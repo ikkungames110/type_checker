@@ -1,0 +1,7 @@
+# Windowsからコピーされたダウンロード元情報
+*:Zone.Identifier
+
+# Pythonのローカル環境・キャッシュ
+.venv/
+__pycache__/
+*.py[cod]

@@ -3,7 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI顔タイプ診断 Prototype</title>
+  <title>好みの顔タイプ診断 | SHIAN STUDIO</title>
+  <meta name="description" content="好みの顔タイプ診断は、2択で気になる顔を選びながら、惹かれやすい雰囲気や特徴を整理するブラウザ診断です。判定方法と注意事項も掲載しています。">
+  <meta name="author" content="SHIAN STUDIO">
   <style>
     :root {
       color-scheme: light;
@@ -43,6 +45,7 @@
       margin: 0 auto;
       padding: 20px clamp(16px, 4vw, 36px) 32px;
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       align-content: center;
       gap: 18px;
     }
@@ -126,7 +129,8 @@
     .primary-btn,
     .ghost-btn,
     .gender-btn,
-    .face-card {
+    .face-card,
+    .skip-btn {
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--panel);
@@ -160,9 +164,20 @@
       background: transparent;
     }
 
+    .skip-btn {
+      width: min(100%, 360px);
+      min-height: 48px;
+      padding: 0 18px;
+      justify-self: center;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--muted);
+      font-weight: 700;
+    }
+
     .gender-btn:hover,
     .face-card:hover,
-    .ghost-btn:hover {
+    .ghost-btn:hover,
+    .skip-btn:hover {
       border-color: #9a9a9a;
       transform: translateY(-2px);
       box-shadow: var(--shadow);
@@ -230,34 +245,12 @@
 
     .portrait {
       width: 100%;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 3 / 4;
       border-radius: 6px;
       background: var(--soft);
       overflow: hidden;
       display: block;
       object-fit: cover;
-    }
-
-    .card-label {
-      min-height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .pick-mark {
-      flex: 0 0 auto;
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--line);
-      color: var(--accent);
-      font-weight: 900;
     }
 
     .result-layout {
@@ -322,6 +315,8 @@
     }
 
     .bar-track {
+      display: block;
+      width: 100%;
       height: 8px;
       border-radius: 999px;
       background: #ece7e0;
@@ -329,9 +324,12 @@
     }
 
     .bar-fill {
+      display: block;
       height: 100%;
       width: 0;
       background: var(--accent-2);
+      border-radius: inherit;
+      transition: width 220ms ease;
     }
 
     .actions {
@@ -345,6 +343,91 @@
       color: var(--accent-2);
       font-size: 13px;
       font-weight: 700;
+    }
+
+    .ad-placement {
+      /* 狭いスマートフォンでも幅320pxの広告が画面内に収まるようにする。 */
+      width: min(100vw, 360px);
+      min-width: 0;
+      justify-self: center;
+      margin-top: 14px;
+      text-align: center;
+    }
+
+    .ad-label {
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .ad-slot {
+      /* バナー分の高さを確保し、縦長の広告は切り取らずに枠を広げる。 */
+      min-height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .content-notes {
+      display: grid;
+      gap: 18px;
+      margin-top: 20px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .content-notes h2 {
+      max-width: none;
+      font-size: clamp(22px, 4vw, 32px);
+    }
+
+    .content-notes > p {
+      max-width: 56em;
+      color: #3d3d3d;
+      line-height: 1.9;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .content-card {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 10px 24px rgba(32, 29, 25, 0.07);
+    }
+
+    .content-card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .content-card p,
+    .content-card li {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .content-card p,
+    .content-card ul {
+      margin: 0;
+    }
+
+    .content-card ul {
+      padding-left: 1.2em;
+    }
+
+    .content-notes a {
+      color: var(--accent);
+      font-weight: 800;
     }
 
     @media (max-width: 760px) {
@@ -369,12 +452,12 @@
         gap: 10px;
       }
 
-      .face-card {
-        padding: 7px;
+      .content-grid {
+        grid-template-columns: 1fr;
       }
 
-      .card-label {
-        font-size: 12px;
+      .face-card {
+        padding: 7px;
       }
 
       .bar-row {
@@ -387,17 +470,17 @@
   <main class="app">
     <div class="topbar">
       <div class="brand">
-        <strong>AI顔タイプ診断</strong>
-        <span>SNS向け診断プロトタイプ</span>
+        <strong>好みの顔タイプ診断</strong>
+        <span>2択で好みを整理</span>
       </div>
-      <div class="progress-text" id="topStatus">Prototype</div>
+      <div class="progress-text" id="topStatus">20問診断</div>
     </div>
 
     <section class="screen active" id="startScreen">
       <div class="hero">
         <div>
-          <h1>あなたが最も惹かれる顔</h1>
-          <p class="lead">2択を直感で選ぶだけ。好みの顔に含まれる特徴を重ねて、最後に「当たってる感」のあるタイプ名で返します。</p>
+          <h1>最後にあなたのタイプの顔が出ます</h1>
+          <p class="lead">2択を直感で選ぶだけ。好みの顔に含まれる特徴を重ねて、最後にあなたが惹かれる顔とタイプ名を表示します。</p>
           <div class="choice-row" aria-label="診断対象を選択">
             <button class="gender-btn" data-gender="female">女性を診断</button>
             <button class="gender-btn" data-gender="male">男性を診断</button>
@@ -413,9 +496,9 @@
     <section class="screen" id="quizScreen">
       <div class="question">
         <div>
-          <p class="micro" id="roundLabel">1 / 8</p>
+          <p class="micro" id="roundLabel">0 / 20</p>
           <h2>どっちがタイプ？</h2>
-          <p class="hint">タップ、または横スワイプで選択</p>
+          <p class="hint">タップ、横スワイプ、またはボタンで選択</p>
         </div>
         <div class="progress" aria-hidden="true">
           <div class="progress-bar" id="progressBar"></div>
@@ -424,6 +507,7 @@
           <button class="face-card" id="leftCard" aria-label="左の顔を選ぶ"></button>
           <button class="face-card" id="rightCard" aria-label="右の顔を選ぶ"></button>
         </div>
+        <button class="skip-btn" id="skipButton" type="button">どっちもタイプじゃない</button>
       </div>
     </section>
 
@@ -446,8 +530,49 @@
         </div>
       </div>
     </section>
+
+    <!-- 全画面で共通の1枠を使い、回答や画面切り替えでタグを再実行しない。 -->
+    <aside class="ad-placement" aria-label="広告">
+      <p class="ad-label" aria-hidden="true">広告</p>
+      <div class="ad-slot">
+        <div id="im-9b64d30372774652a33372f669d0b8bf">
+          <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
+          <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85394,mid:596057,asid:1943441,type:"banner",display:"inline",elementid:"im-9b64d30372774652a33372f669d0b8bf"})</script>
+        </div>
+      </div>
+    </aside>
+
+    <section class="content-notes" aria-labelledby="about-diagnosis-title">
+      <h2 id="about-diagnosis-title">この診断について</h2>
+      <p>
+        好みの顔タイプ診断は、表示された2つの顔から直感で好きな方を選び、選択に含まれる特徴を集計するブラウザ診断です。
+      </p>
+      <div class="content-grid">
+        <section class="content-card">
+          <h3>遊び方</h3>
+          <ul>
+            <li>女性または男性の診断対象を選びます。</li>
+            <li>20回、より好みに近い顔を選びます。</li>
+            <li>結果画面で強く出た特徴とタイプ名を確認できます。</li>
+          </ul>
+        </section>
+        <section class="content-card">
+          <h3>注意事項</h3>
+          <p>
+            結果は固定的な性格診断や美容診断ではありません。表示される顔画像は診断用の素材で、個人を特定する目的では利用していません。
+          </p>
+        </section>
+        <section class="content-card">
+          <h3>素材について</h3>
+          <p>
+            顔素材はAIで生成した架空の人物の画像です。実在の人物の評価やランキングを目的にした内容ではありません。
+          </p>
+        </section>
+      </div>
+    </section>
   </main>
 
+  <script src="data/female_faces.js"></script>
   <script src="data/male_faces.js"></script>
   <script>
     const TAGS = {
@@ -462,6 +587,7 @@
       soft: "やわらかい",
       sharp: "シャープ"
     };
+    const TARGET_SELECTIONS = 20;
 
     const femaleFaces = [
       { id: "f01", label: "涼しげな切れ長タイプ", palette: ["#f2d7c8", "#2c2c34", "#a9425a"], tags: { cool: .9, tsurime: .9, adult: .7, mysterious: .6, sharp: .8 } },
@@ -481,9 +607,26 @@
       { id: "m06", label: "ミステリアス美形タイプ", palette: ["#d9b0a4", "#16191e", "#7f3d4c"], tags: { mysterious: .9, cool: .85, sharp: .85, tsurime: .8, adult: .65 } }
     ];
 
+    const DATASETS = {
+      female: {
+        label: "女性",
+        resultTarget: "女性顔",
+        assets: () => Array.isArray(window.FEMALE_FACE_ASSETS) ? window.FEMALE_FACE_ASSETS : femaleFaces,
+        resultCopy: (topA, topB) => `${topA}と${topB}の反応が強め。顔立ちそのものの整い方に加えて、目元の空気感や輪郭のやわらかさまで含めて「惹かれる女性像」を見ています。`
+      },
+      male: {
+        label: "男性",
+        resultTarget: "男性顔",
+        assets: () => Array.isArray(window.MALE_FACE_ASSETS) ? window.MALE_FACE_ASSETS : maleFaces,
+        resultCopy: (topA, topB) => `${topA}と${topB}の反応が強め。ぱっと見の華やかさより、目元や雰囲気に「自分だけが良さをわかっている」感を見つけると刺さる傾向です。`
+      }
+    };
+
     const state = {
       gender: null,
+      dataset: null,
       round: 0,
+      selectedCount: 0,
       faces: [],
       rounds: [],
       preference: {},
@@ -498,6 +641,7 @@
     const progressBar = document.querySelector("#progressBar");
     const leftCard = document.querySelector("#leftCard");
     const rightCard = document.querySelector("#rightCard");
+    const skipButton = document.querySelector("#skipButton");
     const duel = document.querySelector("#duel");
     const resultPortrait = document.querySelector("#resultPortrait");
     const resultTags = document.querySelector("#resultTags");
@@ -577,40 +721,59 @@
       ];
     }
 
+    function currentPair() {
+      while (state.round >= state.rounds.length) {
+        state.rounds.push(...buildRounds(state.faces));
+      }
+      return state.rounds[state.round];
+    }
+
     function start(gender) {
       state.gender = gender;
+      state.dataset = DATASETS[gender];
       state.round = 0;
+      state.selectedCount = 0;
       state.preference = Object.fromEntries(Object.keys(TAGS).map(key => [key, 0]));
-      const maleAssetFaces = Array.isArray(window.MALE_FACE_ASSETS) ? window.MALE_FACE_ASSETS : maleFaces;
-      state.faces = gender === "female" ? femaleFaces : maleAssetFaces;
+      state.faces = state.dataset.assets().filter(face => face.gender === gender || !face.gender);
       state.rounds = buildRounds(state.faces);
-      topStatus.textContent = gender === "female" ? "女性を診断中" : "男性を診断中";
+      topStatus.textContent = `${state.dataset.label}を診断中`;
       show(quizScreen);
       renderRound();
     }
 
     function renderRound() {
-      const pair = state.rounds[state.round];
-      roundLabel.textContent = `${state.round + 1} / ${state.rounds.length}`;
-      progressBar.style.width = `${(state.round / state.rounds.length) * 100}%`;
+      const pair = currentPair();
+      roundLabel.textContent = `${state.selectedCount} / ${TARGET_SELECTIONS}`;
+      progressBar.style.width = `${(state.selectedCount / TARGET_SELECTIONS) * 100}%`;
       renderCard(leftCard, pair[0], "left");
       renderCard(rightCard, pair[1], "right");
     }
 
+    function advancePair() {
+      state.round += 1;
+      renderRound();
+    }
+
     function choose(index) {
-      const selected = state.rounds[state.round][index];
+      const selected = currentPair()[index];
       Object.entries(selected.tags).forEach(([key, value]) => {
         state.preference[key] = (state.preference[key] || 0) + value;
       });
+      state.selectedCount += 1;
       state.round += 1;
 
-      if (state.round >= state.rounds.length) {
+      if (state.selectedCount >= TARGET_SELECTIONS) {
+        roundLabel.textContent = `${TARGET_SELECTIONS} / ${TARGET_SELECTIONS}`;
         progressBar.style.width = "100%";
         renderResult();
         return;
       }
 
       renderRound();
+    }
+
+    function skipRound() {
+      advancePair();
     }
 
     function sortedScores() {
@@ -648,7 +811,7 @@
       const base = bestResultFace();
 
       resultTitle.textContent = title;
-      resultCopy.textContent = `${TAGS[topKeys[0]]}と${TAGS[topKeys[1]]}の反応が強め。ぱっと見の華やかさより、目元や雰囲気に「自分だけが良さをわかっている」感を見つけると刺さる傾向です。`;
+      resultCopy.textContent = state.dataset.resultCopy(TAGS[topKeys[0]], TAGS[topKeys[1]]);
       resultPortrait.innerHTML = renderPortrait(base, 2, state.preference);
       resultTags.innerHTML = scores.slice(0, 5).map(item => `<span class="tag">#${item.label}好き</span>`).join("");
       resultBars.innerHTML = scores.slice(0, 6).map(item => `
@@ -659,13 +822,13 @@
         </div>
       `).join("");
 
-      state.lastResult = `AI顔タイプ診断の結果: ${title}\n${scores.slice(0, 4).map(item => `#${item.label}好き`).join(" ")}`;
+      state.lastResult = `好みの顔タイプ診断の結果(${state.dataset.resultTarget}): ${title}\n${scores.slice(0, 4).map(item => `#${item.label}好き`).join(" ")}`;
       topStatus.textContent = "診断完了";
       show(resultScreen);
     }
 
     function reset() {
-      topStatus.textContent = "Prototype";
+      topStatus.textContent = "20問診断";
       toast.textContent = "";
       show(startScreen);
     }
@@ -684,6 +847,7 @@
     });
     leftCard.addEventListener("click", () => choose(0));
     rightCard.addEventListener("click", () => choose(1));
+    skipButton.addEventListener("click", skipRound);
     document.querySelector("#restartButton").addEventListener("click", reset);
     document.querySelector("#shareButton").addEventListener("click", copyResult);
 
@@ -702,8 +866,9 @@
       if (event.key === "ArrowRight") choose(1);
     });
 
-    document.querySelector("#sampleA").innerHTML = faceSvg(femaleFaces[0]);
-    document.querySelector("#sampleB").innerHTML = faceSvg(femaleFaces[1], 1);
+    const sampleFaces = DATASETS.female.assets();
+    document.querySelector("#sampleA").innerHTML = renderPortrait(sampleFaces[0]);
+    document.querySelector("#sampleB").innerHTML = renderPortrait(sampleFaces[1], 1);
   </script>
 </body>
 </html>
