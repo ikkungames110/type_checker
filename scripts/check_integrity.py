@@ -88,6 +88,10 @@ def main():
     for path in sorted(images - referenced):
         errors.append(f"{path.relative_to(ROOT)}: 対応する特徴量レコードがない")
 
+    domain = (ROOT / "CNAME").read_text(encoding="utf-8").strip()
+    html = (ROOT / "index.html").read_text(encoding="utf-8")
+    check(f'<link rel="canonical" href="https://{domain}/">' in html, "index.html: canonicalとCNAMEが不一致")
+
     documents = [ROOT / "index.html", ROOT / "README.md", *sorted((ROOT / "docs").glob("*"))]
     for source in documents:
         if source.suffix not in {".html", ".md"}:

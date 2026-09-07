@@ -14,7 +14,9 @@ python3 -m http.server 8000
 画像・データのURLはページからの相対パスなので、ドメイン直下でも
 `/type_checker/` のようなサブディレクトリでも利用できます。
 `docs/` の確認ページも公開する場合は、同じ構造で配置してください。
-公開先URLは固定していません。検索エンジン向けの `canonical` を指定する場合は、公開先の確定後に `index.html` へ追加してください。
+公開先は `CNAME` に設定された `type_checker.shianstudio.com` です。
+`index.html` の `canonical` も `https://type_checker.shianstudio.com/` に合わせています。
+公開先を変更するときは、この2か所を更新してください。
 
 ## ファイル構成
 
