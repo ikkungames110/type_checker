@@ -14,9 +14,32 @@ python3 -m http.server 8000
 画像・データのURLはページからの相対パスなので、ドメイン直下でも
 `/type_checker/` のようなサブディレクトリでも利用できます。
 `docs/` の確認ページも公開する場合は、同じ構造で配置してください。
-公開先は `CNAME` に設定された `type_checker.shianstudio.com` です。
+独自ドメインの設定値は `CNAME` の `type_checker.shianstudio.com` です。
 `index.html` の `canonical` も `https://type_checker.shianstudio.com/` に合わせています。
 公開先を変更するときは、この2か所を更新してください。
+
+## Cloudflare Pagesへの公開
+
+公開URL: [https://type-checker-shianstudio.pages.dev/](https://type-checker-shianstudio.pages.dev/)
+
+2026-09-07にPagesへ公開しました。独自ドメイン `type_checker.shianstudio.com` は
+Cloudflare APIにエラー `8000015`（`Domain is invalid`）で拒否され、未設定です。
+代替ドメインの確定後に `CNAME` と `canonical` を更新し、PagesのカスタムドメインとDNSを設定してください。
+今回使用したWranglerのOAuth認証にはDNSレコードの操作権限がなく、DNS APIは403を返しました。
+
+Pagesプロジェクトは `type-checker-shianstudio`、本番ブランチは `main` です。
+Wranglerでログイン済みの環境から、次のコマンドで更新します。
+
+```bash
+python3 scripts/build_pages.py
+npx wrangler@4.129.0 pages deploy dist --project-name type-checker-shianstudio --branch main
+```
+
+未ログインの場合は `npx wrangler@4.129.0 login` を先に実行してください。
+公開用の `dist/` には診断画面・画像・データ・確認資料を配置します。
+Gitの管理情報、ローカル設定、`Zone.Identifier` は含めません。
+これは直接アップロードによる公開です。GitへのpushだけではPagesは更新されません。
+独自ドメインはPagesのカスタムドメインとDNSで設定します。`CNAME` ファイル単体では設定されません。
 
 ## ファイル構成
 
