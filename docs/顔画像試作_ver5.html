@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>顔画像の試作 — 男女各10枚 ver4</title>
+  <title>顔画像の試作 — 男女各10枚 ver5</title>
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; color: #242a2b; background: #f8f8f5; font: 16px/1.75 system-ui, sans-serif; }
@@ -25,6 +25,9 @@
     figure a { display: block; border-radius: 10px; overflow: hidden; background: #e3e5e3; }
     img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; object-position: center 15%; }
     .full img { aspect-ratio: 3/4; object-fit: contain; }
+    .features figure a { position: relative; aspect-ratio: 1; }
+    .features img { position: absolute; width: 185%; height: auto; aspect-ratio: 3/4; left: -42.5%; top: -55%; }
+    select { padding: 8px; font: inherit; color: inherit; border: 1px solid #d9e1dc; border-radius: 7px; background: white; }
     figcaption { padding-top: 6px; color: #62716c; font: 13px/1.7 ui-monospace, monospace; text-align: center; }
     footer { padding-bottom: 40px; color: #62716c; font-size: 14px; }
     a { color: #355d50; }
@@ -34,35 +37,37 @@
 </head>
 <body>
   <header>
-    <p><a href="顔画像試作_ver5.html">顔立ちの違いを強めた新しい試作（ver5）を見る</a></p>
-    <p class="eyebrow">PORTRAIT PREVIEW / VER. 4</p>
+    <p class="eyebrow">PORTRAIT PREVIEW / VER. 5</p>
     <h1>顔画像の試作 — 男女各10枚</h1>
-    <p>頬はなめらかに、丸顔も小ぶりな輪郭に。全員の容姿の水準を引き上げた試作です。</p>
+    <p>目・眉・鼻・輪郭の組み合わせを、1人ずつはっきり変えた試作です。頬の自然な厚みと、整った容姿は共通条件にしています。</p>
     <p>気になる画像は、下のIDで指定できます。画像を押すと大きく表示します。</p>
     <div class="controls">
       <div class="versions" aria-label="表示する画像のバージョン">
         <button type="button" id="new" aria-pressed="true">新しい試作</button>
-        <button type="button" id="old" aria-pressed="false">前の画像</button>
+        <button type="button" id="old" aria-pressed="false">前回の試作</button>
       </div>
-      <label><input type="checkbox" id="full"> 胸元まで表示</label>
+      <label>表示 <select id="framing"><option value="portrait">通常</option><option value="features">顔を大きく</option><option value="full">胸元まで</option></select></label>
     </div>
     <p id="status" aria-live="polite">新しい試作を表示しています。</p>
   </header>
   <main>
     <section aria-labelledby="female-title"><h2 id="female-title">女性 10枚</h2><div id="female" class="grid"></div></section>
     <section aria-labelledby="male-title"><h2 id="male-title">男性 10枚</h2><div id="male" class="grid"></div></section>
-    <noscript>表示にはJavaScriptが必要です。<a href="顔画像試作_ver4.md">画像への直接リンク一覧</a>も利用できます。</noscript>
+    <noscript>表示にはJavaScriptが必要です。<a href="顔画像試作_ver5.md">画像への直接リンク一覧</a>も利用できます。</noscript>
   </main>
   <footer>
-    <p>今回は方向性を確認するための20枚です。<a href="顔画像試作_ver4.md">制作記録</a> · <a href="顔画像一覧_ver3.html">前の80枚の一覧</a></p>
+    <p>今回は方向性を確認するための20枚です。<a href="顔画像試作_ver5.md">制作記録</a> · <a href="顔画像試作_ver4.html">前回の試作一覧</a></p>
   </footer>
   <script src="../data/previews/female_faces_v4.js"></script>
   <script src="../data/previews/male_faces_v4.js"></script>
+  <script src="../data/previews/female_faces_v5.js"></script>
+  <script src="../data/previews/male_faces_v5.js"></script>
   <script>
     const entries = [];
-    for (const [gender, records] of [['female', window.FEMALE_FACE_PREVIEW_V4], ['male', window.MALE_FACE_PREVIEW_V4]]) {
+    for (const [gender, records] of [['female', window.FEMALE_FACE_PREVIEW_V5], ['male', window.MALE_FACE_PREVIEW_V5]]) {
       const grid = document.getElementById(gender);
-      for (const record of records) {
+      const previous = gender === 'female' ? window.FEMALE_FACE_PREVIEW_V4 : window.MALE_FACE_PREVIEW_V4;
+      for (const [index, record] of records.entries()) {
         const figure = document.createElement('figure');
         const link = document.createElement('a');
         const image = document.createElement('img');
@@ -74,25 +79,27 @@
         link.append(image);
         figure.append(link, caption);
         grid.append(figure);
-        entries.push({ record, link, image });
+        entries.push({ record, previous: previous[index], link, image, caption });
       }
     }
     function showVersion(version) {
       const old = version === 'old';
-      for (const { record, link, image } of entries) {
-        link.href = '../' + (old ? `assets/${record.gender}/${record.id}.png` : record.image);
+      for (const { record, previous, link, image, caption } of entries) {
+        const shown = old ? previous : record;
+        link.href = '../' + shown.image;
+        caption.textContent = shown.id;
         image.src = link.href;
-        image.alt = `${record.id} ${old ? '前の画像' : '新しい試作'}`;
+        image.alt = `${shown.id} ${old ? '前回の試作' : '新しい試作'}`;
       }
       document.getElementById('new').setAttribute('aria-pressed', String(!old));
       document.getElementById('old').setAttribute('aria-pressed', String(old));
       document.getElementById('status').textContent = old
-        ? '同じIDの前の画像を表示しています。新しい試作では人物を新たに生成しています。'
+        ? '前回の試作20枚を表示しています。今回とは別の顔立ち・IDです。'
         : '新しい試作を表示しています。';
     }
     document.getElementById('new').addEventListener('click', () => showVersion('new'));
     document.getElementById('old').addEventListener('click', () => showVersion('old'));
-    document.getElementById('full').addEventListener('change', event => document.querySelector('main').classList.toggle('full', event.target.checked));
+    document.getElementById('framing').addEventListener('change', event => { document.querySelector('main').className = event.target.value; });
     showVersion('new');
   </script>
 </body>

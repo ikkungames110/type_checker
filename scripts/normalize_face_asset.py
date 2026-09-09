@@ -58,7 +58,9 @@ def crop_with_padding(image: np.ndarray, x: float, y: float, w: float, h: float)
             pad_bottom,
             pad_left,
             pad_right,
-            borderType=cv2.BORDER_REPLICATE,
+            # 端の1列・1行を引き伸ばすと服や背景に縞が出るため、近傍を反転補完する。
+            # 顔領域の画素は変更しない。
+            borderType=cv2.BORDER_REFLECT_101,
         )
         x0 += pad_left
         y0 += pad_top

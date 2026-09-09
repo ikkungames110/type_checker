@@ -50,6 +50,8 @@ def main():
         ("data/previews/male_faces_v3.js", "MALE_FACE_PREVIEW_V3", "male", 10, "assets/previews/v3/male"),
         ("data/previews/male_faces_v4.js", "MALE_FACE_PREVIEW_V4", "male", 10, "assets/previews/v4/male"),
         ("data/previews/female_faces_v4.js", "FEMALE_FACE_PREVIEW_V4", "female", 10, "assets/previews/v4/female"),
+        ("data/previews/male_faces_v5.js", "MALE_FACE_PREVIEW_V5", "male", 10, "assets/previews/v5/male"),
+        ("data/previews/female_faces_v5.js", "FEMALE_FACE_PREVIEW_V5", "female", 10, "assets/previews/v5/female"),
     ]
     for filename, global_name, gender, count, directory in datasets:
         source = ROOT / filename
@@ -63,10 +65,11 @@ def main():
         check(len(records) == count and len(set(ids)) == count, f"{filename}: 件数またはID重複が不正")
         if count == 40:
             check(set(ids) == {f"{gender}_{i:03d}" for i in range(1, 41)}, f"{filename}: IDに欠落がある")
-        if global_name.endswith("_V4"):
+        if global_name.endswith(("_V4", "_V5")):
             from build_face_plan_v3 import tags as derive_tags
 
-            selection = json.loads((ROOT / f"data/previews/{gender}_v4_selection.json").read_text())
+            version = global_name.rsplit('_', 1)[1].lower()
+            selection = json.loads((ROOT / f"data/previews/{gender}_{version}_selection.json").read_text())
             plan_path = ROOT / selection["source_plan"]
             plan = json.loads(plan_path.read_text())
             planned = {record["id"]: record for record in plan["records"]}
@@ -78,8 +81,9 @@ def main():
                 check(target["tags"] == derive_tags(target["shape_features"]), f"{target['id']}: 計画のタグ再計算不一致")
             for record in records:
                 target = planned.get(record["id"], {})
-                for key in ("prompt", "tags", "shape_features", "appearance_features"):
+                for key in ("tags", "shape_features", "appearance_features"):
                     check(record[key] == target.get(key), f"{filename}: {record['id']}の{key}が生成計画と不一致")
+                check(record.get('plan_prompt', record['prompt']) == target.get('prompt'), f"{filename}: {record['id']}の生成元プロンプトが計画と不一致")
                 check(record["image"] == target.get("planned_image"), f"{filename}: 計画の保存先と不一致")
         for record in records:
             context = f"{filename}: {record['id']}"
@@ -128,7 +132,7 @@ def main():
 
     if errors:
         raise SystemExit("\n".join(errors))
-    print(f"整合性OK: 本番80件・試作30件（ver3: 10件 / ver4: 20件）、画像{len(referenced)}枚、特徴量・画像ハッシュ・ローカルリンク")
+    print(f"整合性OK: 本番80件・試作50件（ver3: 10件 / ver4: 20件 / ver5: 20件）、画像{len(referenced)}枚、特徴量・画像ハッシュ・ローカルリンク")
 
 
 if __name__ == "__main__":

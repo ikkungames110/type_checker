@@ -1,0 +1,20 @@
+{
+  "gender": "male",
+  "population": 40,
+  "sample_size": 10,
+  "ids": [
+    "male_001",
+    "male_002",
+    "male_003",
+    "male_004",
+    "male_005",
+    "male_006",
+    "male_007",
+    "male_008",
+    "male_009",
+    "male_010"
+  ],
+  "method": "顔立ちの異なる10系統から各1人。目・眉・鼻・輪郭の差を確認する目的抽出。",
+  "source_plan": "data/plans/male_faces_v5.json",
+  "plan_sha256": "ced1b4afd8d8d9c07f02c61806a2fe25b0beb89c28071de79498e39a4e5498ff"
+}

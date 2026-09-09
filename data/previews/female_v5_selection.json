@@ -1,0 +1,20 @@
+{
+  "gender": "female",
+  "population": 40,
+  "sample_size": 10,
+  "ids": [
+    "female_001",
+    "female_002",
+    "female_003",
+    "female_004",
+    "female_005",
+    "female_006",
+    "female_007",
+    "female_008",
+    "female_009",
+    "female_010"
+  ],
+  "method": "顔立ちの異なる10系統から各1人。目・眉・鼻・輪郭の差を確認する目的抽出。",
+  "source_plan": "data/plans/female_faces_v5.json",
+  "plan_sha256": "7a2d4c5d8440a44104a62c79666e293cfb941daf0fa372c8145c63c21653e41f"
+}

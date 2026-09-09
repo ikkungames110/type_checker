@@ -21,11 +21,17 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--id', required=True)
     parser.add_argument('--input', type=Path, required=True)
+    parser.add_argument('--version', choices=('v4', 'v5'), default='v4')
+    parser.add_argument('--edit-prompt', type=Path)
+    parser.add_argument('--reference-image', type=Path)
     args = parser.parse_args()
+    if bool(args.edit_prompt) != bool(args.reference_image):
+        parser.error('--edit-promptと--reference-imageは一緒に指定してください')
     gender = args.id.split('_')[0]
     if gender not in {'male', 'female'}:
         parser.error('IDのgenderが不正です')
-    selection = json.loads((ROOT / f'data/previews/{gender}_v4_selection.json').read_text())
+    version = args.version
+    selection = json.loads((ROOT / f'data/previews/{gender}_{version}_selection.json').read_text())
     if args.id not in selection['ids']:
         parser.error('試作対象のIDではありません')
     plan = json.loads((ROOT / selection['source_plan']).read_text())
@@ -46,24 +52,31 @@ def main():
     destination = ROOT / record['planned_image']
     subprocess.run([sys.executable, str(ROOT / 'scripts/normalize_face_asset.py'),
                     '--input', str(source), '--dest', str(destination)], check=True)
-    record.update(image=record.pop('planned_image'), asset_version='v4-preview',
+    record.update(image=record.pop('planned_image'), asset_version=f'{version}-preview',
                   review_status='awaiting_visual_check', generation=dict(
                       method='builtin_image_gen', date=datetime.now(timezone.utc).date().isoformat(),
                       source_file=source.name, source_size=[raw.shape[1], raw.shape[0]],
                       source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
                       face_box=[x, y, w, h], face_detected=True,
                       crop_shift_source_pixels=[round(fitted_x-crop_x, 2), round(fitted_y-crop_y, 2)],
-                      padding_required=padding, output_size=[1200, 1600],
+                      padding_required=padding, padding_mode='reflect_101' if padding else 'none',
+                      output_size=[1200, 1600],
                       normalizer='scripts/normalize_face_asset.py',
                       image_sha256=hashlib.sha256(destination.read_bytes()).hexdigest()),
                   visual_review=dict(status='pending', shape_calibrated=False,
                                      notes='', unverified_features=[]))
-    target = ROOT / f'data/previews/{gender}_faces_v4.js'
+    if args.edit_prompt:
+        record['plan_prompt'] = record['prompt']
+        record['prompt'] = args.edit_prompt.read_text().strip()
+        record['generation']['method'] = 'builtin_image_gen_edit'
+        record['generation']['reference_file'] = args.reference_image.name
+        record['generation']['reference_sha256'] = hashlib.sha256(args.reference_image.read_bytes()).hexdigest()
+    target = ROOT / f'data/previews/{gender}_faces_{version}.js'
     records = json.loads(target.read_text().split('=', 1)[1].strip().removesuffix(';')) if target.exists() else []
     records = [r for r in records if r['id'] != args.id] + [record]
     records.sort(key=lambda r: selection['ids'].index(r['id']))
     target.write_text('// 試作画像の特徴量は生成目標。ユーザー確認前。\n'
-                      f'window.{gender.upper()}_FACE_PREVIEW_V4 = '
+                      f'window.{gender.upper()}_FACE_PREVIEW_{version.upper()} = '
                       + json.dumps(records, ensure_ascii=False, indent=2) + ';\n')
     print(f'{args.id}: 特徴量保存、padding_required={padding}')
 
