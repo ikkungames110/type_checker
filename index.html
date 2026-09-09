@@ -869,7 +869,6 @@
       topStatus.textContent = "20問診断";
       toast.textContent = "";
       show(startScreen);
-      updatePreview();
     }
 
     async function copyResult() {
@@ -885,10 +884,7 @@
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let previewGender = "female";
 
-    function updatePreview() {
-      const button = startScreen.querySelector(".gender-btn:hover")
-        || startScreen.querySelector(".gender-btn:focus-visible");
-      const gender = button?.dataset.gender || "female";
+    function updatePreview(gender) {
       if (gender === previewGender) return;
       previewGender = gender;
 
@@ -905,18 +901,28 @@
         const to = { transform: target.transform, opacity: target.opacity, zIndex: target.zIndex };
         const drift = Math.min(36, card.clientWidth * 0.1);
         card.animate([
-          { ...from, offset: 0 },
+          { transform: from.transform, offset: 0 },
           {
             transform: incoming
               ? `translate(${drift}px, -12px) rotate(3deg) scale(1.01)`
               : `translate(${-drift}px, 8px) rotate(-5deg) scale(0.97)`,
-            opacity: incoming ? 0.94 : 0.86,
-            zIndex: from.zIndex,
             offset: 0.45
           },
-          { zIndex: to.zIndex, offset: 0.5 },
-          { ...to, offset: 1 }
+          { transform: to.transform, offset: 1 }
         ], { duration: 680, easing: "cubic-bezier(0.4, 0, 0.2, 1)" });
+
+        // 奥行きの入れ替えは、退く写真が透明な間に行う。
+        // 移動より長くフェードさせ、前後が切り替わる瞬間のちらつきを抑える。
+        const opacityFrames = from.zIndex === to.zIndex
+          ? [{ opacity: from.opacity }, { opacity: to.opacity }]
+          : [
+              { opacity: from.opacity, zIndex: from.zIndex, offset: 0 },
+              { opacity: incoming ? 0.92 : 0, zIndex: from.zIndex, offset: 0.46 },
+              { zIndex: to.zIndex, offset: 0.5 },
+              { opacity: incoming ? 0.92 : 0, offset: 0.54 },
+              { opacity: to.opacity, zIndex: to.zIndex, offset: 1 }
+            ];
+        card.animate(opacityFrames, { duration: 1000, easing: "ease-in-out" });
       }
     }
 
@@ -927,8 +933,8 @@
     });
 
     document.querySelectorAll(".gender-btn").forEach(button => {
-      ["pointerenter", "pointerleave", "focus", "blur"].forEach(event => {
-        button.addEventListener(event, updatePreview);
+      ["pointerenter", "focus"].forEach(event => {
+        button.addEventListener(event, () => updatePreview(button.dataset.gender));
       });
       button.addEventListener("click", () => start(button.dataset.gender));
     });
