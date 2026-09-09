@@ -53,6 +53,8 @@ def main():
         ("data/previews/female_faces_v4.js", "FEMALE_FACE_PREVIEW_V4", "female", 10, "assets/previews/v4/female"),
         ("data/previews/male_faces_v5.js", "MALE_FACE_PREVIEW_V5", "male", 10, "assets/previews/v5/male"),
         ("data/previews/female_faces_v5.js", "FEMALE_FACE_PREVIEW_V5", "female", 10, "assets/previews/v5/female"),
+        ("data/generated/male_faces_v6.js", "MALE_FACE_GENERATED_V6", "male", 60, "assets/planned/v6/male"),
+        ("data/generated/female_faces_v6.js", "FEMALE_FACE_GENERATED_V6", "female", 60, "assets/planned/v6/female"),
     ]
     for filename, global_name, gender, count, directory in datasets:
         source = ROOT / filename
@@ -64,8 +66,22 @@ def main():
         records = json.loads(match[1])
         ids = [record["id"] for record in records]
         check(len(records) == count and len(set(ids)) == count, f"{filename}: 件数またはID重複が不正")
-        if count == 40:
-            check(set(ids) == {f"{gender}_{i:03d}" for i in range(1, 41)}, f"{filename}: IDに欠落がある")
+        if count in {40, 60}:
+            check(set(ids) == {f"{gender}_{i:03d}" for i in range(1, count + 1)}, f"{filename}: IDに欠落がある")
+        if global_name.endswith('_GENERATED_V6'):
+            plan_path = ROOT / f'data/plans/{gender}_faces_v6.json'
+            plan = json.loads(plan_path.read_text())
+            planned = {r['id']: r for r in plan['records']}
+            plan_hash = hashlib.sha256(plan_path.read_bytes()).hexdigest()
+            check(len({r['generation']['image_sha256'] for r in records}) == count, f'{filename}: 生成画像が重複')
+            for record in records:
+                target = planned.get(record['id'], {})
+                for key in ('tags', 'shape_features', 'appearance_features', 'prompt', 'label', 'description', 'design_levels', 'source_plan'):
+                    check(record.get(key) == target.get(key), f"{filename}: {record['id']}の{key}がver6計画と不一致")
+                check(record['image'] == target.get('planned_image'), f'{filename}: 計画の保存先と不一致')
+                check(record['generation']['plan_sha256'] == plan_hash, f'{filename}: 生成元の計画ハッシュ不一致')
+                check(record['generation']['face_detected'] is True, f'{filename}: 正面顔を検出していない')
+                check(record['shape_calibrated'] is False, f'{filename}: 生成目標を実測値として扱っている')
         if global_name.endswith(("_V4", "_V5")):
             from build_face_plan_v3 import tags as derive_tags
 
@@ -109,7 +125,7 @@ def main():
                 check(struct.unpack(">II", raw[16:24]) == (1200, 1600), f"{context}: サイズ不一致")
             check(hashlib.sha256(raw).hexdigest() == record["generation"]["image_sha256"], f"{context}: 画像ハッシュ不一致")
 
-    # 未生成の60人計画は実在アセットの集合に加えず、設定・基準画像・HTMLとの一致を検証する。
+    # 生成前の計画はそのまま残し、実在アセットは生成データからのみ参照する。
     from build_face_plan_v6 import category_targets, constrain_anchor, design_levels, describe, make_prompt
     from build_face_plan_v3 import KEYS, tags as derive_tags
 
@@ -189,7 +205,7 @@ def main():
 
     if errors:
         raise SystemExit("\n".join(errors))
-    print(f"整合性OK: 本番80件・試作50件、画像{len(referenced)}枚、ver6計画120人、特徴量・画像ハッシュ・配分・HTML・ローカルリンク")
+    print(f"整合性OK: 本番80件・試作50件・ver6生成120件、画像{len(referenced)}枚、ver6計画120人、特徴量・画像ハッシュ・配分・HTML・ローカルリンク")
 
 
 if __name__ == "__main__":
