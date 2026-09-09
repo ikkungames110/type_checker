@@ -2,6 +2,7 @@
 
 - After making any file modification for the user, commit the change and push it to the configured Git remote.
 - If push is not possible, report the reason clearly and leave the working tree state explicit.
+- Cloudflare Pages is connected to this GitHub repository. A push to `main` triggers production deployment; verify the matching deployment succeeds and the live site reflects the change before reporting completion. The build command is `python3 scripts/build_pages.py`, the output directory is `dist`, and the production URL is `https://type-checker.shianstudio.com/`.
 - Keep generated face assets and their feature metadata in sync: image files live under `assets/`, and the corresponding feature records live under `data/`.
 - Do not show feature labels, tag names, arrows, or other scoring hints on the face choice cards during the quiz. The choice cards should present only the portrait images; `label` and `tags` are metadata for scoring and result generation, not in-quiz display text.
 
