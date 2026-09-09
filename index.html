@@ -561,14 +561,14 @@
       <p class="ad-label" aria-hidden="true">広告</p>
       <div class="ad-slot">
         <div id="im-0188de672a6d45f9866ae278a4d4ef39" hidden></div>
-        <div id="im-24506e18fc184948a7840e1fba38c035" hidden></div>
+        <div id="im-f9eb908dad6a4cf49b5ea04a2cd2e6f5" hidden></div>
         <p class="ad-status" role="status">広告配信待ち</p>
         <script>
           (() => {
             const desktopMedia = window.matchMedia("(min-width: 800px)");
             const banners = [
               {pid:85394,mid:596132,asid:1943443,type:"banner",display:"inline",elementid:"im-0188de672a6d45f9866ae278a4d4ef39"},
-              {pid:85394,mid:596134,asid:1943444,type:"banner",display:"inline",elementid:"im-24506e18fc184948a7840e1fba38c035"}
+              {pid:85394,mid:596134,asid:1943673,type:"banner",display:"inline",elementid:"im-f9eb908dad6a4cf49b5ea04a2cd2e6f5"}
             ];
             const loadedBanners = new Set();
 
@@ -627,6 +627,7 @@
 
   <script src="data/female_faces.js"></script>
   <script src="data/male_faces.js"></script>
+  <script src="js/face_deck.js"></script>
   <script>
     const TAGS = {
       cool: "クール",
@@ -678,10 +679,9 @@
     const state = {
       gender: null,
       dataset: null,
-      round: 0,
       selectedCount: 0,
       faces: [],
-      rounds: [],
+      deck: null,
       preference: {},
       lastResult: ""
     };
@@ -752,43 +752,18 @@
       screen.classList.add("active");
     }
 
-    function buildRounds(faces) {
-      if (faces.length > 6) {
-        const shuffled = [...faces].sort(() => Math.random() - 0.5);
-        const rounds = [];
-        for (let i = 0; i < shuffled.length - 1; i += 2) {
-          rounds.push([shuffled[i], shuffled[i + 1]]);
-        }
-        return rounds;
-      }
-
-      return [
-        [faces[0], faces[1]],
-        [faces[2], faces[3]],
-        [faces[4], faces[5]],
-        [faces[0], faces[2]],
-        [faces[1], faces[4]],
-        [faces[3], faces[5]],
-        [faces[0], faces[4]],
-        [faces[2], faces[5]]
-      ];
-    }
-
     function currentPair() {
-      while (state.round >= state.rounds.length) {
-        state.rounds.push(...buildRounds(state.faces));
-      }
-      return state.rounds[state.round];
+      return state.deck.current;
     }
 
     function start(gender) {
       state.gender = gender;
       state.dataset = DATASETS[gender];
-      state.round = 0;
       state.selectedCount = 0;
       state.preference = Object.fromEntries(Object.keys(TAGS).map(key => [key, 0]));
       state.faces = state.dataset.assets().filter(face => face.gender === gender || !face.gender);
-      state.rounds = buildRounds(state.faces);
+      state.deck = new FaceDeck(state.faces, TARGET_SELECTIONS);
+      state.deck.next();
       topStatus.textContent = `${state.dataset.label}を診断中`;
       show(quizScreen);
       renderRound();
@@ -802,18 +777,13 @@
       renderCard(rightCard, pair[1], "right");
     }
 
-    function advancePair() {
-      state.round += 1;
-      renderRound();
-    }
-
     function choose(index) {
+      if (!quizScreen.classList.contains("active")) return;
       const selected = currentPair()[index];
       Object.entries(selected.tags).forEach(([key, value]) => {
         state.preference[key] = (state.preference[key] || 0) + value;
       });
       state.selectedCount += 1;
-      state.round += 1;
 
       if (state.selectedCount >= TARGET_SELECTIONS) {
         roundLabel.textContent = `${TARGET_SELECTIONS} / ${TARGET_SELECTIONS}`;
@@ -822,11 +792,14 @@
         return;
       }
 
+      state.deck.next();
       renderRound();
     }
 
     function skipRound() {
-      advancePair();
+      if (!quizScreen.classList.contains("active")) return;
+      state.deck.skip();
+      renderRound();
     }
 
     function sortedScores() {

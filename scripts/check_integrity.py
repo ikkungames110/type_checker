@@ -110,7 +110,7 @@ def main():
             check(hashlib.sha256(raw).hexdigest() == record["generation"]["image_sha256"], f"{context}: 画像ハッシュ不一致")
 
     # 未生成の60人計画は実在アセットの集合に加えず、設定・基準画像・HTMLとの一致を検証する。
-    from build_face_plan_v6 import LEVELS, design_levels, describe, make_prompt
+    from build_face_plan_v6 import category_targets, constrain_anchor, design_levels, describe, make_prompt
     from build_face_plan_v3 import KEYS, tags as derive_tags
 
     new_plans = []
@@ -136,23 +136,29 @@ def main():
             check(set(record['tags']) == TAG_KEYS and record['tags'] == derive_tags(shape), f'{context}: 派生タグ不一致')
             check(record['design_levels'] == design_levels(record), f'{context}: 数値と分類が不一致')
             appearance = record['appearance_features']
+            check(appearance['hair_style'] == 'fringe_down', f'{context}: 自然な下ろし前髪ではない')
+            if gender == 'female':
+                check(appearance['face_outline'] in {'round','short_oval','oval'}, f'{context}: 女性の輪郭制約に違反')
+                check(shape['eyebrow_thickness'] <= .50, f'{context}: 女性の眉が太い')
             check(record['description'] == describe(shape,appearance['face_outline'],appearance['hair_style'],gender), f'{context}: 日本語説明が数値と不一致')
             check(record['prompt'] == make_prompt(record), f'{context}: 生成指示が数値と不一致')
             signature = tuple(shape[k] for k in KEYS)
             check(signature not in signatures, f'{context}: 他の人物と形態26項目が完全一致')
             signatures.add(signature)
             if i < 10:
-                check(shape == anchors[i]['shape_features'] and appearance == anchors[i]['appearance_features'], f'{context}: 基準10人の設定が変更されている')
+                revised = constrain_anchor(anchors[i])
+                check(shape == revised['shape_features'] and appearance == revised['appearance_features'], f'{context}: 基準10人への条件反映が不一致')
                 check(record['reference_image'] == f'assets/previews/v5/{gender}/{record["id"]}.png', f'{context}: 基準画像が不一致')
                 local_path(ROOT/'index.html',record['reference_image'])
             else:
                 check(record['reference_image'] is None, f'{context}: 新規人物に別人の基準画像を割り当てている')
         for key, coverage in plan['coverage'].items():
             counts = Counter(r['design_levels'][key] for r in records)
-            size = 8 if key == 'outline' else 3 if key == 'hair' else len(LEVELS[key]['values'])
+            targets = category_targets(gender)[key]
+            size = len(targets)
             check(len(coverage) == size, f'{source.name}: {key}の配分カテゴリ数が不正')
             check([c['count'] for c in coverage] == [counts[i] for i in range(size)], f'{source.name}: {key}の配分記録が不一致')
-            check([counts[i] for i in range(size)] == [60//size + (i < 60%size) for i in range(size)], f'{source.name}: {key}の配分に偏り')
+            check([counts[i] for i in range(size)] == targets, f'{source.name}: {key}の配分が指定と不一致')
     catalog = (ROOT/'docs/顔設定一覧_男女各60人_ver6.html').read_text()
     embedded = re.search(r'<script type="application/json" id="plan-data">(.*?)</script>',catalog,re.S)
     check(embedded is not None, 'ver6 HTML: 設定データがない')

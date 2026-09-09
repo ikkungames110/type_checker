@@ -8,12 +8,14 @@ from pathlib import Path
 import random
 
 from build_face_plan_v3 import HAIR, KEYS, OUTLINE_KEYS, SCHEMA, tags
-from build_face_plan_v5 import OUTLINES
+from build_face_plan_v5 import OUTLINES as V5_OUTLINES
 
 
 ROOT = Path(__file__).resolve().parents[1]
 COUNT = 60
-VERSION = '6.0.0'
+VERSION = '6.1.0'
+OUTLINES = deepcopy(V5_OUTLINES)
+OUTLINES['round'] = ('小ぶりな丸形', OUTLINES['round'][1])
 GROUPS = {
     'eyes': ('目', KEYS[:6]),
     'brows': ('眉', KEYS[6:10]),
@@ -102,16 +104,41 @@ def pair_cost(a, b):
                for x,nx in ac.items() for y,ny in bc.items())
 
 
-def extend_columns(anchors, seed):
-    """先頭10人を固定し、全60人で各カテゴリの人数差が最大1になるよう補完。"""
+def category_targets(gender):
+    sizes = {'outline':8, **{k:len(s['values']) for k,s in LEVELS.items()}, 'hair':3}
+    allowed = {key:list(range(size)) for key,size in sizes.items()}
+    allowed['hair'] = [1]
+    if gender == 'female':
+        allowed['outline'] = [0,1,2]
+        allowed['eyebrow_thickness'] = [0,1]
+    return {key:[COUNT//len(allowed[key]) + (allowed[key].index(i) < COUNT%len(allowed[key]))
+                 if i in allowed[key] else 0 for i in range(size)] for key,size in sizes.items()}
+
+
+def constrain_anchor(record):
+    """基準10人にも、今回指定された髪型・女性の輪郭と眉の条件を適用する。"""
+    record = deepcopy(record)
+    record['appearance_features']['hair_style'] = 'fringe_down'
+    if record['gender'] == 'female':
+        before = record['appearance_features']['face_outline']
+        outline = {'long_oval':'oval', 'soft_square':'short_oval', 'rectangle':'oval',
+                   'heart':'short_oval', 'diamond':'oval'}.get(before,before)
+        record['appearance_features']['face_outline'] = outline
+        record['shape_features'].update(zip(OUTLINE_KEYS,OUTLINES[outline][1]))
+        record['shape_features']['eyebrow_thickness'] = min(.50,record['shape_features']['eyebrow_thickness'])
+    return record
+
+
+def extend_columns(anchors, seed, gender):
+    """今回の制約内で、基準10人を含む全60人のカテゴリ人数を配分する。"""
     rng = random.Random(seed)
     fixed = [design_levels(r) for r in anchors]
-    sizes = {'outline': 8, **{k:len(s['values']) for k,s in LEVELS.items()}, 'hair':3}
     columns = {}
-    for key, size in sizes.items():
+    for key, targets in category_targets(gender).items():
         prefix = [r[key] for r in fixed]
         counts = Counter(prefix)
-        tail = [i for i in range(size) for _ in range(COUNT//size + (i < COUNT%size) - counts[i])]
+        assert all(counts[i] <= target for i,target in enumerate(targets))
+        tail = [i for i,target in enumerate(targets) for _ in range(target-counts[i])]
         assert len(tail) == 50
         candidates = []
         for _ in range(220):
@@ -141,6 +168,7 @@ def make_prompt(record):
         'IDENTITY, highest priority: ' + OUTLINE_PHRASES[appearance['face_outline']] + '. '
         + 'Eyes: ' + '; '.join(p[k] for k in ['eye_shape','eye_angle','upper_eyelid_crease','eye_size','eye_spacing','lower_eyelid_fullness']) + '. '
         + 'Brows: ' + '; '.join(p[k] for k in ['eyebrow_thickness','eyebrow_arch','eyebrow_angle','eyebrow_eye_distance']) + '. '
+        + ('No thick or bushy eyebrows; brows must remain fine to medium in width. ' if record['gender']=='female' else '')
         + 'Nose: ' + '; '.join(p[k] for k in ['nose_bridge_height','nose_width','nose_tip_roundness']) + '. '
         + 'Mouth: ' + '; '.join(p[k] for k in ['mouth_width','lip_fullness','upper_lip_share','cupid_bow_definition']) + '. '
         'Keep these anatomical contrasts clear and create an unrelated identity; do not average them into a generic idol face. '
@@ -160,8 +188,9 @@ def make_prompt(record):
 
 def make_plan(gender, seed):
     source = ROOT / f'data/plans/{gender}_faces_v5.json'
-    anchors = json.loads(source.read_text())['records'][:10]
-    columns = extend_columns(anchors, seed)
+    original_anchors = json.loads(source.read_text())['records'][:10]
+    anchors = [constrain_anchor(r) for r in original_anchors]
+    columns = extend_columns(anchors, seed, gender)
     records = []
     for i in range(COUNT):
         c = {k:v[i] for k,v in columns.items()}
@@ -185,9 +214,17 @@ def make_plan(gender, seed):
                       schema_version='3.1.0', mapping_version='shape-impression-1', plan_version=VERSION,
                       asset_version='v6-planned', review_status='planned',
                       shape_feature_source='generation_target', shape_calibrated=False,
-                      design_basis='v5-reference' if i<10 else 'expanded-combination',
+                      design_basis='v5-revised' if i<10 else 'expanded-combination',
                       source_plan=f'data/plans/{gender}_faces_v6.json',
                       reference_image=f'assets/previews/v5/{gender}/{ident}.png' if i<10 else None)
+        record['reference_changes'] = []
+        if i < 10:
+            old = original_anchors[i]
+            for key,name in [('hair_style','髪型'),('face_outline','輪郭')]:
+                if appearance[key] != old['appearance_features'][key]:
+                    record['reference_changes'].append(name)
+            if shape['eyebrow_thickness'] != old['shape_features']['eyebrow_thickness']:
+                record['reference_changes'].append('眉の太さ')
         record['prompt'] = make_prompt(record)
         records.append(record)
     coverage = {key:[dict(label=label, count=Counter(columns[key])[i]) for i,label in enumerate(labels)]
@@ -196,10 +233,13 @@ def make_plan(gender, seed):
     return dict(plan_version=VERSION, schema_version='3.1.0', gender=gender, population=COUNT,
                 design_seed=seed, reference_plan=str(source.relative_to(ROOT)),
                 reference_plan_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
-                method='ver5の先頭10人の形態・髪型を維持し、50人を追加。分類ごとの人数を均等化し、部位の固定的な組み合わせを減らす決定的な探索。統計的独立性や実画像での識別性は未検証。',
+                method='ver5を基にした10人を含め、全員を自然な下ろし前髪へ変更。女性は小ぶりな丸形・短い卵型・卵型と細〜中程度の眉に限定し、制約内で60人を再配分。統計的独立性や実画像での識別性は未検証。',
                 common_constraints=dict(age=27, nationality='Japanese', cheek_fullness_range=[.51,.56],
                     mouth_width_max=.50, lip_fullness_max=.50, no_sunken_cheeks=True,
-                    petite_round_faces=True, attractiveness='全員が個々の顔立ちを保った整った容姿'),
+                    petite_round_faces=True, hair_style='fringe_down',
+                    allowed_face_outlines=OUTLINE_NAMES[:3] if gender=='female' else OUTLINE_NAMES,
+                    eyebrow_thickness_max=.50 if gender=='female' else 1.00,
+                    attractiveness='全員が個々の顔立ちを保った整った容姿'),
                 coverage=coverage, records=records)
 
 

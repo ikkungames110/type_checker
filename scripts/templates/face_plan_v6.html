@@ -95,12 +95,12 @@
   <header>
     <p class="eyebrow">FACE DESIGN CATALOG / VER. 6</p>
     <h1>顔の設定一覧 <span style="font-weight:400">男女各60人</span></h1>
-    <p class="intro">今回の試作10人ずつを基準に、目・眉・鼻・輪郭の組み合わせを50人ずつ追加しました。全員を整った容姿にし、頬の自然な厚みと小ぶりな丸顔を共通条件にしています。</p>
+    <p class="intro">全員を「自然な下ろし前髪」に統一しました。女性は「小ぶりな丸形」「短い卵型」「卵型」の3輪郭に限定し、眉は細め〜中程度。整った容姿と頬の自然な厚みを保ち、目・鼻・口の組み合わせで変化を出しています。</p>
     <div class="facts">
-      <div class="fact"><strong>60</strong>女性<small>試作を基にした10人 ＋ 新規50人</small></div>
-      <div class="fact"><strong>60</strong>男性<small>試作を基にした10人 ＋ 新規50人</small></div>
+      <div class="fact"><strong>60</strong>女性<small>3輪郭を各20人・太眉なし</small></div>
+      <div class="fact"><strong>60</strong>男性<small>8輪郭を各7〜8人</small></div>
       <div class="fact"><strong>26</strong>形態項目<small>目・眉・輪郭・鼻・口を数値化</small></div>
-      <div class="fact"><strong>8</strong>輪郭タイプ<small>各性別に7〜8人ずつ配分</small></div>
+      <div class="fact"><strong>1</strong>髪型<small>全120人が自然な下ろし前髪</small></div>
     </div>
     <p class="note">数値は0.00〜1.00の生成目標です。大きいほど美しいという意味ではなく、写真の実測値でもありません。今回は設定の一覧です。</p>
   </header>
@@ -126,9 +126,9 @@
     <div class="table-wrap" tabindex="0" role="region" aria-label="人物設定の比較表"><table id="catalog"><caption>日本語の特徴は設定値を段階に分けた説明です。詳しい数値は各IDまたは「数値で見る」で確認できます。</caption><thead></thead><tbody></tbody></table></div>
     <p id="empty" hidden>条件に合う人がいません。絞り込みを減らすか、リセットしてください。</p>
     <details class="guide"><summary>設定値の読み方と配分</summary>
-      <p>男女とも、目の形5種類・目尻5段階は各12人、まぶた3種類・眉や鼻の各3段階は各20人。輪郭は8種類を各7〜8人に配分しました。特徴の組み合わせは性別ごとに異なります。</p>
+      <p>男女とも、目の形5種類・目尻5段階は各12人、まぶた3種類や鼻の各3段階は各20人。女性の輪郭は3種類を各20人、眉の太さは細め・中程度を各30人。男性の輪郭は8種類を各7〜8人に配分しています。</p>
       <p>頬の膨らみは0.51〜0.56、口の横幅と唇の厚みは0.50以下。丸顔は短い中顔面と小さな丸い顎で表現します。顔の形と容姿の良さを混同しない方針です。</p>
-      <p>001〜010はver5の設定値を維持した基準人物です。参考写真は当時の生成結果なので、数値と一致するとは限りません。011〜060は新しい設定です。派生タグ10項目は形態値から既存の共通式で算出し、診断の選択カードには表示しません。</p>
+      <p>001〜010にも今回の髪型・女性の輪郭と眉の条件を反映しました。参考写真は変更前のver5画像で、今回の設定とは異なる部分があります。011〜060は制約内で再配分した設定です。派生タグ10項目は形態値から既存の共通式で算出し、診断の選択カードには表示しません。</p>
       <p>各項目の0と1は下記の両端を表す設計座標です。医学的な比率や長さとしては扱いません。設定の段階分けは比較用で、画像で同じ差が出るかは生成後に確認します。</p>
       <div class="definitions" id="definitions"></div>
     </details>
@@ -155,6 +155,11 @@
     options('lid-filter',data.levels.upper_eyelid_crease.labels.map((s,i)=>[i,s]));
     function metricKeys(){const group=$('metric-group').value;return group==='tags'?Object.keys(data.tag_names):group==='all'?data.features.map(f=>f.key):data.groups[group][1];}
     function render(){
+      const outlineValue=$('outline-filter').value;
+      const availableOutlines=gender==='all'?Object.keys(data.outlines):data.plans.find(p=>p.gender===gender).common_constraints.allowed_face_outlines;
+      $('outline-filter').replaceChildren(new Option('すべての輪郭',''));
+      options('outline-filter',availableOutlines.map(k=>[k,data.outlines[k]]));
+      $('outline-filter').value=availableOutlines.includes(outlineValue)?outlineValue:'';
       const query=$('search').value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
       filtered=records.filter(r=>(gender==='all'||r.gender===gender)
         &&(!$('outline-filter').value||r.appearance_features.face_outline===$('outline-filter').value)
@@ -188,8 +193,8 @@
     function openPerson(id){
       const r=records.find(r=>r.id===id);
       $('person-title').textContent=`${r.id} / ${genders[r.gender]}`;
-      let html=`<p><strong>${esc(r.label)}</strong></p><p class="note">${r.reference_image?'ver5の形態26項目と髪型を維持。写真は当時の参考画像です。':'新たに組み合わせた設定。画像は未生成です。'} 数値は生成目標です。</p>`;
-      if(r.reference_image)html+=`<div class="reference"><a href="../${r.reference_image}" target="_blank" rel="noopener"><img src="../${r.reference_image}" alt="ver5の参考写真 ${r.id}"></a><div><strong>基準にした試作</strong><p class="note">目・鼻・輪郭の見え方と数値は未校正です。<br>画像を押すと元の大きさで確認できます。</p></div></div>`;
+      let html=`<p><strong>${esc(r.label)}</strong></p><p class="note">今回の条件を反映した設定。画像は未生成です。数値は生成目標です。</p>`;
+      if(r.reference_image)html+=`<div class="reference"><a href="../${r.reference_image}" target="_blank" rel="noopener"><img src="../${r.reference_image}" alt="変更前のver5参考写真 ${r.id}"></a><div><strong>変更前の試作</strong><p class="note">${r.reference_changes.length?`今回の変更：${esc(r.reference_changes.join('・'))}。<br>`:''}写真は今回の設定の生成結果ではありません。<br>画像を押すと元の大きさで確認できます。</p></div></div>`;
       for(const [name,keys] of Object.values(data.groups))html+=`<h3>${name}</h3><div class="metrics">`+keys.map(key=>{
         const f=featureByKey[key],v=r.shape_features[key];
         return `<div class="metric" title="${esc(f.definition)}"><div class="metric-top"><span>${f.name}</span><b>${v.toFixed(2)}</b></div><div class="track"><span style="width:${v*100}%"></span></div><div class="ends"><span>0 ${f.low}</span><span>1 ${f.high}</span></div></div>`;

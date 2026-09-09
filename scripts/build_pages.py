@@ -16,7 +16,7 @@ def main():
         shutil.rmtree(destination)
     destination.mkdir()
     shutil.copy2(ROOT / "index.html", destination / "index.html")
-    for name in ("assets", "data", "docs"):
+    for name in ("assets", "data", "docs", "js"):
         shutil.copytree(
             ROOT / name,
             destination / name,
