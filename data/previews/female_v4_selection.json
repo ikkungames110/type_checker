@@ -1,0 +1,20 @@
+{
+  "gender": "female",
+  "population": 40,
+  "sample_size": 10,
+  "ids": [
+    "female_023",
+    "female_027",
+    "female_034",
+    "female_039",
+    "female_037",
+    "female_015",
+    "female_013",
+    "female_028",
+    "female_012",
+    "female_033"
+  ],
+  "method": "8輪郭を各1件、丸顔と面長卵型を各1件追加した目的抽出",
+  "source_plan": "data/plans/female_faces_v4.json",
+  "plan_sha256": "1bbd78f170b735c0b60b09f6e9b2d8cd6b95cd2fb42acb153a730f1558cb9413"
+}

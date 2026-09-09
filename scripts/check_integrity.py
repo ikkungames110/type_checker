@@ -48,6 +48,8 @@ def main():
         ("data/male_faces.js", "MALE_FACE_ASSETS", "male", 40, "assets/male"),
         ("data/female_faces.js", "FEMALE_FACE_ASSETS", "female", 40, "assets/female"),
         ("data/previews/male_faces_v3.js", "MALE_FACE_PREVIEW_V3", "male", 10, "assets/previews/v3/male"),
+        ("data/previews/male_faces_v4.js", "MALE_FACE_PREVIEW_V4", "male", 10, "assets/previews/v4/male"),
+        ("data/previews/female_faces_v4.js", "FEMALE_FACE_PREVIEW_V4", "female", 10, "assets/previews/v4/female"),
     ]
     for filename, global_name, gender, count, directory in datasets:
         source = ROOT / filename
@@ -61,6 +63,24 @@ def main():
         check(len(records) == count and len(set(ids)) == count, f"{filename}: 件数またはID重複が不正")
         if count == 40:
             check(set(ids) == {f"{gender}_{i:03d}" for i in range(1, 41)}, f"{filename}: IDに欠落がある")
+        if global_name.endswith("_V4"):
+            from build_face_plan_v3 import tags as derive_tags
+
+            selection = json.loads((ROOT / f"data/previews/{gender}_v4_selection.json").read_text())
+            plan_path = ROOT / selection["source_plan"]
+            plan = json.loads(plan_path.read_text())
+            planned = {record["id"]: record for record in plan["records"]}
+            check(len(plan["records"]) == 40 and set(planned) == {f"{gender}_{i:03d}" for i in range(1, 41)}, f"{plan_path.name}: 計画40件が不正")
+            check(hashlib.sha256(plan_path.read_bytes()).hexdigest() == selection["plan_sha256"], f"{filename}: 選定時の計画ハッシュ不一致")
+            check(ids == selection["ids"], f"{filename}: 選定ID・順序が不一致")
+            for target in plan["records"]:
+                check(target["image"] is None, f"{target['id']}: 未生成の計画にimageを指定している")
+                check(target["tags"] == derive_tags(target["shape_features"]), f"{target['id']}: 計画のタグ再計算不一致")
+            for record in records:
+                target = planned.get(record["id"], {})
+                for key in ("prompt", "tags", "shape_features", "appearance_features"):
+                    check(record[key] == target.get(key), f"{filename}: {record['id']}の{key}が生成計画と不一致")
+                check(record["image"] == target.get("planned_image"), f"{filename}: 計画の保存先と不一致")
         for record in records:
             context = f"{filename}: {record['id']}"
             check(record["gender"] == gender, f"{context}: gender不一致")
@@ -108,7 +128,7 @@ def main():
 
     if errors:
         raise SystemExit("\n".join(errors))
-    print(f"整合性OK: 本番80件・試作10件、画像{len(referenced)}枚、特徴量・画像ハッシュ・ローカルリンク")
+    print(f"整合性OK: 本番80件・試作30件（ver3: 10件 / ver4: 20件）、画像{len(referenced)}枚、特徴量・画像ハッシュ・ローカルリンク")
 
 
 if __name__ == "__main__":

@@ -46,12 +46,20 @@ Gitの管理情報、ローカル設定、`Zone.Identifier` は含めません�
 - `index.html`: 診断画面。
 - `data/male_faces.js`、`data/female_faces.js`: 本番画像に対応する各40件の特徴量。
 - `assets/male/`、`assets/female/`: 本番画像。各1200×1600 PNG。
-- `data/previews/`、`assets/previews/v3/male/`: 男性試作10件の記録と画像。
+- `data/previews/`、`assets/previews/`: ver3の男性試作10件と、ver4の男女各10件の記録・画像。
 - `data/plans/`: 生成前の計画。`planned_image` は計画当時の保存予定先で、実在画像の参照先は本番データの `image` です。
 - `docs/`: 設計資料・生成記録・画像の確認ページ。
 - `scripts/`: 生成計画の作成、画像正規化、ファイル整合性の確認。
 
 [本番80枚の一覧](docs/顔画像一覧_ver3.html) / [試作10枚の一覧](docs/男性画像試作_ver3.html)
+
+## 最新の試作（ver4・男女各10枚）
+
+[試作20枚の確認ページ](docs/顔画像試作_ver4.html)で、新旧の画像を切り替えて比較できます。
+頬のこけを除き、丸顔を小ぶりにし、全体の容姿の水準を引き上げた方向性確認用です。
+生成前の計画は男女各40件、今回生成した画像は各10枚です。本番80枚への採用はユーザー確認後に判断します。
+画像は `assets/previews/v4/<gender>/`、最終プロンプト・特徴量・生成記録は
+`data/previews/<gender>_faces_v4.js`、詳しい経緯は[制作記録](docs/顔画像試作_ver4.md)に保存しています。
 
 ## コピー後の整合性確認
 
@@ -76,3 +84,4 @@ python3 -m venv .venv
 `--input` と `--dest` の相対パスは実行時のカレントディレクトリを基準にします。
 入力を省略すると `~/.codex/generated_images/` 内の最新画像を使うため、別環境からコピーした画像には `--input` を明示してください。
 画像を更新するときは対応する特徴量・生成記録・画像ハッシュも更新します。
+既存の顔検出器を利用するため、OpenCVは `opencv-python-headless<5` を使用します。
