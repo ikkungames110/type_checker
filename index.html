@@ -189,25 +189,33 @@
       display: grid;
       place-items: center;
       position: relative;
+      isolation: isolate;
     }
 
     .sample-card {
       width: min(86vw, 330px);
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 3 / 4;
+      grid-area: 1 / 1;
       border-radius: 8px;
       background: var(--panel);
       border: 1px solid var(--line);
       box-shadow: var(--shadow);
       display: grid;
       place-items: center;
-      transform: rotate(-2deg);
+      overflow: hidden;
+      transform: translate(28px, 24px) rotate(4deg) scale(0.96);
+      z-index: 1;
+      opacity: 0.78;
     }
 
-    .sample-card:nth-child(2) {
-      position: absolute;
-      transform: translate(28px, 24px) rotate(4deg);
-      z-index: -1;
-      opacity: 0.78;
+    .sample-card.is-front {
+      transform: translate(0, 0) rotate(-2deg) scale(1);
+      z-index: 2;
+      opacity: 1;
+    }
+
+    .sample-card .portrait {
+      height: 100%;
     }
 
     .question {
@@ -507,13 +515,17 @@
           <h1>最後にあなたのタイプの顔が出ます</h1>
           <p class="lead">2択を直感で選ぶだけ。好みの顔に含まれる特徴を重ねて、最後にあなたが惹かれる顔とタイプ名を表示します。</p>
           <div class="choice-row" aria-label="診断対象を選択">
-            <button class="gender-btn" data-gender="female">女性を診断</button>
-            <button class="gender-btn" data-gender="male">男性を診断</button>
+            <button class="gender-btn" data-gender="female">好みの女性を診断</button>
+            <button class="gender-btn" data-gender="male">好みの男性を診断</button>
           </div>
         </div>
         <div class="preview-stack" aria-hidden="true">
-          <div class="sample-card" id="sampleA"></div>
-          <div class="sample-card" id="sampleB"></div>
+          <div class="sample-card is-front" id="sampleA" data-preview-gender="female">
+            <img class="portrait" src="assets/planned/v6/female/female_008.png" width="1200" height="1600" alt="" fetchpriority="high">
+          </div>
+          <div class="sample-card" id="sampleB" data-preview-gender="male">
+            <img class="portrait" src="assets/planned/v6/male/male_002.png" width="1200" height="1600" alt="">
+          </div>
         </div>
       </div>
     </section>
@@ -857,6 +869,7 @@
       topStatus.textContent = "20問診断";
       toast.textContent = "";
       show(startScreen);
+      updatePreview();
     }
 
     async function copyResult() {
@@ -868,7 +881,55 @@
       }
     }
 
-    document.querySelectorAll("[data-gender]").forEach(button => {
+    const previewCards = [...document.querySelectorAll(".sample-card")];
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let previewGender = "female";
+
+    function updatePreview() {
+      const button = startScreen.querySelector(".gender-btn:hover")
+        || startScreen.querySelector(".gender-btn:focus-visible");
+      const gender = button?.dataset.gender || "female";
+      if (gender === previewGender) return;
+      previewGender = gender;
+
+      for (const card of previewCards) {
+        // 切り替え途中のホバーでも、現在の位置から次の動きにつなげる。
+        const current = getComputedStyle(card);
+        const from = { transform: current.transform, opacity: current.opacity, zIndex: current.zIndex };
+        card.getAnimations().forEach(animation => animation.cancel());
+        const incoming = card.dataset.previewGender === gender;
+        card.classList.toggle("is-front", incoming);
+        if (reducedMotion.matches) continue;
+
+        const target = getComputedStyle(card);
+        const to = { transform: target.transform, opacity: target.opacity, zIndex: target.zIndex };
+        const drift = Math.min(36, card.clientWidth * 0.1);
+        card.animate([
+          { ...from, offset: 0 },
+          {
+            transform: incoming
+              ? `translate(${drift}px, -12px) rotate(3deg) scale(1.01)`
+              : `translate(${-drift}px, 8px) rotate(-5deg) scale(0.97)`,
+            opacity: incoming ? 0.94 : 0.86,
+            zIndex: from.zIndex,
+            offset: 0.45
+          },
+          { zIndex: to.zIndex, offset: 0.5 },
+          { ...to, offset: 1 }
+        ], { duration: 680, easing: "cubic-bezier(0.4, 0, 0.2, 1)" });
+      }
+    }
+
+    reducedMotion.addEventListener("change", () => {
+      if (reducedMotion.matches) {
+        previewCards.forEach(card => card.getAnimations().forEach(animation => animation.cancel()));
+      }
+    });
+
+    document.querySelectorAll(".gender-btn").forEach(button => {
+      ["pointerenter", "pointerleave", "focus", "blur"].forEach(event => {
+        button.addEventListener(event, updatePreview);
+      });
       button.addEventListener("click", () => start(button.dataset.gender));
     });
     leftCard.addEventListener("click", () => choose(0));
@@ -892,9 +953,6 @@
       if (event.key === "ArrowRight") choose(1);
     });
 
-    const sampleFaces = DATASETS.female.assets();
-    document.querySelector("#sampleA").innerHTML = renderPortrait(sampleFaces[0]);
-    document.querySelector("#sampleB").innerHTML = renderPortrait(sampleFaces[1], 1);
   </script>
 </body>
 </html>
