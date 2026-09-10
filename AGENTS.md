@@ -8,6 +8,8 @@
 
 ## Generated Face Asset Workflow
 
+- The newer type-based v8 gallery is separate from the v6.1 production quiz: `docs/face-types-v8.html`, `data/previews/face_types_v8.js`, and `assets/previews/v8/<gender>/`. It contains five independently generated identities for each of eight types per gender (80 portraits). Every prompt and record must specify age 25; elegant/cool proportions must not be expressed by making the person look older. Preserve differences between identities within a type. These type-based records use `type` for scoring and have no numeric feature vectors or compatibility tags; the v6 plan-specific appearance constraints below do not apply to v8.
+
 - Use the existing male set as the format reference: feature records are stored as a browser global in `data/<gender>_faces.js`, with one object per asset containing `id`, `gender`, `image`, `label`, `tags`, and `prompt`.
 - Create the full feature set before generating images. The current production app uses the v6.1 set with 60 records per gender; the previous 40-record sets have been replaced. Keep plans in `data/plans/` separate from production data. Use zero-padded ids and filenames such as `female_001` / `assets/female/female_001.png`.
 - Keep the same tag keys across genders so scoring remains comparable: `cool`, `cute`, `tsurime`, `tareme`, `adult`, `idol`, `mysterious`, `shortFace`, `soft`, and `sharp`. Tag values are normalized numbers from `0.00` to `1.00`.

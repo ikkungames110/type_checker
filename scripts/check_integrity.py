@@ -129,10 +129,10 @@ def check_promotion_card(check, referenced):
         check(bool(meta.get(f"og:{key}")) and meta.get(f"og:{key}") == meta.get(f"twitter:{key}"), f"宣材画像: {key}のOGP・X設定がないか不一致")
 
 
-def check_type_previews(check, referenced):
-    source = ROOT / "data/previews/face_types_v7.js"
-    match = re.fullmatch(r"(?:\s|//[^\n]*\n)*window\.FACE_TYPE_PREVIEW_V7\s*=\s*(\{.*\});?\s*", source.read_text(), re.S)
-    check(match is not None, "ver7: ブラウザglobalの形式が不正")
+def check_type_previews(check, referenced, version="v7", per_type=1):
+    source = ROOT / f"data/previews/face_types_{version}.js"
+    match = re.fullmatch(rf"(?:\s|//[^\n]*\n)*window\.FACE_TYPE_PREVIEW_{version.upper()}\s*=\s*(\{{.*\}});?\s*", source.read_text(), re.S)
+    check(match is not None, f"{version}: ブラウザglobalの形式が不正")
     if match is None:
         return
     data = json.loads(match[1])
@@ -141,17 +141,25 @@ def check_type_previews(check, referenced):
         "female": ["cute", "active_cute", "fresh", "cool_casual", "feminine", "soft_elegant", "elegant", "cool"],
         "male": ["charming_soft", "charming_hard", "fresh_soft", "fresh_hard", "elegant_soft", "elegant_hard", "cool_soft", "cool_hard"],
     }
-    check(data["version"] == "v7" and data["status"] == "preview", "ver7: 試作バージョンが不正")
-    check(data["scoring"] == {"key": "type", "points_per_choice": 1}, "ver7: タイプ単位の採点定義が不正")
-    check(len(records) == 16, "ver7: 男女各8件ではない")
+    check(data["version"] == version and data["status"] == "preview", f"{version}: 試作バージョンが不正")
+    check(data["scoring"] == {"key": "type", "points_per_choice": 1}, f"{version}: タイプ単位の採点定義が不正")
+    check(len(records) == 16 * per_type, f"{version}: 男女各8タイプの人数が不正")
     for gender, types in expected.items():
         subset = [record for record in records if record["gender"] == gender]
-        check([record["id"] for record in subset] == [f"{gender}_{i:03d}" for i in range(1, 9)], f"ver7 {gender}: IDが不正")
-        check([record["type"] for record in subset] == types, f"ver7 {gender}: 8タイプが揃っていない")
+        check([record["id"] for record in subset] == [f"{gender}_{i:03d}" for i in range(1, 8 * per_type + 1)], f"{version} {gender}: IDが不正")
+        check([record["type"] for record in subset] == [value for value in types for _ in range(per_type)], f"{version} {gender}: 8タイプが揃っていない")
+    if version == "v8":
+        check(data.get("age") == 25 and data.get("portraits_per_type") == 5, "v8: 年齢・各タイプ人数の設定が不正")
+        check(all(record.get("age") == 25 for record in records), "v8: 全員25歳の設定ではない")
+        check(len({record.get("identity_brief") for record in records}) == 80, "v8: 個別人物の生成指示が重複")
+        check(len({record.get("prompt") for record in records}) == 80, "v8: プロンプトが重複")
+        for gender in expected:
+            subset = [record for record in records if record["gender"] == gender]
+            check([record.get("variant") for record in subset] == list(range(1, 6)) * 8, f"v8 {gender}: 各タイプ5人の番号が不正")
     hashes = set()
     for record in records:
-        context = f"ver7 {record['id']}"
-        expected_path = f"assets/previews/v7/{record['gender']}/{record['id']}.png"
+        context = f"{version} {record['id']}"
+        expected_path = f"assets/previews/{version}/{record['gender']}/{record['id']}.png"
         check(record["image"] == expected_path, f"{context}: 画像パスが不正")
         check(not {"tags", "shape_features", "appearance_features"}.intersection(record), f"{context}: 不要な特徴量がある")
         check(bool(record.get("label")) and bool(record.get("prompt")), f"{context}: タイプ名・プロンプトがない")
@@ -329,6 +337,7 @@ def main():
         check(json.loads(embedded[1])['plans'] == new_plans, 'ver6 HTML: 計画JSONと内容が不一致')
 
     check_type_previews(check, referenced)
+    check_type_previews(check, referenced, "v8", 5)
     check_share_cards(check, referenced)
     check_promotion_card(check, referenced)
     images = {path.resolve() for path in (ROOT / "assets").rglob("*") if path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}}
@@ -355,7 +364,7 @@ def main():
 
     if errors:
         raise SystemExit("\n".join(errors))
-    print(f"整合性OK: 本番ver6.1 120件・試作66件（ver7の16タイプを含む）・共有カード120件・宣材1件、画像{len(referenced)}枚、ver6計画120人、タイプ・特徴量・画像ハッシュ・配分・HTML・ローカルリンク")
+    print(f"整合性OK: 本番ver6.1 120件・試作146件（ver7の16枚・ver8の80枚を含む）・共有カード120件・宣材1件、画像{len(referenced)}枚、ver6計画120人、タイプ・特徴量・画像ハッシュ・配分・HTML・ローカルリンク")
 
 
 if __name__ == "__main__":
