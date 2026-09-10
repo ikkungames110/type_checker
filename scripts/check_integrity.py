@@ -46,15 +46,13 @@ def main():
 
     referenced = set()
     datasets = [
-        ("data/male_faces.js", "MALE_FACE_ASSETS", "male", 40, "assets/male"),
-        ("data/female_faces.js", "FEMALE_FACE_ASSETS", "female", 40, "assets/female"),
+        ("data/male_faces.js", "MALE_FACE_ASSETS", "male", 60, "assets/male"),
+        ("data/female_faces.js", "FEMALE_FACE_ASSETS", "female", 60, "assets/female"),
         ("data/previews/male_faces_v3.js", "MALE_FACE_PREVIEW_V3", "male", 10, "assets/previews/v3/male"),
         ("data/previews/male_faces_v4.js", "MALE_FACE_PREVIEW_V4", "male", 10, "assets/previews/v4/male"),
         ("data/previews/female_faces_v4.js", "FEMALE_FACE_PREVIEW_V4", "female", 10, "assets/previews/v4/female"),
         ("data/previews/male_faces_v5.js", "MALE_FACE_PREVIEW_V5", "male", 10, "assets/previews/v5/male"),
         ("data/previews/female_faces_v5.js", "FEMALE_FACE_PREVIEW_V5", "female", 10, "assets/previews/v5/female"),
-        ("data/generated/male_faces_v6.js", "MALE_FACE_GENERATED_V6", "male", 60, "assets/planned/v6/male"),
-        ("data/generated/female_faces_v6.js", "FEMALE_FACE_GENERATED_V6", "female", 60, "assets/planned/v6/female"),
     ]
     for filename, global_name, gender, count, directory in datasets:
         source = ROOT / filename
@@ -68,7 +66,7 @@ def main():
         check(len(records) == count and len(set(ids)) == count, f"{filename}: 件数またはID重複が不正")
         if count in {40, 60}:
             check(set(ids) == {f"{gender}_{i:03d}" for i in range(1, count + 1)}, f"{filename}: IDに欠落がある")
-        if global_name.endswith('_GENERATED_V6'):
+        if global_name.endswith('_FACE_ASSETS'):
             plan_path = ROOT / f'data/plans/{gender}_faces_v6.json'
             plan = json.loads(plan_path.read_text())
             planned = {r['id']: r for r in plan['records']}
@@ -78,7 +76,8 @@ def main():
                 target = planned.get(record['id'], {})
                 for key in ('tags', 'shape_features', 'appearance_features', 'prompt', 'label', 'description', 'design_levels', 'source_plan'):
                     check(record.get(key) == target.get(key), f"{filename}: {record['id']}の{key}がver6計画と不一致")
-                check(record['image'] == target.get('planned_image'), f'{filename}: 計画の保存先と不一致')
+                check(record['asset_version'] == 'v6.1', f'{filename}: 本番画像がver6.1ではない')
+                check(record['review_status'] == 'visual_checked', f'{filename}: 本番画像が目視確認済みではない')
                 check(record['generation']['plan_sha256'] == plan_hash, f'{filename}: 生成元の計画ハッシュ不一致')
                 check(record['generation']['face_detected'] is True, f'{filename}: 正面顔を検出していない')
                 check(record['shape_calibrated'] is False, f'{filename}: 生成目標を実測値として扱っている')
@@ -205,7 +204,7 @@ def main():
 
     if errors:
         raise SystemExit("\n".join(errors))
-    print(f"整合性OK: 本番80件・試作50件・ver6生成120件、画像{len(referenced)}枚、ver6計画120人、特徴量・画像ハッシュ・配分・HTML・ローカルリンク")
+    print(f"整合性OK: 本番ver6.1 120件・試作50件、画像{len(referenced)}枚、ver6計画120人、特徴量・画像ハッシュ・配分・HTML・ローカルリンク")
 
 
 if __name__ == "__main__":

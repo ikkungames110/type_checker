@@ -35,7 +35,7 @@
 <body>
   <header>
     <h1>顔画像一覧 — 男女各60枚</h1>
-    <p>ver6.1の設定から生成した120人です。全員が自然な下ろし前髪。画像を押すと原寸で確認できます。</p>
+    <p>ver6.1の設定から生成した120人です。全員が自然な下ろし前髪。現在の診断で使用している本番セットです。画像を押すと原寸で確認できます。</p>
     <p><a href="顔設定一覧_男女各60人_ver6.html">設定一覧</a> · <a href="顔画像生成_ver6.md">制作記録</a> · <a href="顔画像試作_ver5.html">前回の試作</a></p>
     <div class="controls">
       <label>性別 <select id="gender"><option value="all">男女両方</option><option value="female">女性</option><option value="male">男性</option></select></label>
@@ -50,15 +50,15 @@
     <noscript>表示にはJavaScriptが必要です。<a href="顔画像生成_ver6.md">画像への直接リンク一覧</a>も利用できます。</noscript>
   </main>
   <footer><p>画像下のIDで人物を指定できます。特徴量は生成目標であり、写真の実測値ではありません。</p></footer>
-  <script src="../data/generated/female_faces_v6.js"></script>
-  <script src="../data/generated/male_faces_v6.js"></script>
+  <script src="../data/female_faces.js?v=6.1"></script>
+  <script src="../data/male_faces.js?v=6.1"></script>
   <script>
     const entries = [];
-    for (const [gender, records] of [['female', window.FEMALE_FACE_GENERATED_V6], ['male', window.MALE_FACE_GENERATED_V6]]) {
+    for (const [gender, records] of [['female', window.FEMALE_FACE_ASSETS], ['male', window.MALE_FACE_ASSETS]]) {
       for (const record of records) {
         const figure = document.createElement('figure');
         const link = document.createElement('a');
-        link.href = '../' + record.image;
+        link.href = '../' + record.image + '?v=' + encodeURIComponent(record.asset_version);
         const image = document.createElement('img');
         image.width = 1200;
         image.height = 1600;

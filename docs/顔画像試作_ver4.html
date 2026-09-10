@@ -40,13 +40,9 @@
     <p>頬はなめらかに、丸顔も小ぶりな輪郭に。全員の容姿の水準を引き上げた試作です。</p>
     <p>気になる画像は、下のIDで指定できます。画像を押すと大きく表示します。</p>
     <div class="controls">
-      <div class="versions" aria-label="表示する画像のバージョン">
-        <button type="button" id="new" aria-pressed="true">新しい試作</button>
-        <button type="button" id="old" aria-pressed="false">前の画像</button>
-      </div>
       <label><input type="checkbox" id="full"> 胸元まで表示</label>
     </div>
-    <p id="status" aria-live="polite">新しい試作を表示しています。</p>
+    <p id="status" aria-live="polite">ver4の試作です。旧本番画像の削除に伴い、新旧比較は終了しました。</p>
   </header>
   <main>
     <section aria-labelledby="female-title"><h2 id="female-title">女性 10枚</h2><div id="female" class="grid"></div></section>
@@ -54,7 +50,7 @@
     <noscript>表示にはJavaScriptが必要です。<a href="顔画像試作_ver4.md">画像への直接リンク一覧</a>も利用できます。</noscript>
   </main>
   <footer>
-    <p>今回は方向性を確認するための20枚です。<a href="顔画像試作_ver4.md">制作記録</a> · <a href="顔画像一覧_ver3.html">前の80枚の一覧</a></p>
+    <p>今回は方向性を確認するための20枚です。<a href="顔画像試作_ver4.md">制作記録</a> · <a href="顔画像一覧_ver3.html">旧80枚の公開終了について</a></p>
   </footer>
   <script src="../data/previews/female_faces_v4.js"></script>
   <script src="../data/previews/male_faces_v4.js"></script>
@@ -77,23 +73,12 @@
         entries.push({ record, link, image });
       }
     }
-    function showVersion(version) {
-      const old = version === 'old';
-      for (const { record, link, image } of entries) {
-        link.href = '../' + (old ? `assets/${record.gender}/${record.id}.png` : record.image);
-        image.src = link.href;
-        image.alt = `${record.id} ${old ? '前の画像' : '新しい試作'}`;
-      }
-      document.getElementById('new').setAttribute('aria-pressed', String(!old));
-      document.getElementById('old').setAttribute('aria-pressed', String(old));
-      document.getElementById('status').textContent = old
-        ? '同じIDの前の画像を表示しています。新しい試作では人物を新たに生成しています。'
-        : '新しい試作を表示しています。';
+    for (const { record, link, image } of entries) {
+      link.href = '../' + record.image;
+      image.src = link.href;
+      image.alt = `${record.id} ver4の試作`;
     }
-    document.getElementById('new').addEventListener('click', () => showVersion('new'));
-    document.getElementById('old').addEventListener('click', () => showVersion('old'));
     document.getElementById('full').addEventListener('change', event => document.querySelector('main').classList.toggle('full', event.target.checked));
-    showVersion('new');
   </script>
 </body>
 </html>

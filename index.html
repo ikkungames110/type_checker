@@ -265,11 +265,13 @@
     .result-layout {
       display: grid;
       grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
-      gap: clamp(18px, 5vw, 54px);
+      grid-template-areas: "portrait summary" "portrait share" "portrait details";
+      gap: 20px clamp(18px, 5vw, 54px);
       align-items: center;
     }
 
     .result-card {
+      grid-area: portrait;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--panel);
@@ -277,6 +279,67 @@
       box-shadow: var(--shadow);
       display: grid;
       gap: 16px;
+    }
+
+    .result-summary {
+      grid-area: summary;
+      display: grid;
+      gap: 12px;
+    }
+
+    .result-share {
+      grid-area: share;
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+      border: 1px solid #e6cbd1;
+      border-radius: 12px;
+      background: #fff3f5;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .x-share-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 60px;
+      padding: 16px 12px;
+      border: 2px solid #111;
+      border-radius: 8px;
+      background: #111;
+      color: #fff;
+      font-size: clamp(17px, 2.5vw, 20px);
+      font-weight: 800;
+      line-height: 1.4;
+      text-decoration: none;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+      transition: background 160ms ease, box-shadow 160ms ease;
+    }
+
+    .x-share-btn svg {
+      width: 24px;
+      height: 24px;
+      flex: none;
+      fill: currentColor;
+    }
+
+    .x-share-btn:hover {
+      background: #333;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.24);
+    }
+
+    .x-share-btn:focus-visible {
+      outline: 3px solid var(--accent-2);
+      outline-offset: 4px;
+    }
+
+    .result-details {
+      grid-area: details;
+      display: grid;
+      gap: 18px;
     }
 
     .result-title {
@@ -473,6 +536,10 @@
         grid-template-columns: 1fr;
       }
 
+      .result-layout {
+        grid-template-areas: "summary" "share" "portrait" "details";
+      }
+
       .preview-stack {
         min-height: 310px;
       }
@@ -521,10 +588,10 @@
         </div>
         <div class="preview-stack" aria-hidden="true">
           <div class="sample-card is-front" id="sampleA" data-preview-gender="female">
-            <img class="portrait" src="assets/planned/v6/female/female_008.png" width="1200" height="1600" alt="" fetchpriority="high">
+            <img class="portrait" src="assets/female/female_008.png?v=6.1" width="1200" height="1600" alt="" fetchpriority="high">
           </div>
           <div class="sample-card" id="sampleB" data-preview-gender="male">
-            <img class="portrait" src="assets/planned/v6/male/male_002.png" width="1200" height="1600" alt="">
+            <img class="portrait" src="assets/male/male_002.png?v=6.1" width="1200" height="1600" alt="">
           </div>
         </div>
       </div>
@@ -550,17 +617,26 @@
 
     <section class="screen" id="resultScreen">
       <div class="result-layout">
+        <div class="result-summary">
+          <p class="micro">診断結果</p>
+          <div class="result-title" id="resultTitle"></div>
+          <p class="result-copy" id="resultCopy"></p>
+        </div>
+        <div class="result-share">
+          <strong>あなたのタイプをシェアしよう</strong>
+          <a class="x-share-btn" id="xShareButton" href="https://x.com/intent/tweet" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.835L0 1.154h7.594l5.243 6.932zm-1.29 19.49h2.039L6.487 3.24H4.3z"/></svg>
+            <span>Xで結果をシェア</span>
+          </a>
+        </div>
         <div class="result-card">
           <div id="resultPortrait"></div>
           <div class="tags" id="resultTags"></div>
         </div>
-        <div>
-          <p class="micro">診断結果</p>
-          <div class="result-title" id="resultTitle"></div>
-          <p class="result-copy" id="resultCopy"></p>
+        <div class="result-details">
           <div class="bars" id="resultBars"></div>
           <div class="actions">
-            <button class="primary-btn" id="shareButton">結果をコピー</button>
+            <button class="ghost-btn" id="shareButton">結果をコピー</button>
             <button class="ghost-btn" id="restartButton">もう一度</button>
           </div>
           <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -637,8 +713,8 @@
     </section>
   </main>
 
-  <script src="data/female_faces.js"></script>
-  <script src="data/male_faces.js"></script>
+  <script src="data/female_faces.js?v=6.1"></script>
+  <script src="data/male_faces.js?v=6.1"></script>
   <script src="js/face_deck.js"></script>
   <script>
     const TAGS = {
@@ -713,6 +789,8 @@
     const resultTitle = document.querySelector("#resultTitle");
     const resultCopy = document.querySelector("#resultCopy");
     const resultBars = document.querySelector("#resultBars");
+    const xShareButton = document.querySelector("#xShareButton");
+    const shareUrl = document.querySelector('link[rel="canonical"]').href;
     const toast = document.querySelector("#toast");
 
     function faceSvg(face, variant = 0, score = {}) {
@@ -747,7 +825,8 @@
 
     function renderPortrait(face, variant = 0, score = {}) {
       if (face.image) {
-        return `<img class="portrait" src="${face.image}" alt="">`;
+        const version = face.asset_version ? `?v=${encodeURIComponent(face.asset_version)}` : "";
+        return `<img class="portrait" src="${face.image}${version}" alt="">`;
       }
 
       return faceSvg(face, variant, score);
@@ -861,8 +940,11 @@
       `).join("");
 
       state.lastResult = `好みの顔タイプ診断の結果(${state.dataset.resultTarget}): ${title}\n${scores.slice(0, 4).map(item => `#${item.label}好き`).join(" ")}`;
+      const shareParams = new URLSearchParams({ text: state.lastResult, url: shareUrl, hashtags: "好みの顔タイプ診断" });
+      xShareButton.href = `https://x.com/intent/tweet?${shareParams}`;
       topStatus.textContent = "診断完了";
       show(resultScreen);
+      window.scrollTo(0, 0);
     }
 
     function reset() {
@@ -873,10 +955,10 @@
 
     async function copyResult() {
       try {
-        await navigator.clipboard.writeText(state.lastResult);
+        await navigator.clipboard.writeText(`${state.lastResult}\n${shareUrl}`);
         toast.textContent = "共有テキストをコピーしました";
       } catch {
-        toast.textContent = state.lastResult;
+        toast.textContent = `${state.lastResult}\n${shareUrl}`;
       }
     }
 

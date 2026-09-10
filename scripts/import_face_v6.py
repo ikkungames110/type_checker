@@ -26,6 +26,11 @@ def main():
     gender = args.id.split('_')[0]
     if gender not in {'male', 'female'}:
         parser.error('IDの性別が不正です')
+    production_path = ROOT / f'data/{gender}_faces.js'
+    if production_path.exists():
+        production = json.loads(production_path.read_text().split('=', 1)[1].strip().removesuffix(';'))
+        if any(r.get('asset_version') == 'v6.1' for r in production):
+            parser.error('ver6.1は本番採用済みです。新しい生成は別バージョンの計画・保存先で行ってください')
     plan_path = ROOT / f'data/plans/{gender}_faces_v6.json'
     plan = json.loads(plan_path.read_text())
     candidates = [r for r in plan['records'] if r['id'] == args.id]
