@@ -21,9 +21,13 @@ class Links(HTMLParser):
     def __init__(self):
         super().__init__()
         self.targets = []
+        self.metadata = {}
 
     def handle_starttag(self, tag, attrs):
         self.targets.extend(value for key, value in attrs if key in {"src", "href"} and value)
+        if tag == "meta":
+            values = dict(attrs)
+            self.metadata[values.get("name", values.get("property"))] = values.get("content")
 
 
 def jpeg_dimensions(raw):
@@ -79,6 +83,50 @@ def check_share_cards(check, referenced):
     for item in types:
         check(re.fullmatch(r"[a-z]+", item["id"]) is not None and bool(item["label"]), "共有タイプ: IDまたはタイプ名が不正")
         check(set(item["tags"]) <= TAG_KEYS, "共有タイプ: 不明な採点タグ")
+
+
+def check_promotion_card(check, referenced):
+    from build_share_pages import read_browser_data
+
+    card = json.loads((ROOT / "data/promotion_card.json").read_text())
+    faces = read_browser_data(ROOT / card["source_data"])
+    face = next((face for face in faces if face["id"] == card["source_id"]), None)
+    check(face is not None, "宣材画像: 元写真の特徴量レコードがない")
+    if face is not None:
+        check(card["source_image"] == face["image"] and card["source_sha256"] == face["generation"]["image_sha256"], "宣材画像: 元写真が更新されています。宣材も見直してください")
+    html = (ROOT / "index.html").read_text()
+    parser = Links()
+    parser.feed(html)
+    check(card["source_image"] in {urlsplit(target).path for target in parser.targets}, "宣材画像: 元写真がトップ画面で使われていない")
+    check(bool(card["generation"]["prompt"]) and card["review_status"] == "visual_checked", "宣材画像: 制作記録・目視確認がない")
+
+    expected_path = f'assets/promo/home-v1-{card["image_sha256"][:12]}.png'
+    check(card["image"] == expected_path, "宣材画像: 画像パスが不正")
+    image_path = ROOT / expected_path
+    check(image_path.is_file(), "宣材画像: 画像がない")
+    if image_path.is_file():
+        raw = image_path.read_bytes()
+        is_png = raw.startswith(b"\x89PNG\r\n\x1a\n") and len(raw) >= 24
+        check(is_png, "宣材画像: PNGではない")
+        if is_png:
+            check(struct.unpack(">II", raw[16:24]) == (card["width"], card["height"]), "宣材画像: サイズが記録と不一致")
+        check(card["width"] == card["height"] * 2 and 300 <= card["width"] <= 4096 and card["height"] >= 157, "宣材画像: Xカード用のサイズが不正")
+        check(len(raw) < 5_000_000, "宣材画像: 画像が5MB以上")
+        check(hashlib.sha256(raw).hexdigest() == card["image_sha256"], "宣材画像: 画像ハッシュが不一致")
+        check(image_path.resolve() not in referenced, "宣材画像: 画像参照が重複")
+        referenced.add(image_path.resolve())
+
+    site = f'https://{(ROOT / "CNAME").read_text().strip()}/'
+    meta = parser.metadata
+    check(meta.get("og:url") == site, "宣材画像: og:urlとCNAMEが不一致")
+    check(meta.get("twitter:card") == "summary_large_image", "宣材画像: Xの大きな画像カードが未設定")
+    for key in ("og:image", "og:image:secure_url", "twitter:image"):
+        check(meta.get(key) == site + card["image"], f"宣材画像: {key}のURLが不一致")
+    check(meta.get("og:image:type") == "image/png", "宣材画像: MIMEタイプが不一致")
+    for dimension in ("width", "height"):
+        check(meta.get(f"og:image:{dimension}") == str(card[dimension]), f"宣材画像: {dimension}がメタ情報と不一致")
+    for key in ("title", "description", "image:alt"):
+        check(bool(meta.get(f"og:{key}")) and meta.get(f"og:{key}") == meta.get(f"twitter:{key}"), f"宣材画像: {key}のOGP・X設定がないか不一致")
 
 
 def main():
@@ -236,6 +284,7 @@ def main():
         check(json.loads(embedded[1])['plans'] == new_plans, 'ver6 HTML: 計画JSONと内容が不一致')
 
     check_share_cards(check, referenced)
+    check_promotion_card(check, referenced)
     images = {path.resolve() for path in (ROOT / "assets").rglob("*") if path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}}
     for path in sorted(images - referenced):
         errors.append(f"{path.relative_to(ROOT)}: 対応する特徴量レコードがない")
@@ -260,7 +309,7 @@ def main():
 
     if errors:
         raise SystemExit("\n".join(errors))
-    print(f"整合性OK: 本番ver6.1 120件・試作50件・共有カード120件、画像{len(referenced)}枚、ver6計画120人、特徴量・画像ハッシュ・配分・HTML・ローカルリンク")
+    print(f"整合性OK: 本番ver6.1 120件・試作50件・共有カード120件・宣材1件、画像{len(referenced)}枚、ver6計画120人、特徴量・画像ハッシュ・配分・HTML・ローカルリンク")
 
 
 if __name__ == "__main__":

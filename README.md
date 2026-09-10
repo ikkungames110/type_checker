@@ -17,7 +17,7 @@ python3 -m http.server 8000 --directory dist
 `docs/` の確認ページも公開する場合は、同じ構造で配置してください。
 独自ドメインの設定値は `CNAME` の `type-checker.shianstudio.com` です。
 `index.html` の `canonical` も `https://type-checker.shianstudio.com/` に合わせています。
-公開先を変更するときは、この2か所を更新してください。
+公開先を変更するときは、この2か所と `index.html` のOpen Graph・XカードのURLを更新してください。
 
 ## Cloudflare Pagesへの公開
 
@@ -57,6 +57,7 @@ Gitの管理情報、ローカル設定、`Zone.Identifier` は含めません�
 - `data/male_faces.js`、`data/female_faces.js`: 本番画像に対応する各60件の特徴量・生成記録。
 - `assets/male/`、`assets/female/`: 本番画像。各1200×1600 PNG。
 - `assets/share/`、`data/share_cards.json`: 本番120人に対応する顔写真付きの共有画像と、元写真・出力画像のハッシュ。
+- `assets/promo/`、`data/promotion_card.json`: トップ画面の女性写真を使った宣材画像と制作記録。トップページのXカード・Open Graphで使用。
 - `data/result_types.js`: 診断と共有ページで共通のタイプ名・判定条件。
 - `data/previews/`、`assets/previews/`: ver3の男性試作10件、ver4・ver5の男女各10件の記録・画像。
 - `data/plans/`: 生成前の計画。`planned_image` は計画当時の保存予定先で、実在画像の参照先は本番・試作・生成済みデータの `image` です。
@@ -77,6 +78,8 @@ Gitの管理情報、ローカル設定、`Zone.Identifier` は含めません�
 生成前の計画は記録としてそのまま残し、実在画像の参照には生成済みデータの `image` を使用します。[設計と保存形式](docs/顔設定一覧_男女各60人_ver6.md)に配分と再作成方法を記載しています。
 
 ## 顔の出題順と広告
+
+トップページのリンクをXに貼ると使われる宣材画像を設定しています。トップ画面の `female_008` を元写真として内蔵 `image_gen` で制作した1774×887pxのPNGです。[投稿文・宣材画像・更新手順](docs/X宣伝素材.md)を参照してください。生HTMLのXカード・Open Graphから画像を取得でき、通常のPagesビルドに画像生成環境は不要です。
 
 60枚の場合は、シャッフルした先頭40枚を通常20問分に、残り20枚を差し替え用に確保します。「どっちもタイプじゃない」は回答数とスコアを進めず、41・42枚目から2枚ずつ差し替えます。
 差し替え10回分を使った後は、未表示の顔をシャッフルして補充します。未表示の通常枠も先に使い切るため、序盤の11回目で既出の顔へ戻ることはありません。実際に全枚を表示した後に全体を再シャッフルします。
