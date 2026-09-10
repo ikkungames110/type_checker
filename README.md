@@ -41,6 +41,10 @@ npm run test:navigation
 
 画面は `/top/`・`/quiz/`・`/result/` の3つ。通常のページ遷移で広告を初期化します。回答・表示中の二択・除外タイプ・一巡の残りは `sessionStorage` の `face-diagnosis:v8` に保存し、再読み込み後も復元します。旧データの診断状態は引き継ぎません。
 
+## 宣伝PV
+
+[30秒版・15秒版の視聴とダウンロード](https://type-checker.shianstudio.com/docs/promo.html)。YouTube Shorts / TikTok向けの縦1080×1920動画です。実際の操作映像、日本語ナレーション、オリジナルBGMを使用。完成MP4、字幕、サムネイル、投稿文は `assets/promo/`、収録素材と再生成方法は [PV制作記録](marketing/pv/README.md) にあります。
+
 ## 公開
 
 Cloudflare PagesはこのGitHubリポジトリに接続されています。`main` へのpushで本番公開されるため、対応するコミットのデプロイ成功と実サイトでの反映を確認します。

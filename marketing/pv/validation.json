@@ -1,0 +1,55 @@
+{
+  "videos": [
+    {
+      "seconds": 30,
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "fps": 30,
+      "fullDecode": "passed",
+      "audio": {
+        "input_i": "-15.95",
+        "input_tp": "-3.48",
+        "input_lra": "3.10",
+        "input_thresh": "-27.87",
+        "output_i": "-16.28",
+        "output_tp": "-3.42",
+        "output_lra": "3.50",
+        "output_thresh": "-28.08",
+        "normalization_type": "dynamic",
+        "target_offset": "0.28"
+      },
+      "bytes": 3029737
+    },
+    {
+      "seconds": 15,
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "fps": 30,
+      "fullDecode": "passed",
+      "audio": {
+        "input_i": "-16.01",
+        "input_tp": "-3.93",
+        "input_lra": "2.70",
+        "input_thresh": "-27.61",
+        "output_i": "-16.14",
+        "output_tp": "-3.96",
+        "output_lra": "2.40",
+        "output_thresh": "-27.63",
+        "normalization_type": "dynamic",
+        "target_offset": "0.14"
+      },
+      "bytes": 1653329
+    }
+  ],
+  "manifestHashes": "passed",
+  "quizFramesChecked": 900,
+  "emptyChoiceCards": 0,
+  "siteTests": {
+    "node": 15,
+    "python": 6
+  }
+}

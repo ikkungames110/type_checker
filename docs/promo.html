@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#fff5ed">
+  <title>宣伝PV｜好みの顔タイプ診断</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #202126; background: #fff5ed; font-family: system-ui, sans-serif; }
+    main { max-width: 1000px; padding: 40px 24px 80px; margin: auto; }
+    .brand { color: #b82c4a; font-size: 14px; font-weight: 800; text-decoration: none; }
+    h1 { font-size: clamp(32px, 6vw, 58px); line-height: 1.2; letter-spacing: -.04em; margin: 24px 0 16px; }
+    .lead { max-width: 42em; color: #60545a; line-height: 1.8; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 32px; }
+    article { min-width: 0; }
+    h2 { font-size: 21px; margin: 0 0 14px; }
+    video { display: block; width: 100%; max-height: 72vh; aspect-ratio: 9 / 16; object-fit: contain; background: #202126; border-radius: 20px; }
+    .button { display: block; background: #202126; color: white; text-decoration: none; font-weight: 700; padding: 17px 20px; border-radius: 12px; margin-top: 14px; text-align: center; }
+    .links { display: flex; flex-wrap: wrap; gap: 14px; margin: 16px 0 28px; }
+    a { color: #ad2140; text-underline-offset: .2em; }
+    a:focus-visible, video:focus-visible { outline: 3px solid #b82c4a; outline-offset: 5px; }
+    .note { font-size: 14px; color: #60545a; line-height: 1.8; }
+    aside { margin-top: 32px; padding: 24px; background: #fff; border: 1px solid #efdbd4; border-radius: 16px; }
+    @media (max-width: 620px) { .grid { grid-template-columns: 1fr; gap: 30px; } main { padding: 28px 18px 56px; } video { max-height: 76vh; } }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="brand" href="https://type-checker.shianstudio.com/top/">好みの顔タイプ診断 / SHIAN STUDIO</a>
+    <h1>好きな顔、<br>秒で選べる？</h1>
+    <p class="lead">YouTube Shorts・TikTok向けの縦型PV。本番サイトの操作映像に、大きなテロップ、日本語ナレーション、オリジナルBGMと効果音を合わせました。</p>
+    <div class="grid">
+      <article>
+        <h2>30秒版 · 迷う楽しさから、結果発表まで</h2>
+        <video controls playsinline preload="metadata" poster="../assets/promo/type-checker-cover.jpg" aria-label="宣伝PV 30秒版">
+          <source src="../assets/promo/type-checker-30s.mp4" type="video/mp4">
+          <track kind="captions" src="../assets/promo/type-checker-30s.vtt" srclang="ja" label="日本語ナレーション">
+          <a href="../assets/promo/type-checker-30s.mp4">30秒版をダウンロード</a>
+        </video>
+        <a class="button" href="../assets/promo/type-checker-30s.mp4" download>30秒版 MP4を保存</a>
+        <div class="links"><a href="../assets/promo/type-checker-30s.srt" download>字幕 SRT</a></div>
+      </article>
+      <article>
+        <h2>15秒版 · すぐに伝わるショート版</h2>
+        <video controls playsinline preload="metadata" poster="../assets/promo/type-checker-cover.jpg" aria-label="宣伝PV 15秒版">
+          <source src="../assets/promo/type-checker-15s.mp4" type="video/mp4">
+          <track kind="captions" src="../assets/promo/type-checker-15s.vtt" srclang="ja" label="日本語ナレーション">
+          <a href="../assets/promo/type-checker-15s.mp4">15秒版をダウンロード</a>
+        </video>
+        <a class="button" href="../assets/promo/type-checker-15s.mp4" download>15秒版 MP4を保存</a>
+        <div class="links"><a href="../assets/promo/type-checker-15s.srt" download>字幕 SRT</a></div>
+      </article>
+    </div>
+    <aside>
+      <h2>投稿用の素材</h2>
+      <div class="links">
+        <a href="../assets/promo/type-checker-cover.jpg" download>縦型サムネイル JPG</a>
+        <a href="../assets/promo/post-caption.txt" download>投稿文・ハッシュタグ</a>
+      </div>
+      <p class="note">1080 × 1920 / 9:16 / 30 fps / MP4（H.264 + AAC）。大きなテロップは映像に入っています。音声の全文はプレイヤーの日本語字幕でも確認できます。</p>
+      <p class="note">診断結果は収録時の一例です。操作映像は一部を早送り・トリミングしています。顔画像とナレーションにはAIを使用しています。</p>
+    </aside>
+  </main>
+</body>
+</html>

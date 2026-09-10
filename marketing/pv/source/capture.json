@@ -1,0 +1,870 @@
+{
+  "capturedAt": "2026-09-10T12:29:54.378Z",
+  "site": "https://type-checker.shianstudio.com/",
+  "viewport": {
+    "width": 440,
+    "height": 880
+  },
+  "sessions": {
+    "female": {
+      "events": [
+        {
+          "name": "top",
+          "time": 4.490876443
+        },
+        {
+          "name": "tap",
+          "time": 5.7267378220000005,
+          "selector": "[data-gender=\"female\"]",
+          "x": 115.796875,
+          "y": 293.34375
+        },
+        {
+          "name": "quiz",
+          "time": 6.093053561
+        },
+        {
+          "name": "choice-before",
+          "time": 8.041189736,
+          "index": 1
+        },
+        {
+          "name": "tap",
+          "time": 8.048155785999999,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 9.193714155,
+          "index": 2
+        },
+        {
+          "name": "tap",
+          "time": 9.201066167999999,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 10.370305238999999,
+          "index": 3
+        },
+        {
+          "name": "tap",
+          "time": 10.418423221,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "skip-before",
+          "time": 11.566263177000002
+        },
+        {
+          "name": "tap",
+          "time": 12.887585948,
+          "selector": "#skipButton",
+          "x": 220,
+          "y": 483.25
+        },
+        {
+          "name": "skip-after",
+          "time": 13.016760866999999
+        },
+        {
+          "name": "choice-before",
+          "time": 14.321210169,
+          "index": 4
+        },
+        {
+          "name": "tap",
+          "time": 14.328432658,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 14.940083744999999,
+          "index": 5
+        },
+        {
+          "name": "tap",
+          "time": 14.947103245000001,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 15.524925919,
+          "index": 6
+        },
+        {
+          "name": "tap",
+          "time": 15.531653552,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 16.114150068,
+          "index": 7
+        },
+        {
+          "name": "tap",
+          "time": 16.121224653,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 16.712693307000002,
+          "index": 8
+        },
+        {
+          "name": "tap",
+          "time": 16.725069183000002,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 17.334172259000002,
+          "index": 9
+        },
+        {
+          "name": "tap",
+          "time": 17.34202129,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 17.945618892000002,
+          "index": 10
+        },
+        {
+          "name": "tap",
+          "time": 17.952320582,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 314.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 18.555018021,
+          "index": 11
+        },
+        {
+          "name": "tap",
+          "time": 18.561496248000005,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 314.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 19.159223499000003,
+          "index": 12
+        },
+        {
+          "name": "tap",
+          "time": 19.166638557000002,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 19.756568542,
+          "index": 13
+        },
+        {
+          "name": "tap",
+          "time": 19.77208537,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 314.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 20.407379489000004,
+          "index": 14
+        },
+        {
+          "name": "tap",
+          "time": 20.42134577,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 21.165958457000002,
+          "index": 15
+        },
+        {
+          "name": "tap",
+          "time": 21.181437717,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 314.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 21.80728905,
+          "index": 16
+        },
+        {
+          "name": "tap",
+          "time": 21.826469864000003,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 314.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 22.457793501,
+          "index": 17
+        },
+        {
+          "name": "tap",
+          "time": 22.468649319,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 314.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 23.088381641,
+          "index": 18
+        },
+        {
+          "name": "tap",
+          "time": 23.094426288,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 23.693999651000002,
+          "index": 19
+        },
+        {
+          "name": "tap",
+          "time": 23.701418699,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 24.277179882,
+          "index": 20
+        },
+        {
+          "name": "tap",
+          "time": 24.4942625,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "result",
+          "time": 24.771598936000004
+        },
+        {
+          "name": "result-scroll",
+          "time": 29.255644286000003
+        }
+      ],
+      "quizBounds": {
+        "x": 17.59375,
+        "y": 85.5,
+        "width": 404.8125,
+        "height": 421.75
+      },
+      "duelBounds": {
+        "x": 17.59375,
+        "y": 187.375,
+        "width": 404.8125,
+        "height": 257.875
+      },
+      "skipBounds": {
+        "x": 40,
+        "y": 459.25,
+        "width": 360,
+        "height": 48
+      },
+      "resultTitle": "何度でも会いたくなる、余韻の顔",
+      "classification": "(ソフトエレガントタイプ)",
+      "resultPortrait": "assets/female/female_028.png?v=v8",
+      "resultSummaryBounds": {
+        "x": 17.59375,
+        "y": 85.5,
+        "width": 404.8125,
+        "height": 190.46875
+      },
+      "resultPortraitBounds": {
+        "x": 34.59375,
+        "y": 463.96875,
+        "width": 370.8125,
+        "height": 494.40625
+      },
+      "saved": {
+        "version": 8,
+        "gender": "female",
+        "selectedCount": 20,
+        "chosenIds": [
+          "female_026",
+          "female_014",
+          "female_036",
+          "female_015",
+          "female_030",
+          "female_017",
+          "female_031",
+          "female_032",
+          "female_039",
+          "female_029",
+          "female_013",
+          "female_027",
+          "female_011",
+          "female_005",
+          "female_035",
+          "female_028",
+          "female_007",
+          "female_002",
+          "female_012",
+          "female_032"
+        ],
+        "winnerId": "soft_elegant",
+        "deck": {
+          "version": 2,
+          "faceKeys": [
+            "female_001:cute:v8",
+            "female_002:cute:v8",
+            "female_003:cute:v8",
+            "female_004:cute:v8",
+            "female_005:cute:v8",
+            "female_006:active_cute:v8",
+            "female_007:active_cute:v8",
+            "female_008:active_cute:v8",
+            "female_009:active_cute:v8",
+            "female_010:active_cute:v8",
+            "female_011:fresh:v8",
+            "female_012:fresh:v8",
+            "female_013:fresh:v8",
+            "female_014:fresh:v8",
+            "female_015:fresh:v8",
+            "female_016:cool_casual:v8",
+            "female_017:cool_casual:v8",
+            "female_018:cool_casual:v8",
+            "female_019:cool_casual:v8",
+            "female_020:cool_casual:v8",
+            "female_021:feminine:v8",
+            "female_022:feminine:v8",
+            "female_023:feminine:v8",
+            "female_024:feminine:v8",
+            "female_025:feminine:v8",
+            "female_026:soft_elegant:v8",
+            "female_027:soft_elegant:v8",
+            "female_028:soft_elegant:v8",
+            "female_029:soft_elegant:v8",
+            "female_030:soft_elegant:v8",
+            "female_031:elegant:v8",
+            "female_032:elegant:v8",
+            "female_033:elegant:v8",
+            "female_034:elegant:v8",
+            "female_035:elegant:v8",
+            "female_036:cool:v8",
+            "female_037:cool:v8",
+            "female_038:cool:v8",
+            "female_039:cool:v8",
+            "female_040:cool:v8"
+          ],
+          "questionCount": 20,
+          "current": [
+            "female_016",
+            "female_032"
+          ],
+          "unseen": [
+            "female_006",
+            "female_007",
+            "female_008",
+            "female_009",
+            "female_010",
+            "female_011",
+            "female_012",
+            "female_013",
+            "female_014",
+            "female_015",
+            "female_017",
+            "female_018",
+            "female_019",
+            "female_020",
+            "female_026",
+            "female_027",
+            "female_028",
+            "female_029",
+            "female_030",
+            "female_031",
+            "female_033",
+            "female_034",
+            "female_035",
+            "female_036",
+            "female_037",
+            "female_038",
+            "female_039",
+            "female_040"
+          ],
+          "rejectedTypes": [
+            "feminine",
+            "cute"
+          ],
+          "allTypes": false,
+          "shownPairs": 21,
+          "cycle": 2
+        }
+      }
+    },
+    "male": {
+      "events": [
+        {
+          "name": "top",
+          "time": 4.420864121999999
+        },
+        {
+          "name": "tap",
+          "time": 5.638747670000004,
+          "selector": "[data-gender=\"male\"]",
+          "x": 324.203125,
+          "y": 293.34375
+        },
+        {
+          "name": "quiz",
+          "time": 5.989105733000004
+        },
+        {
+          "name": "choice-before",
+          "time": 7.956989708000001,
+          "index": 1
+        },
+        {
+          "name": "tap",
+          "time": 7.963722550999999,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 9.118368751000002,
+          "index": 2
+        },
+        {
+          "name": "tap",
+          "time": 9.125620573,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 10.275660204,
+          "index": 3
+        },
+        {
+          "name": "tap",
+          "time": 10.282773237,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 314.3125
+        },
+        {
+          "name": "skip-before",
+          "time": 11.473761422000003
+        },
+        {
+          "name": "tap",
+          "time": 12.782859475999997,
+          "selector": "#skipButton",
+          "x": 220,
+          "y": 483.25
+        },
+        {
+          "name": "skip-after",
+          "time": 12.910560164000001
+        },
+        {
+          "name": "choice-before",
+          "time": 14.214538852999999,
+          "index": 4
+        },
+        {
+          "name": "tap",
+          "time": 14.221160968000003,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 14.801874592,
+          "index": 5
+        },
+        {
+          "name": "tap",
+          "time": 14.808720204999998,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 15.400529392000005,
+          "index": 6
+        },
+        {
+          "name": "tap",
+          "time": 15.407058951,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 16.002319335,
+          "index": 7
+        },
+        {
+          "name": "tap",
+          "time": 16.007466698000005,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 16.598900179000005,
+          "index": 8
+        },
+        {
+          "name": "tap",
+          "time": 16.605690945000003,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 17.238219656000002,
+          "index": 9
+        },
+        {
+          "name": "tap",
+          "time": 17.258987179000002,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 17.884243804999997,
+          "index": 10
+        },
+        {
+          "name": "tap",
+          "time": 17.903565306000004,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 18.554807229999998,
+          "index": 11
+        },
+        {
+          "name": "tap",
+          "time": 18.576501213000004,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 19.218961444,
+          "index": 12
+        },
+        {
+          "name": "tap",
+          "time": 19.226996570000004,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 19.836192802,
+          "index": 13
+        },
+        {
+          "name": "tap",
+          "time": 19.843283560000003,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 314.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 20.433425195000005,
+          "index": 14
+        },
+        {
+          "name": "tap",
+          "time": 20.444247621000002,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 314.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 21.064933667,
+          "index": 15
+        },
+        {
+          "name": "tap",
+          "time": 21.072146991,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 314.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 21.670034108,
+          "index": 16
+        },
+        {
+          "name": "tap",
+          "time": 21.687915740000005,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 314.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 22.304147608,
+          "index": 17
+        },
+        {
+          "name": "tap",
+          "time": 22.317586471000002,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 22.937028198,
+          "index": 18
+        },
+        {
+          "name": "tap",
+          "time": 22.944532831000004,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 314.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 23.530548119,
+          "index": 19
+        },
+        {
+          "name": "tap",
+          "time": 23.537184972000002,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 314.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 24.043598011,
+          "index": 20
+        },
+        {
+          "name": "tap",
+          "time": 24.271690707,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "result",
+          "time": 24.506623384999997
+        },
+        {
+          "name": "result-scroll",
+          "time": 29.036871003
+        }
+      ],
+      "quizBounds": {
+        "x": 17.59375,
+        "y": 85.5,
+        "width": 404.8125,
+        "height": 421.75
+      },
+      "duelBounds": {
+        "x": 17.59375,
+        "y": 187.375,
+        "width": 404.8125,
+        "height": 257.875
+      },
+      "skipBounds": {
+        "x": 40,
+        "y": 459.25,
+        "width": 360,
+        "height": 48
+      },
+      "resultTitle": "隣で笑っていてほしい、癒やし顔",
+      "classification": "(フレッシュソフトタイプ)",
+      "resultPortrait": "assets/male/male_013.png?v=v8",
+      "resultSummaryBounds": {
+        "x": 17.59375,
+        "y": 85.5,
+        "width": 404.8125,
+        "height": 190.46875
+      },
+      "resultPortraitBounds": {
+        "x": 34.59375,
+        "y": 463.96875,
+        "width": 370.8125,
+        "height": 494.40625
+      },
+      "saved": {
+        "version": 8,
+        "gender": "male",
+        "selectedCount": 20,
+        "chosenIds": [
+          "male_023",
+          "male_006",
+          "male_011",
+          "male_033",
+          "male_004",
+          "male_015",
+          "male_010",
+          "male_024",
+          "male_040",
+          "male_002",
+          "male_012",
+          "male_025",
+          "male_035",
+          "male_014",
+          "male_003",
+          "male_020",
+          "male_013",
+          "male_005",
+          "male_022",
+          "male_031"
+        ],
+        "winnerId": "fresh_soft",
+        "deck": {
+          "version": 2,
+          "faceKeys": [
+            "male_001:charming_soft:v8",
+            "male_002:charming_soft:v8",
+            "male_003:charming_soft:v8",
+            "male_004:charming_soft:v8",
+            "male_005:charming_soft:v8",
+            "male_006:charming_hard:v8",
+            "male_007:charming_hard:v8",
+            "male_008:charming_hard:v8",
+            "male_009:charming_hard:v8",
+            "male_010:charming_hard:v8",
+            "male_011:fresh_soft:v8",
+            "male_012:fresh_soft:v8",
+            "male_013:fresh_soft:v8",
+            "male_014:fresh_soft:v8",
+            "male_015:fresh_soft:v8",
+            "male_016:fresh_hard:v8",
+            "male_017:fresh_hard:v8",
+            "male_018:fresh_hard:v8",
+            "male_019:fresh_hard:v8",
+            "male_020:fresh_hard:v8",
+            "male_021:elegant_soft:v8",
+            "male_022:elegant_soft:v8",
+            "male_023:elegant_soft:v8",
+            "male_024:elegant_soft:v8",
+            "male_025:elegant_soft:v8",
+            "male_026:elegant_hard:v8",
+            "male_027:elegant_hard:v8",
+            "male_028:elegant_hard:v8",
+            "male_029:elegant_hard:v8",
+            "male_030:elegant_hard:v8",
+            "male_031:cool_soft:v8",
+            "male_032:cool_soft:v8",
+            "male_033:cool_soft:v8",
+            "male_034:cool_soft:v8",
+            "male_035:cool_soft:v8",
+            "male_036:cool_hard:v8",
+            "male_037:cool_hard:v8",
+            "male_038:cool_hard:v8",
+            "male_039:cool_hard:v8",
+            "male_040:cool_hard:v8"
+          ],
+          "questionCount": 20,
+          "current": [
+            "male_009",
+            "male_031"
+          ],
+          "unseen": [
+            "male_006",
+            "male_007",
+            "male_008",
+            "male_010",
+            "male_011",
+            "male_012",
+            "male_013",
+            "male_014",
+            "male_015",
+            "male_021",
+            "male_022",
+            "male_023",
+            "male_024",
+            "male_025",
+            "male_026",
+            "male_027",
+            "male_028",
+            "male_029",
+            "male_030",
+            "male_032",
+            "male_033",
+            "male_034",
+            "male_035",
+            "male_036",
+            "male_037",
+            "male_038",
+            "male_039",
+            "male_040"
+          ],
+          "rejectedTypes": [
+            "charming_soft",
+            "fresh_hard"
+          ],
+          "allTypes": false,
+          "shownPairs": 21,
+          "cycle": 2
+        }
+      }
+    }
+  }
+}

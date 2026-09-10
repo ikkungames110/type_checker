@@ -117,6 +117,30 @@ def check_promotion_card(check, referenced):
         check(bool(meta.get(f"og:{key}")) and meta.get(f"og:{key}") == meta.get(f"twitter:{key}"), f"宣材画像: {key}のOGP・X設定がないか不一致")
 
 
+def check_pv_assets(check, referenced):
+    """PVの登録済みファイルだけを許可し、旧顔画像の混入検査を維持する。"""
+    expected = {
+        "type-checker-30s.mp4", "type-checker-15s.mp4",
+        "type-checker-30s.srt", "type-checker-15s.srt",
+        "type-checker-30s.vtt", "type-checker-15s.vtt",
+        "type-checker-cover.jpg", "post-caption.txt",
+    }
+    manifest = json.loads((ROOT / "marketing/pv/manifest.json").read_text())
+    files = manifest["files"]
+    check(set(files) == expected, "PV: 登録された完成ファイルの一覧が不一致")
+    for name in sorted(expected):
+        path = ROOT / "assets/promo" / name
+        check(path.is_file(), f"PV: ファイルがない {name}")
+        if not path.is_file() or name not in files:
+            continue
+        raw = path.read_bytes()
+        check(len(raw) == files[name]["bytes"] and hashlib.sha256(raw).hexdigest() == files[name]["sha256"], f"PV: サイズ・ハッシュが不一致 {name}")
+        check(0 < len(raw) < 25 * 1024 * 1024, f"PV: ファイルが空、または25MiB以上 {name}")
+        if name == "type-checker-cover.jpg":
+            check(jpeg_dimensions(raw) == (1080, 1920), "PV: サムネイルのJPEG寸法が不正")
+            referenced.add(path.resolve())
+
+
 def main():
     from build_share_pages import read_browser_data
     errors = []
@@ -163,10 +187,11 @@ def main():
         check(len({f["generation"][key] for f in records}) == 80, f"顔写真: {key}が重複")
     check_share_cards(check, referenced)
     check_promotion_card(check, referenced)
+    check_pv_assets(check, referenced)
     promotion = json.loads((ROOT / "data/promotion_card.json").read_text())
     check(promotion["source_id"] == "female_011", "宣材画像: female_011が使われていない")
     images = {p.resolve() for p in (ROOT / "assets").rglob("*") if p.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}}
-    check(images == referenced and len(images) == 161, "旧画像または対応データのない画像が残っています")
+    check(images == referenced and len(images) == 162, "旧画像または対応データのない画像が残っています")
     check(not (ROOT / "assets/previews").exists(), "旧試作画像が残っています")
     html = (ROOT / "index.html").read_text()
     for gender in expected:
@@ -193,7 +218,7 @@ def main():
             local_path(source, target)
     if errors:
         raise SystemExit("\n".join(errors))
-    print("整合性OK: 本番80枚（男女8タイプ×5人・全員25歳）・共有80枚・宣材1枚、旧画像なし、タイプ・生成記録・ハッシュ・リンク")
+    print("整合性OK: 本番80枚（男女8タイプ×5人・全員25歳）・共有80枚・宣材1枚・PVサムネイル1枚、旧画像なし、タイプ・生成記録・PV・ハッシュ・リンク")
 
 
 if __name__ == "__main__":
