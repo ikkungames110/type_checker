@@ -182,6 +182,22 @@
       background: transparent;
     }
 
+    .restart-btn {
+      border-color: #d99aa6;
+      background: #f7dce3;
+      color: #843247;
+    }
+
+    .restart-btn:hover {
+      border-color: #c8798b;
+      background: #f2c9d3;
+    }
+
+    .restart-btn:focus-visible {
+      outline: 3px solid var(--accent-2);
+      outline-offset: 3px;
+    }
+
     .skip-btn {
       width: min(100%, 360px);
       min-height: 48px;
@@ -374,6 +390,14 @@
       font-size: 15px;
     }
 
+    .result-classification {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      text-align: right;
+    }
+
     .tags {
       display: flex;
       flex-wrap: wrap;
@@ -388,40 +412,6 @@
       padding: 7px 11px;
       font-size: 13px;
       font-weight: 700;
-    }
-
-    .bars {
-      display: grid;
-      gap: 9px;
-    }
-
-    .bar-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 2.5em;
-      gap: 10px;
-      align-items: center;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .bar-row > span:first-child { grid-column: 1 / -1; }
-
-    .bar-track {
-      display: block;
-      width: 100%;
-      height: 8px;
-      border-radius: 999px;
-      background: #ece7e0;
-      overflow: hidden;
-    }
-
-    .bar-fill {
-      display: block;
-      height: 100%;
-      width: 0;
-      background: var(--accent-2);
-      border-radius: inherit;
-      transition: width 220ms ease;
     }
 
     .actions {
@@ -639,7 +629,10 @@
       <div class="result-layout">
         <div class="result-summary">
           <p class="micro">診断結果</p>
-          <div class="result-title" id="resultTitle"></div>
+          <div>
+            <div class="result-title" id="resultTitle"></div>
+            <p class="result-classification" id="resultClassification"></p>
+          </div>
           <p class="result-copy" id="resultCopy"></p>
         </div>
         <div class="result-share">
@@ -654,10 +647,9 @@
           <div class="tags" id="resultTags"></div>
         </div>
         <div class="result-details">
-          <div class="bars" id="resultBars"></div>
           <div class="actions">
             <button class="ghost-btn" id="shareButton">結果をコピー</button>
-            <button class="ghost-btn" id="restartButton">もう一度</button>
+            <button class="ghost-btn restart-btn" id="restartButton">もう一回診断する</button>
           </div>
           <div class="toast" id="toast" role="status" aria-live="polite"></div>
         </div>
@@ -734,11 +726,11 @@
     </section>
   </main>
 
-  <script src="data/female_faces.js?v=8"></script>
+  <script src="data/female_faces.js?v=8.1"></script>
   <script src="data/male_faces.js?v=8"></script>
-  <script src="data/result_types.js?v=8"></script>
+  <script src="data/result_types.js?v=8.1"></script>
   <script src="js/face_deck.js?v=8"></script>
-  <script src="js/face_scoring.js?v=8"></script>
+  <script src="js/face_scoring.js?v=8.1"></script>
   <script>
     const TARGET_SELECTIONS = 20;
     const DATASETS = {
@@ -753,6 +745,7 @@
       faces: [],
       deck: null,
       chosenIds: [],
+      winnerId: null,
       lastResult: "",
       shareUrl: ""
     };
@@ -770,8 +763,8 @@
     const resultPortrait = document.querySelector("#resultPortrait");
     const resultTags = document.querySelector("#resultTags");
     const resultTitle = document.querySelector("#resultTitle");
+    const resultClassification = document.querySelector("#resultClassification");
     const resultCopy = document.querySelector("#resultCopy");
-    const resultBars = document.querySelector("#resultBars");
     const xShareButton = document.querySelector("#xShareButton");
     const siteUrl = new URL("../", document.querySelector('link[rel="canonical"]').href).href;
     const toast = document.querySelector("#toast");
@@ -794,6 +787,7 @@
           gender: state.gender,
           selectedCount: state.selectedCount,
           chosenIds: state.chosenIds,
+          winnerId: state.winnerId,
           deck: state.deck.snapshot()
         });
         sessionStorage.setItem(SESSION_KEY, saved);
@@ -806,6 +800,7 @@
           const saved = JSON.parse(lastSavedSession);
           state.selectedCount = saved.selectedCount;
           state.chosenIds = saved.chosenIds;
+          state.winnerId = saved.winnerId || null;
           state.deck = FaceDeck.restore(state.faces, saved.deck, TARGET_SELECTIONS);
         }
         sessionError.textContent = "診断を保存できませんでした。ブラウザのサイトデータ保存を許可して、もう一度お試しください。";
@@ -824,7 +819,7 @@
         if (!Array.isArray(saved.chosenIds) || saved.chosenIds.length !== saved.selectedCount ||
             !saved.chosenIds.every(id => faces.some(face => face.id === id))) return false;
         const deck = FaceDeck.restore(faces, saved.deck, TARGET_SELECTIONS);
-        Object.assign(state, { gender: saved.gender, dataset, faces, deck, selectedCount: saved.selectedCount, chosenIds: saved.chosenIds });
+        Object.assign(state, { gender: saved.gender, dataset, faces, deck, selectedCount: saved.selectedCount, chosenIds: saved.chosenIds, winnerId: saved.winnerId || null });
         lastSavedSession = JSON.stringify(saved);
         return true;
       } catch {
@@ -871,6 +866,7 @@
       state.dataset = DATASETS[gender];
       state.selectedCount = 0;
       state.chosenIds = [];
+      state.winnerId = null;
       state.faces = state.dataset.assets();
       state.deck = new FaceDeck(state.faces, TARGET_SELECTIONS);
       state.deck.next();
@@ -892,6 +888,7 @@
       state.selectedCount += 1;
 
       if (state.selectedCount >= TARGET_SELECTIONS) {
+        state.winnerId = FaceScoring.rank(state.faces, state.chosenIds, window.FACE_RESULT_TYPES[state.gender]).winner.id;
         roundLabel.textContent = `${TARGET_SELECTIONS} / ${TARGET_SELECTIONS}`;
         progressBar.style.width = "100%";
         if (saveSession()) navigate("result");
@@ -912,20 +909,17 @@
     }
 
     function renderResult() {
-      const { scores, portrait } = FaceScoring.rank(state.faces, state.chosenIds, window.FACE_RESULT_TYPES[state.gender]);
-      const type = scores[0];
-      const max = Math.max(type.value, 1);
+      const { winner: type, portrait } = FaceScoring.rank(state.faces, state.chosenIds, window.FACE_RESULT_TYPES[state.gender], { winnerId: state.winnerId });
+      if (state.winnerId !== type.id) {
+        // 更新前に完了した診断も、初回表示時の抽選結果を保存する。
+        state.winnerId = type.id;
+        saveSession();
+      }
       resultTitle.textContent = type.label;
+      resultClassification.textContent = `(${type.classification_label}タイプ)`;
       resultCopy.textContent = type.copy;
       resultPortrait.innerHTML = renderPortrait(portrait);
       resultTags.textContent = `あなたが選んだ、いちばん惹かれるタイプの顔`;
-      resultBars.innerHTML = '<p class="micro">あなたが選んだ回数</p>' + scores.filter(item => item.value > 0).map(item => `
-        <div class="bar-row">
-          <span>${item.label}</span>
-          <span class="bar-track"><span class="bar-fill" style="width:${Math.round((item.value / max) * 100)}%"></span></span>
-          <span>${item.value}回</span>
-        </div>
-      `).join("");
       state.lastResult = `好みの顔タイプ診断の結果(${state.dataset.resultTarget}): ${type.label}`;
       state.shareUrl = new URL(`share/${portrait.asset_version}/${portrait.id}/${type.id}/`, siteUrl).href;
       const shareParams = new URLSearchParams({ text: state.lastResult, url: state.shareUrl, hashtags: "好みの顔タイプ診断" });

@@ -135,6 +135,7 @@ def main():
         records.extend(faces)
         check([item["id"] for item in types[gender]] == ids, f"{gender}: 結果の8タイプが不正")
         labels = {item["id"]: item["label"] for item in types[gender]}
+        classifications = {item["id"]: item["classification_label"] for item in types[gender]}
         check(len(set(labels.values())) == 8 and all(item.get("copy") for item in types[gender]), f"{gender}: 結果名・説明が不正")
         check([f["id"] for f in faces] == [f"{gender}_{i:03d}" for i in range(1, 41)], f"{gender}: 40件のIDが不正")
         check(Counter(f["type"] for f in faces) == Counter({t: 5 for t in ids}), f"{gender}: 各タイプ5枚ではない")
@@ -142,6 +143,7 @@ def main():
             context = face["id"]
             check(face["gender"] == gender and face["asset_version"] == "v8" and face["age"] == 25, f"{context}: 性別・世代・年齢が不正")
             check(face["label"] == labels.get(face["type"]), f"{context}: 表示タイプ名が不一致")
+            check(face["classification_label"] == classifications.get(face["type"]), f"{context}: 分類名が不一致")
             check(not {"tags", "shape_features", "appearance_features"}.intersection(face), f"{context}: 旧特徴量が残っています")
             check(face["image"] == f"assets/{gender}/{context}.png", f"{context}: 画像パスが不正")
             path = ROOT / face["image"]

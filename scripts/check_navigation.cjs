@@ -122,12 +122,17 @@ async function main() {
         const winner = byId.get(portraitId).type;
         return { chosen: saved.chosenIds.includes(portraitId), total: Object.values(scores).reduce((a,b) => a+b,0),
           max: Math.max(...Object.values(scores)), winnerCount: scores[winner], winner,
+          savedWinner: saved.winnerId,
+          classification: window.FACE_RESULT_TYPES[saved.gender].find(type => type.id === winner).classification_label,
           label: window.FACE_RESULT_TYPES[saved.gender].find(type => type.id === winner).label };
       }, sessionKey);
       assert.equal(resultData.total, 20);
       assert.equal(resultData.chosen, true);
       assert.equal(resultData.max, resultData.winnerCount);
       assert.equal(title, resultData.label);
+      assert.equal(resultData.savedWinner, resultData.winner);
+      assert.equal(await page.locator('#resultClassification').innerText(), `(${resultData.classification}タイプ)`);
+      assert.equal(await page.locator('#resultBars').count(), 0);
       await page.locator('#resultPortrait img').evaluate(img => img.decode());
       assert.equal(await page.locator('#resultPortrait img').evaluate(img => Math.abs(img.clientWidth / img.clientHeight - 0.75) < 0.01), true);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
@@ -139,6 +144,7 @@ async function main() {
       assert.ok(portrait.includes(shareUrl.pathname.split('/')[3]));
       const sharedPage = await context.newPage();
       await sharedPage.goto(new URL(shareUrl.pathname, site).href);
+      assert.equal(await sharedPage.locator('.result-classification').innerText(), `(${resultData.classification}タイプ)`);
       assert.equal(new URL(await sharedPage.locator('.cta').getAttribute('href'), sharedPage.url()).href, routeUrl('top'));
       await sharedPage.close();
       await page.reload();
@@ -152,6 +158,27 @@ async function main() {
       await page.goForward();
       await ready('result');
       assert.equal(await page.locator('#resultTitle').innerText(), title);
+
+      // 保存済みの旧形式が同率1位でも、一度抽選した結果と共有URLを保持する。
+      const tiedTypes = await page.evaluate(key => {
+        const saved = JSON.parse(sessionStorage.getItem(key));
+        const faces = saved.gender === 'female' ? window.FEMALE_FACE_ASSETS : window.MALE_FACE_ASSETS;
+        const first = faces[0];
+        const second = faces.find(face => face.type !== first.type);
+        saved.chosenIds = [...Array(10).fill(first.id), ...Array(10).fill(second.id)];
+        delete saved.winnerId;
+        sessionStorage.setItem(key, JSON.stringify(saved));
+        return [first.type, second.type];
+      }, sessionKey);
+      await page.reload();
+      await ready('result');
+      const tiedWinner = await page.evaluate(key => JSON.parse(sessionStorage.getItem(key)).winnerId, sessionKey);
+      const tiedShare = await page.locator('#xShareButton').getAttribute('href');
+      assert.ok(tiedTypes.includes(tiedWinner));
+      await page.reload();
+      await ready('result');
+      assert.equal(await page.evaluate(key => JSON.parse(sessionStorage.getItem(key)).winnerId, sessionKey), tiedWinner);
+      assert.equal(await page.locator('#xShareButton').getAttribute('href'), tiedShare);
       await page.locator('#restartButton').click();
       await ready('top');
       assert.equal(await page.evaluate(key => sessionStorage.getItem(key), sessionKey), null);
