@@ -129,6 +129,51 @@ def check_promotion_card(check, referenced):
         check(bool(meta.get(f"og:{key}")) and meta.get(f"og:{key}") == meta.get(f"twitter:{key}"), f"宣材画像: {key}のOGP・X設定がないか不一致")
 
 
+def check_type_previews(check, referenced):
+    source = ROOT / "data/previews/face_types_v7.js"
+    match = re.fullmatch(r"(?:\s|//[^\n]*\n)*window\.FACE_TYPE_PREVIEW_V7\s*=\s*(\{.*\});?\s*", source.read_text(), re.S)
+    check(match is not None, "ver7: ブラウザglobalの形式が不正")
+    if match is None:
+        return
+    data = json.loads(match[1])
+    records = data["records"]
+    expected = {
+        "female": ["cute", "active_cute", "fresh", "cool_casual", "feminine", "soft_elegant", "elegant", "cool"],
+        "male": ["charming_soft", "charming_hard", "fresh_soft", "fresh_hard", "elegant_soft", "elegant_hard", "cool_soft", "cool_hard"],
+    }
+    check(data["version"] == "v7" and data["status"] == "preview", "ver7: 試作バージョンが不正")
+    check(data["scoring"] == {"key": "type", "points_per_choice": 1}, "ver7: タイプ単位の採点定義が不正")
+    check(len(records) == 16, "ver7: 男女各8件ではない")
+    for gender, types in expected.items():
+        subset = [record for record in records if record["gender"] == gender]
+        check([record["id"] for record in subset] == [f"{gender}_{i:03d}" for i in range(1, 9)], f"ver7 {gender}: IDが不正")
+        check([record["type"] for record in subset] == types, f"ver7 {gender}: 8タイプが揃っていない")
+    hashes = set()
+    for record in records:
+        context = f"ver7 {record['id']}"
+        expected_path = f"assets/previews/v7/{record['gender']}/{record['id']}.png"
+        check(record["image"] == expected_path, f"{context}: 画像パスが不正")
+        check(not {"tags", "shape_features", "appearance_features"}.intersection(record), f"{context}: 不要な特徴量がある")
+        check(bool(record.get("label")) and bool(record.get("prompt")), f"{context}: タイプ名・プロンプトがない")
+        path = (ROOT / expected_path).resolve()
+        check(path.is_file(), f"{context}: 画像がない")
+        if not path.is_file():
+            continue
+        check(path not in referenced, f"{context}: 画像参照が重複")
+        referenced.add(path)
+        raw = path.read_bytes()
+        check(raw.startswith(b"\x89PNG\r\n\x1a\n") and len(raw) >= 24 and struct.unpack(">II", raw[16:24]) == (1200, 1600), f"{context}: PNG形式・サイズが不正")
+        digest = hashlib.sha256(raw).hexdigest()
+        check(digest not in hashes, f"{context}: 別人物と画像が同一")
+        hashes.add(digest)
+        generation = record.get("generation", {})
+        check(generation.get("image_sha256") == digest, f"{context}: 画像ハッシュ不一致")
+        check(generation.get("prompt_sha256") == hashlib.sha256(record["prompt"].encode("utf-8")).hexdigest(), f"{context}: 使用プロンプトのハッシュ不一致")
+        check(generation.get("method") == "built-in image_gen", f"{context}: 生成方法が不正")
+        check(generation.get("face_detected") is True, f"{context}: 正面顔を検出していない")
+        check(generation.get("normalizer") == "scripts/normalize_face_asset.py", f"{context}: 正規化方法が不正")
+
+
 def main():
     errors = []
 
@@ -283,11 +328,12 @@ def main():
     if embedded:
         check(json.loads(embedded[1])['plans'] == new_plans, 'ver6 HTML: 計画JSONと内容が不一致')
 
+    check_type_previews(check, referenced)
     check_share_cards(check, referenced)
     check_promotion_card(check, referenced)
     images = {path.resolve() for path in (ROOT / "assets").rglob("*") if path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}}
     for path in sorted(images - referenced):
-        errors.append(f"{path.relative_to(ROOT)}: 対応する特徴量レコードがない")
+        errors.append(f"{path.relative_to(ROOT)}: 対応するデータレコードがない")
 
     domain = (ROOT / "CNAME").read_text(encoding="utf-8").strip()
     html = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -309,7 +355,7 @@ def main():
 
     if errors:
         raise SystemExit("\n".join(errors))
-    print(f"整合性OK: 本番ver6.1 120件・試作50件・共有カード120件・宣材1件、画像{len(referenced)}枚、ver6計画120人、特徴量・画像ハッシュ・配分・HTML・ローカルリンク")
+    print(f"整合性OK: 本番ver6.1 120件・試作66件（ver7の16タイプを含む）・共有カード120件・宣材1件、画像{len(referenced)}枚、ver6計画120人、タイプ・特徴量・画像ハッシュ・配分・HTML・ローカルリンク")
 
 
 if __name__ == "__main__":
