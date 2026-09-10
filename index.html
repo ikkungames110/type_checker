@@ -6,13 +6,13 @@
   <title>好みの顔タイプ診断 | SHIAN STUDIO</title>
   <meta name="description" content="好みの顔タイプ診断は、2択で気になる顔を選びながら、惹かれやすい雰囲気や特徴を整理するブラウザ診断です。判定方法と注意事項も掲載しています。">
   <meta name="author" content="SHIAN STUDIO">
-  <link rel="canonical" href="https://type-checker.shianstudio.com/">
+  <link rel="canonical" href="https://type-checker.shianstudio.com/top/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="好みの顔タイプ診断">
   <meta property="og:locale" content="ja_JP">
   <meta property="og:title" content="あなたは、どんな顔が好き？ | 好みの顔タイプ診断">
   <meta property="og:description" content="2択を直感で選ぶ20問の顔タイプ診断。最後に、あなたが惹かれる顔とタイプ名を表示します。女性・男性どちらも診断できます。">
-  <meta property="og:url" content="https://type-checker.shianstudio.com/">
+  <meta property="og:url" content="https://type-checker.shianstudio.com/top/">
   <meta property="og:image" content="https://type-checker.shianstudio.com/assets/promo/home-v1-4b4f311ee7e9.png">
   <meta property="og:image:secure_url" content="https://type-checker.shianstudio.com/assets/promo/home-v1-4b4f311ee7e9.png">
   <meta property="og:image:type" content="image/png">
@@ -583,7 +583,7 @@
     }
   </style>
 </head>
-<body>
+<body data-page="top">
   <main class="app">
     <div class="topbar">
       <div class="brand">
@@ -592,6 +592,8 @@
       </div>
       <div class="progress-text" id="topStatus">20問診断</div>
     </div>
+
+    <p class="toast" id="sessionError" role="alert" hidden></p>
 
     <section class="screen active" id="startScreen">
       <div class="hero">
@@ -661,7 +663,7 @@
       </div>
     </section>
 
-    <!-- 全画面で共通の1枠を使い、回答や画面切り替えでタグを再実行しない。 -->
+    <!-- 各ページで1枠を読み込む。診断中の回答・差し替えでは再実行しない。 -->
     <aside class="ad-placement" aria-label="広告">
       <p class="ad-label" aria-hidden="true">広告</p>
       <div class="ad-slot">
@@ -809,8 +811,80 @@
     const resultCopy = document.querySelector("#resultCopy");
     const resultBars = document.querySelector("#resultBars");
     const xShareButton = document.querySelector("#xShareButton");
-    const siteUrl = document.querySelector('link[rel="canonical"]').href;
+    const siteUrl = new URL("../", document.querySelector('link[rel="canonical"]').href).href;
     const toast = document.querySelector("#toast");
+    const SESSION_KEY = "face-diagnosis:v1";
+    const sessionError = document.querySelector("#sessionError");
+    let navigating = false;
+    let lastSavedSession = null;
+
+    function navigate(page, replace = false) {
+      navigating = true;
+      const url = new URL(`${page}/`, document.baseURI);
+      if (replace) window.location.replace(url.href);
+      else window.location.assign(url.href);
+    }
+
+    function saveSession() {
+      try {
+        const saved = JSON.stringify({
+          version: 1,
+          gender: state.gender,
+          selectedCount: state.selectedCount,
+          preference: state.preference,
+          deck: state.deck.snapshot()
+        });
+        sessionStorage.setItem(SESSION_KEY, saved);
+        lastSavedSession = saved;
+        sessionError.hidden = true;
+        return true;
+      } catch {
+        // 書き込みに失敗した回答は進めず、直前の問題から再試行できるようにする。
+        if (lastSavedSession) {
+          const saved = JSON.parse(lastSavedSession);
+          state.selectedCount = saved.selectedCount;
+          state.preference = saved.preference;
+          state.deck = FaceDeck.restore(state.faces, saved.deck, TARGET_SELECTIONS);
+        }
+        sessionError.textContent = "診断を保存できませんでした。ブラウザのサイトデータ保存を許可して、もう一度お試しください。";
+        sessionError.hidden = false;
+        return false;
+      }
+    }
+
+    function restoreSession() {
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(SESSION_KEY));
+        if (!saved || saved.version !== 1 || !Object.hasOwn(DATASETS, saved.gender)) return false;
+        if (!Number.isInteger(saved.selectedCount) || saved.selectedCount < 0 || saved.selectedCount > TARGET_SELECTIONS) return false;
+        if (!saved.preference || Object.keys(saved.preference).length !== Object.keys(TAGS).length) return false;
+        if (!Object.keys(TAGS).every(key => Number.isFinite(saved.preference[key]) && saved.preference[key] >= 0 && saved.preference[key] <= saved.selectedCount)) return false;
+        const dataset = DATASETS[saved.gender];
+        const faces = dataset.assets().filter(face => face.gender === saved.gender || !face.gender);
+        const deck = FaceDeck.restore(faces, saved.deck, TARGET_SELECTIONS);
+        Object.assign(state, { gender: saved.gender, dataset, faces, deck, selectedCount: saved.selectedCount, preference: saved.preference });
+        lastSavedSession = JSON.stringify(saved);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    function openPage() {
+      const page = document.body.dataset.page;
+      if (page === "top") return;
+      if (!restoreSession()) return navigate("top", true);
+      if (page === "quiz") {
+        // 完了後に「戻る」で診断画面へ来た場合は、トップへ戻して履歴のループを防ぐ。
+        if (state.selectedCount >= TARGET_SELECTIONS) return navigate("top", true);
+        topStatus.textContent = `${state.dataset.label}を診断中`;
+        show(quizScreen);
+        renderRound();
+      } else if (page === "result") {
+        if (state.selectedCount < TARGET_SELECTIONS) return navigate("quiz", true);
+        renderResult();
+      }
+    }
 
     function faceSvg(face, variant = 0, score = {}) {
       const [skin, hair, lip] = face.palette;
@@ -867,6 +941,7 @@
     }
 
     function start(gender) {
+      if (navigating) return;
       state.gender = gender;
       state.dataset = DATASETS[gender];
       state.selectedCount = 0;
@@ -874,9 +949,7 @@
       state.faces = state.dataset.assets().filter(face => face.gender === gender || !face.gender);
       state.deck = new FaceDeck(state.faces, TARGET_SELECTIONS);
       state.deck.next();
-      topStatus.textContent = `${state.dataset.label}を診断中`;
-      show(quizScreen);
-      renderRound();
+      if (saveSession()) navigate("quiz");
     }
 
     function renderRound() {
@@ -888,7 +961,7 @@
     }
 
     function choose(index) {
-      if (!quizScreen.classList.contains("active")) return;
+      if (navigating || !quizScreen.classList.contains("active") || !state.deck || state.selectedCount >= TARGET_SELECTIONS) return;
       const selected = currentPair()[index];
       Object.entries(selected.tags).forEach(([key, value]) => {
         state.preference[key] = (state.preference[key] || 0) + value;
@@ -898,17 +971,20 @@
       if (state.selectedCount >= TARGET_SELECTIONS) {
         roundLabel.textContent = `${TARGET_SELECTIONS} / ${TARGET_SELECTIONS}`;
         progressBar.style.width = "100%";
-        renderResult();
+        if (saveSession()) navigate("result");
+        else renderRound();
         return;
       }
 
       state.deck.next();
+      saveSession();
       renderRound();
     }
 
     function skipRound() {
-      if (!quizScreen.classList.contains("active")) return;
+      if (navigating || !quizScreen.classList.contains("active") || !state.deck || state.selectedCount >= TARGET_SELECTIONS) return;
       state.deck.skip();
+      saveSession();
       renderRound();
     }
 
@@ -967,9 +1043,8 @@
     }
 
     function reset() {
-      topStatus.textContent = "20問診断";
-      toast.textContent = "";
-      show(startScreen);
+      try { sessionStorage.removeItem(SESSION_KEY); } catch { /* 保存不可でもトップへ戻れる。 */ }
+      navigate("top");
     }
 
     async function copyResult() {
@@ -1059,6 +1134,12 @@
       if (event.key === "ArrowLeft") choose(0);
       if (event.key === "ArrowRight") choose(1);
     });
+
+    // 戻る・進むでブラウザのページキャッシュから復元された場合も、広告と状態を読み直す。
+    window.addEventListener("pageshow", event => {
+      if (event.persisted) window.location.reload();
+    });
+    openPage();
 
   </script>
 </body>

@@ -11,13 +11,32 @@ python3 scripts/build_pages.py
 python3 -m http.server 8000 --directory dist
 ```
 
-公開時は `dist/` の内容をそのまま配置してください。`index.html`、`data/`、`assets/`、`js/`、生成した `share/` と `robots.txt` が必要です。
+公開時は `dist/` の内容をそのまま配置してください。`index.html`、`top/`、`quiz/`、`result/`、`data/`、`assets/`、`js/`、生成した `share/`、`robots.txt`、`_redirects` が必要です。
 画像・データのURLはページからの相対パスなので、ドメイン直下でも
 `/type_checker/` のようなサブディレクトリでも利用できます。
 `docs/` の確認ページも公開する場合は、同じ構造で配置してください。
 独自ドメインの設定値は `CNAME` の `type-checker.shianstudio.com` です。
-`index.html` の `canonical` も `https://type-checker.shianstudio.com/` に合わせています。
+`index.html` の `canonical` はトップ画面の `https://type-checker.shianstudio.com/top/` です。
 公開先を変更するときは、この2か所と `index.html` のOpen Graph・XカードのURLを更新してください。
+
+## 画面URLと診断の保存
+
+- `/top/`: トップ画面。ドメイン直下 `/` はここへHTTP 302でリダイレクトします。
+- `/quiz/`: 診断中。20問の回答・顔の差し替えは同じページで進みます。
+- `/result/`: 診断結果。完了した診断を復元して表示します。
+
+画面間は `location.assign()` による通常のページ遷移で、各ページの広告タグを初期化します。戻る・進むでブラウザのページキャッシュから復元された場合も読み直します。`scripts/build_app_pages.py` が共通テンプレートから3つのHTMLを生成し、各パスのcanonical・OGPと初期画面を設定します。ルート転送はCloudflare Pagesの[リダイレクト設定](https://developers.cloudflare.com/pages/configuration/redirects/)を使い、単純なローカルサーバーではHTML側の転送で同じトップ画面を開きます。
+
+回答数・スコア・表示中の2枚・未表示の顔と出題順は `sessionStorage` の `face-diagnosis:v1` に保存します。同じタブの再読み込みで続きから表示でき、結果も再表示できます。「もう一度」で保存内容を消してトップへ戻ります。保存がない・壊れている状態で診断や結果のURLを直接開いた場合はトップへ移動し、未完了の結果URLは診断へ戻します。診断・結果ページは `noindex` とし、X共有には従来の写真付き静的共有URLを使用します。
+
+ブラウザでの検証は、上記のローカルサーバーを起動したうえで次を実行します。男女の20問、途中・結果の再読み込み、履歴、直接アクセス、広告タグの初期化を確認します。広告配信はモックし、実広告へのアクセスを発生させません。
+
+```bash
+npx playwright install --with-deps chromium
+npm run test:navigation
+```
+
+別のサーバーを確認する場合は `SITE_URL` にURLを指定してください。
 
 ## Cloudflare Pagesへの公開
 
@@ -52,7 +71,8 @@ Gitの管理情報、ローカル設定、`Zone.Identifier` は含めません�
 
 ## ファイル構成
 
-- `index.html`: 診断画面。
+- `index.html`: 3画面の共通テンプレート。公開HTMLはビルド時に生成。
+- `_redirects`: ドメイン直下からトップ画面への転送と、各パスの末尾スラッシュ統一。
 - `js/face_deck.js`: 未表示の顔を優先する出題・差し替え処理。
 - `data/male_faces.js`、`data/female_faces.js`: 本番画像に対応する各60件の特徴量・生成記録。
 - `assets/male/`、`assets/female/`: 本番画像。各1200×1600 PNG。
@@ -103,7 +123,7 @@ python3 scripts/build_pages.py
 
 テンプレートは `scripts/templates/share_card.html`、書き出し処理は `scripts/render_share_cards.cjs` です。既存Chromiumを使う場合は `SHARE_CARD_CHROMIUM` に実行ファイルを指定できます。ビルド時には共有画像と元写真のハッシュ・件数・サイズも確認し、写真だけ更新されて共有画像が古いままの公開を防ぎます。
 
-PC広告は画面幅800px以上で `pid:85394 / mid:596134 / asid:1943673`、要素ID `im-f9eb908dad6a4cf49b5ea04a2cd2e6f5` を使用します。スマートフォン枠は従来どおり。回答や画面切り替えでは広告タグを再実行しません。
+PC広告は画面幅800px以上で `pid:85394 / mid:596134 / asid:1943673`、要素ID `im-f9eb908dad6a4cf49b5ea04a2cd2e6f5` を使用します。スマートフォン枠は従来どおり。トップ・診断・結果の各ページで広告タグを読み込み、診断中の回答・差し替えでは再実行しません。
 
 ## 最新の試作（ver5・男女各10枚）
 

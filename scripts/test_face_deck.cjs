@@ -70,3 +70,46 @@ test('不足・奇数・重複IDのデータは受け付けない', () => {
     assert.throws(() => new FaceDeck(source), /偶数件/);
   }
 });
+
+test('保存・復元後も表示中の2枚と出題・差し替えの順序を引き継ぐ', () => {
+  const source = faces(60);
+  let deck = new FaceDeck(source, 20, unchangedOrder);
+  deck.next();
+  const shown = new Set(ids(deck.current));
+  for (let turn = 0; turn < 29; turn += 1) {
+    const saved = JSON.parse(JSON.stringify(deck.snapshot()));
+    const restored = FaceDeck.restore(source, saved, 20, unchangedOrder);
+    assert.deepEqual(restored.current, deck.current);
+    assert.equal(restored.current[0], source.find(face => face.id === saved.current[0]));
+    const operation = turn % 3 ? 'skip' : 'next';
+    assert.deepEqual(restored[operation](), deck[operation]());
+    for (const id of ids(restored.current)) {
+      assert.ok(!shown.has(id));
+      shown.add(id);
+    }
+    deck = restored;
+  }
+  assert.equal(shown.size, 60);
+  deck = FaceDeck.restore(source, deck.snapshot(), 20, unchangedOrder);
+  deck.next();
+  assert.equal(deck.cycle, 2);
+});
+
+test('壊れた保存データ・異なる顔セットは復元しない', () => {
+  const source = faces(60);
+  const deck = new FaceDeck(source, 20, unchangedOrder);
+  deck.next();
+  for (const change of [
+    saved => { saved.current = ['unknown', 'face_2']; },
+    saved => { saved.normal[0] = saved.reserve[0]; },
+    saved => { saved.unseen.push('face_1'); },
+    saved => { saved.cycle = 0; },
+    saved => { saved.questionCount = 10; },
+    saved => { saved.faceIds.reverse(); }
+  ]) {
+    const saved = deck.snapshot();
+    change(saved);
+    assert.throws(() => FaceDeck.restore(source, saved), /無効/);
+  }
+  assert.throws(() => FaceDeck.restore(source, null), /無効/);
+});

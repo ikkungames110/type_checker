@@ -5,6 +5,7 @@ import shutil
 
 from check_integrity import main as check_integrity
 from build_share_pages import build_share_pages
+from build_app_pages import build_app_pages
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,7 +17,8 @@ def main():
     if destination.exists():
         shutil.rmtree(destination)
     destination.mkdir()
-    shutil.copy2(ROOT / "index.html", destination / "index.html")
+    build_app_pages(destination)
+    shutil.copy2(ROOT / "_redirects", destination / "_redirects")
     shutil.copy2(ROOT / "robots.txt", destination / "robots.txt")
     for name in ("assets", "data", "docs", "js"):
         shutil.copytree(

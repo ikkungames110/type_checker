@@ -48,6 +48,46 @@ class FaceDeck {
 
   next() { return this.take(false); }
   skip() { return this.take(true); }
+
+  snapshot() {
+    const pairs = queue => queue.map(pair => pair.map(face => face.id));
+    return {
+      version: 1,
+      faceIds: this.faces.map(face => face.id),
+      questionCount: this.questionCount,
+      normal: pairs(this.normal),
+      reserve: pairs(this.reserve),
+      current: this.current?.map(face => face.id),
+      unseen: [...this.unseen],
+      cycle: this.cycle
+    };
+  }
+
+  static restore(faces, saved, questionCount = 20, random = Math.random) {
+    const invalid = () => { throw new Error('保存した出題データが無効です'); };
+    const byId = new Map(faces.map(face => [face.id, face]));
+    if (!saved || saved.version !== 1 || saved.questionCount !== questionCount ||
+        JSON.stringify(saved.faceIds) !== JSON.stringify(faces.map(face => face.id)) ||
+        !Number.isInteger(saved.cycle) || saved.cycle < 1) invalid();
+    const pair = ids => {
+      if (!Array.isArray(ids) || ids.length !== 2 || ids[0] === ids[1] || !ids.every(id => byId.has(id))) invalid();
+      return ids.map(id => byId.get(id));
+    };
+    const queue = pairs => {
+      if (!Array.isArray(pairs)) invalid();
+      return pairs.map(pair);
+    };
+    const normal = queue(saved.normal), reserve = queue(saved.reserve), current = pair(saved.current);
+    if (!Array.isArray(saved.unseen) || !saved.unseen.every(id => byId.has(id))) invalid();
+    const unseen = new Set(saved.unseen);
+    const queuedIds = [...normal, ...reserve].flat().map(face => face.id);
+    if (unseen.size !== saved.unseen.length || new Set(queuedIds).size !== queuedIds.length ||
+        queuedIds.length !== unseen.size || !queuedIds.every(id => unseen.has(id)) ||
+        current.some(face => unseen.has(face.id))) invalid();
+    const deck = new FaceDeck(faces, questionCount, random);
+    Object.assign(deck, { normal, reserve, current, unseen, cycle: saved.cycle });
+    return deck;
+  }
 }
 
 if (typeof module !== 'undefined' && module.exports) module.exports = { FaceDeck };

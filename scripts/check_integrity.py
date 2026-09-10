@@ -118,7 +118,7 @@ def check_promotion_card(check, referenced):
 
     site = f'https://{(ROOT / "CNAME").read_text().strip()}/'
     meta = parser.metadata
-    check(meta.get("og:url") == site, "宣材画像: og:urlとCNAMEが不一致")
+    check(meta.get("og:url") == site + "top/", "宣材画像: og:urlとトップ画面URLが不一致")
     check(meta.get("twitter:card") == "summary_large_image", "宣材画像: Xの大きな画像カードが未設定")
     for key in ("og:image", "og:image:secure_url", "twitter:image"):
         check(meta.get(key) == site + card["image"], f"宣材画像: {key}のURLが不一致")
@@ -291,7 +291,7 @@ def main():
 
     domain = (ROOT / "CNAME").read_text(encoding="utf-8").strip()
     html = (ROOT / "index.html").read_text(encoding="utf-8")
-    check(f'<link rel="canonical" href="https://{domain}/">' in html, "index.html: canonicalとCNAMEが不一致")
+    check(f'<link rel="canonical" href="https://{domain}/top/">' in html, "index.html: canonicalとトップ画面URLが不一致")
 
     documents = [ROOT / "index.html", ROOT / "README.md", *sorted((ROOT / "docs").glob("*"))]
     for source in documents:

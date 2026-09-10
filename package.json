@@ -4,6 +4,7 @@
   "scripts": {
     "render:share-cards": "node scripts/render_share_cards.cjs",
     "test": "node --test scripts/test_*.cjs && python3 -m unittest discover -s scripts -p 'test_*.py'",
+    "test:navigation": "node scripts/check_navigation.cjs",
     "build": "python3 scripts/build_pages.py"
   },
   "devDependencies": {
