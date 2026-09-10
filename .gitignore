@@ -9,3 +9,6 @@ __pycache__/
 # Cloudflare Pagesの公開用ファイル・ローカル状態
 dist/
 .wrangler/
+
+# 共有カードの書き出しに使う開発用パッケージ
+node_modules/

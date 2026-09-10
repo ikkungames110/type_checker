@@ -1,16 +1,17 @@
 # 好みの顔タイプ診断
 
-男女各60枚の顔画像（ver6.1）を使う、ビルド不要の静的Webアプリです。
+男女各60枚の顔画像（ver6.1）を使う静的Webアプリです。Pythonのビルドで診断画面と顔写真付き共有ページを公開します。
 
 ## 起動
 
 リポジトリのルートで次を実行し、`http://localhost:8000/` を開きます。
 
 ```bash
-python3 -m http.server 8000
+python3 scripts/build_pages.py
+python3 -m http.server 8000 --directory dist
 ```
 
-公開時は `index.html`、`data/`、`assets/`、`js/` を同じ階層構造で配置してください。
+公開時は `dist/` の内容をそのまま配置してください。`index.html`、`data/`、`assets/`、`js/`、生成した `share/` と `robots.txt` が必要です。
 画像・データのURLはページからの相対パスなので、ドメイン直下でも
 `/type_checker/` のようなサブディレクトリでも利用できます。
 `docs/` の確認ページも公開する場合は、同じ構造で配置してください。
@@ -55,6 +56,8 @@ Gitの管理情報、ローカル設定、`Zone.Identifier` は含めません�
 - `js/face_deck.js`: 未表示の顔を優先する出題・差し替え処理。
 - `data/male_faces.js`、`data/female_faces.js`: 本番画像に対応する各60件の特徴量・生成記録。
 - `assets/male/`、`assets/female/`: 本番画像。各1200×1600 PNG。
+- `assets/share/`、`data/share_cards.json`: 本番120人に対応する顔写真付きの共有画像と、元写真・出力画像のハッシュ。
+- `data/result_types.js`: 診断と共有ページで共通のタイプ名・判定条件。
 - `data/previews/`、`assets/previews/`: ver3の男性試作10件、ver4・ver5の男女各10件の記録・画像。
 - `data/plans/`: 生成前の計画。`planned_image` は計画当時の保存予定先で、実在画像の参照先は本番・試作・生成済みデータの `image` です。
 - `docs/`: 設計資料・生成記録・画像の確認ページ。
@@ -79,7 +82,23 @@ Gitの管理情報、ローカル設定、`Zone.Identifier` は含めません�
 差し替え10回分を使った後は、未表示の顔をシャッフルして補充します。未表示の通常枠も先に使い切るため、序盤の11回目で既出の顔へ戻ることはありません。実際に全枚を表示した後に全体を再シャッフルします。
 本番は男女各60枚で一巡します。[出題処理](js/face_deck.js)は `node --test scripts/test_face_deck.cjs` で検証できます。
 
-診断結果には黒地の大きな「Xで結果をシェア」ボタンを配置しています。スマートフォンでは結果の説明直下・顔写真の前に表示します。タイプ名・上位の特徴・診断の公開URL・ハッシュタグを入れたXの投稿画面を別タブで開きます。[X公式のWeb Intents](https://docs.x.com/x-for-websites/web-intents/overview)を使うリンクで、投稿の確定は利用者がX上で行います。「結果をコピー」と「もう一度」は補助操作として残しています。
+診断結果には黒地の大きな「Xで結果をシェア」ボタンを配置しています。スマートフォンでは結果の説明直下・顔写真の前に表示します。タイプ名・上位の特徴・顔写真付きの共有URL・ハッシュタグを入れたXの投稿画面を別タブで開きます。[X公式のWeb Intents](https://docs.x.com/x-for-websites/web-intents/overview)を使うリンクで、投稿の確定は利用者がX上で行います。「結果をコピー」も同じ共有URLをコピーします。
+
+共有URLは `share/v6.1/<顔ID>/<タイプID>/` です。ビルド時に120人×6タイプの静的HTMLを生成し、診断結果と同じ写真・タイプ名を表示します。HTMLの先頭に `twitter:card=summary_large_image`、`twitter:image` と [Open Graph](https://ogp.me/) のメタ情報を埋め込むため、JavaScriptを実行しないXのクローラーも顔写真を取得できます。画像は1200×600のJPEGで、元の縦長写真を切り取らずに配置しています。
+
+これは共有URLの画像カードを自動表示する方式です。Web Intentから画像ファイルを直接添付する機能は使用しません。X上の表示タイミングやキャッシュはX側で管理されます。
+
+共有画像はGitに保存してあるため、通常のPagesビルドに画像生成環境は不要です。写真や共有カードのデザインを変えた場合は、次の手順で画像とマニフェストを再作成して一緒にコミットしてください。前回のマニフェストにある古い共有画像も整理します。
+
+```bash
+npm ci
+npx playwright install --with-deps chromium
+npm run render:share-cards
+npm test
+python3 scripts/build_pages.py
+```
+
+テンプレートは `scripts/templates/share_card.html`、書き出し処理は `scripts/render_share_cards.cjs` です。既存Chromiumを使う場合は `SHARE_CARD_CHROMIUM` に実行ファイルを指定できます。ビルド時には共有画像と元写真のハッシュ・件数・サイズも確認し、写真だけ更新されて共有画像が古いままの公開を防ぎます。
 
 PC広告は画面幅800px以上で `pid:85394 / mid:596134 / asid:1943673`、要素ID `im-f9eb908dad6a4cf49b5ea04a2cd2e6f5` を使用します。スマートフォン枠は従来どおり。回答や画面切り替えでは広告タグを再実行しません。
 

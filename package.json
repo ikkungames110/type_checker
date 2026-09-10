@@ -1,0 +1,12 @@
+{
+  "name": "type-checker-shianstudio",
+  "private": true,
+  "scripts": {
+    "render:share-cards": "node scripts/render_share_cards.cjs",
+    "test": "node --test scripts/test_*.cjs && python3 -m unittest discover -s scripts -p 'test_*.py'",
+    "build": "python3 scripts/build_pages.py"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

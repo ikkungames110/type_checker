@@ -26,6 +26,61 @@ class Links(HTMLParser):
         self.targets.extend(value for key, value in attrs if key in {"src", "href"} and value)
 
 
+def jpeg_dimensions(raw):
+    if not raw.startswith(b"\xff\xd8"):
+        return None
+    offset = 2
+    while offset + 4 <= len(raw):
+        if raw[offset] != 0xFF:
+            return None
+        marker = raw[offset + 1]
+        length = int.from_bytes(raw[offset + 2:offset + 4], "big")
+        if marker in {0xC0, 0xC1, 0xC2} and length >= 7:
+            height, width = struct.unpack(">HH", raw[offset + 5:offset + 9])
+            return width, height
+        if marker in {0xDA, 0xD9} or length < 2:
+            return None
+        offset += 2 + length
+    return None
+
+
+def check_share_cards(check, referenced):
+    from build_share_pages import read_browser_data
+
+    manifest = json.loads((ROOT / "data/share_cards.json").read_text())
+    check(manifest["template"] == "scripts/templates/share_card.html", "共有画像: テンプレートが不正")
+    check(hashlib.sha256((ROOT / manifest["template"]).read_bytes()).hexdigest() == manifest["template_sha256"], "共有画像: テンプレート変更後に画像を書き出し直してください")
+    faces = {face["id"]: face for gender in ("female", "male") for face in read_browser_data(ROOT / f"data/{gender}_faces.js")}
+    cards = manifest["cards"]
+    check(len(cards) == len(faces) and {card["id"] for card in cards} == set(faces), "共有画像: 本番の顔と件数・IDが不一致")
+    for card in cards:
+        face = faces.get(card["id"])
+        if face is None:
+            continue
+        context = f'共有画像: {card["id"]}'
+        check(card["gender"] == face["gender"] and card["asset_version"] == face["asset_version"], f"{context}: 性別・バージョンが不一致")
+        check(card["source_image"] == face["image"] and card["source_sha256"] == face["generation"]["image_sha256"], f"{context}: 元の顔写真が更新されています。共有画像も書き出し直してください")
+        expected_path = f'assets/share/{face["asset_version"]}/{face["id"]}-{card["image_sha256"][:12]}.jpg'
+        check(card["image"] == expected_path, f"{context}: 画像パスが不正")
+        image_path = ROOT / expected_path
+        check(image_path.is_file(), f"{context}: 画像がない")
+        if not image_path.is_file():
+            continue
+        raw = image_path.read_bytes()
+        check(jpeg_dimensions(raw) == (card["width"], card["height"]) == (1200, 600), f"{context}: JPEG・サイズが不正")
+        check(len(raw) < 5_000_000, f"{context}: 画像が5MB以上")
+        check(hashlib.sha256(raw).hexdigest() == card["image_sha256"], f"{context}: 画像ハッシュが不一致")
+        check(image_path.resolve() not in referenced, f"{context}: 画像参照が重複")
+        referenced.add(image_path.resolve())
+
+    types = read_browser_data(ROOT / "data/result_types.js")
+    check(len(types) == len({item["id"] for item in types}) == 6, "共有タイプ: 件数またはIDが不正")
+    check(types[-1]["tags"] == [], "共有タイプ: 最後の判定に既定値がない")
+    for item in types:
+        check(re.fullmatch(r"[a-z]+", item["id"]) is not None and bool(item["label"]), "共有タイプ: IDまたはタイプ名が不正")
+        check(set(item["tags"]) <= TAG_KEYS, "共有タイプ: 不明な採点タグ")
+
+
 def main():
     errors = []
 
@@ -180,6 +235,7 @@ def main():
     if embedded:
         check(json.loads(embedded[1])['plans'] == new_plans, 'ver6 HTML: 計画JSONと内容が不一致')
 
+    check_share_cards(check, referenced)
     images = {path.resolve() for path in (ROOT / "assets").rglob("*") if path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}}
     for path in sorted(images - referenced):
         errors.append(f"{path.relative_to(ROOT)}: 対応する特徴量レコードがない")
@@ -204,7 +260,7 @@ def main():
 
     if errors:
         raise SystemExit("\n".join(errors))
-    print(f"整合性OK: 本番ver6.1 120件・試作50件、画像{len(referenced)}枚、ver6計画120人、特徴量・画像ハッシュ・配分・HTML・ローカルリンク")
+    print(f"整合性OK: 本番ver6.1 120件・試作50件・共有カード120件、画像{len(referenced)}枚、ver6計画120人、特徴量・画像ハッシュ・配分・HTML・ローカルリンク")
 
 
 if __name__ == "__main__":

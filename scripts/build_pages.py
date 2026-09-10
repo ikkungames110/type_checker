@@ -4,6 +4,7 @@ from pathlib import Path
 import shutil
 
 from check_integrity import main as check_integrity
+from build_share_pages import build_share_pages
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,12 +17,14 @@ def main():
         shutil.rmtree(destination)
     destination.mkdir()
     shutil.copy2(ROOT / "index.html", destination / "index.html")
+    shutil.copy2(ROOT / "robots.txt", destination / "robots.txt")
     for name in ("assets", "data", "docs", "js"):
         shutil.copytree(
             ROOT / name,
             destination / name,
             ignore=shutil.ignore_patterns("*:Zone.Identifier", "__pycache__", "*.pyc"),
         )
+    build_share_pages(destination)
     files = [path for path in destination.rglob("*") if path.is_file()]
     print(f"Pages公開用ファイル: {len(files)}件 → {destination}")
 

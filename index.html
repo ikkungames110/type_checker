@@ -623,7 +623,7 @@
           <p class="result-copy" id="resultCopy"></p>
         </div>
         <div class="result-share">
-          <strong>あなたのタイプをシェアしよう</strong>
+          <strong>顔写真と結果をシェアしよう</strong>
           <a class="x-share-btn" id="xShareButton" href="https://x.com/intent/tweet" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.835L0 1.154h7.594l5.243 6.932zm-1.29 19.49h2.039L6.487 3.24H4.3z"/></svg>
             <span>Xで結果をシェア</span>
@@ -715,6 +715,7 @@
 
   <script src="data/female_faces.js?v=6.1"></script>
   <script src="data/male_faces.js?v=6.1"></script>
+  <script src="data/result_types.js?v=1"></script>
   <script src="js/face_deck.js"></script>
   <script>
     const TAGS = {
@@ -771,7 +772,8 @@
       faces: [],
       deck: null,
       preference: {},
-      lastResult: ""
+      lastResult: "",
+      shareUrl: ""
     };
 
     const startScreen = document.querySelector("#startScreen");
@@ -790,7 +792,7 @@
     const resultCopy = document.querySelector("#resultCopy");
     const resultBars = document.querySelector("#resultBars");
     const xShareButton = document.querySelector("#xShareButton");
-    const shareUrl = document.querySelector('link[rel="canonical"]').href;
+    const siteUrl = document.querySelector('link[rel="canonical"]').href;
     const toast = document.querySelector("#toast");
 
     function faceSvg(face, variant = 0, score = {}) {
@@ -899,14 +901,9 @@
         .map(([key, value]) => ({ key, label: TAGS[key], value }));
     }
 
-    function resultName(keys) {
+    function resultType(keys) {
       const top = new Set(keys.slice(0, 3));
-      if (top.has("cool") && top.has("sharp")) return "静かな目力に吸い込まれるタイプ";
-      if (top.has("cute") && top.has("shortFace")) return "守りたくなる甘めフェイス";
-      if (top.has("mysterious") && top.has("adult")) return "余白で惹きつけるアンニュイ美形";
-      if (top.has("idol") && top.has("tareme")) return "近づきやすい王道アイドル顔";
-      if (top.has("tsurime")) return "凛としたつり目フェイス";
-      return "清潔感のある好印象フェイス";
+      return window.FACE_RESULT_TYPES.find(type => type.tags.every(key => top.has(key)));
     }
 
     function bestResultFace() {
@@ -923,7 +920,8 @@
     function renderResult() {
       const scores = sortedScores();
       const topKeys = scores.slice(0, 4).map(item => item.key);
-      const title = resultName(topKeys);
+      const type = resultType(topKeys);
+      const title = type.label;
       const max = Math.max(...scores.map(item => item.value), 1);
       const base = bestResultFace();
 
@@ -940,7 +938,11 @@
       `).join("");
 
       state.lastResult = `好みの顔タイプ診断の結果(${state.dataset.resultTarget}): ${title}\n${scores.slice(0, 4).map(item => `#${item.label}好き`).join(" ")}`;
-      const shareParams = new URLSearchParams({ text: state.lastResult, url: shareUrl, hashtags: "好みの顔タイプ診断" });
+      // Xのクローラーが結果の顔写真を取得できる、静的な共有ページを使う。
+      state.shareUrl = base.image && base.asset_version
+        ? new URL(`share/${base.asset_version}/${base.id}/${type.id}/`, siteUrl).href
+        : siteUrl;
+      const shareParams = new URLSearchParams({ text: state.lastResult, url: state.shareUrl, hashtags: "好みの顔タイプ診断" });
       xShareButton.href = `https://x.com/intent/tweet?${shareParams}`;
       topStatus.textContent = "診断完了";
       show(resultScreen);
@@ -955,10 +957,10 @@
 
     async function copyResult() {
       try {
-        await navigator.clipboard.writeText(`${state.lastResult}\n${shareUrl}`);
+        await navigator.clipboard.writeText(`${state.lastResult}\n${state.shareUrl}`);
         toast.textContent = "共有テキストをコピーしました";
       } catch {
-        toast.textContent = `${state.lastResult}\n${shareUrl}`;
+        toast.textContent = `${state.lastResult}\n${state.shareUrl}`;
       }
     }
 
