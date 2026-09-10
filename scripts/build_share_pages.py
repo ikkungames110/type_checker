@@ -23,20 +23,20 @@ def build_share_pages(destination):
     for gender, gender_label in (("female", "女性"), ("male", "男性")):
         for face in read_browser_data(ROOT / f"data/{gender}_faces.js"):
             card = cards[face["id"]]
-            for result_type in types:
-                relative = f'share/{face["asset_version"]}/{face["id"]}/{result_type["id"]}/'
-                values = {
-                    "title": result_type["label"],
-                    "description": f'好みの{gender_label}の顔は「{result_type["label"]}」。あなたも20問の2択で、惹かれる顔を見つけてみませんか？',
-                    "page_url": site_url + relative,
-                    "card_url": site_url + card["image"],
-                    "portrait_path": face["image"] + "?v=" + face["asset_version"],
-                    "image_alt": f'診断結果に選ばれた架空の成人{gender_label}の顔写真',
-                    "gender_label": gender_label,
-                }
-                page = destination / relative / "index.html"
-                page.parent.mkdir(parents=True, exist_ok=True)
-                page.write_text(template.substitute({key: escape(value, quote=True) for key, value in values.items()}), encoding="utf-8")
-                count += 1
+            result_type = next(item for item in types[gender] if item["id"] == face["type"])
+            relative = f'share/{face["asset_version"]}/{face["id"]}/{result_type["id"]}/'
+            values = {
+                "title": result_type["label"],
+                "description": f'好みの{gender_label}の顔は「{result_type["label"]}」。あなたも20問の2択で、惹かれる顔を見つけてみませんか？',
+                "page_url": site_url + relative,
+                "card_url": site_url + card["image"],
+                "portrait_path": face["image"] + "?v=" + face["asset_version"],
+                "image_alt": f'診断結果に選ばれた架空の成人{gender_label}の顔写真',
+                "gender_label": gender_label,
+            }
+            page = destination / relative / "index.html"
+            page.parent.mkdir(parents=True, exist_ok=True)
+            page.write_text(template.substitute({key: escape(value, quote=True) for key, value in values.items()}), encoding="utf-8")
+            count += 1
     print(f"顔写真付きの共有ページ: {count}件")
     return count

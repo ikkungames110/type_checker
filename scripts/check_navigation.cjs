@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 
 const site = new URL(process.env.SITE_URL || 'http://127.0.0.1:8000/');
-const sessionKey = 'face-diagnosis:v1';
+const sessionKey = 'face-diagnosis:v8';
 const routeUrl = name => new URL(`${name}/`, site).href;
 
 async function main() {
@@ -35,19 +35,43 @@ async function main() {
         assert.equal(ad.asid, width >= 800 ? 1943673 : 1943443);
         return page.evaluate(() => window.__documentId);
       };
+      const shownFirstCycle = new Set();
+      let observedPairs = 0;
+      let rejectedTypes = new Set();
+      const inspectPair = async () => {
+        const saved = await page.evaluate(key => JSON.parse(sessionStorage.getItem(key)), sessionKey);
+        const records = await page.evaluate(g => g === 'female' ? window.FEMALE_FACE_ASSETS : window.MALE_FACE_ASSETS, gender);
+        const current = saved.deck.current.map(id => records.find(face => face.id === id));
+        assert.notEqual(current[0].type, current[1].type);
+        assert.equal(await page.locator('#duel img').evaluateAll(imgs => imgs.every(img => Math.abs(img.clientWidth / img.clientHeight - 0.75) < 0.01)), true);
+        assert.equal(saved.deck.shownPairs, ++observedPairs);
+        if (observedPairs <= 20) {
+          current.forEach(face => { assert.ok(!shownFirstCycle.has(face.id)); shownFirstCycle.add(face.id); });
+          if (observedPairs === 20) assert.equal(shownFirstCycle.size, 40);
+        } else {
+          current.forEach(face => assert.ok(!rejectedTypes.has(face.type)));
+        }
+        return current;
+      };
       const pair = () => page.locator('#duel img').evaluateAll(images => images.map(image => image.getAttribute('src')));
 
       await page.goto(site.href);
       const topDocument = await ready('top');
+      assert.equal(await page.locator('#sampleA img').getAttribute('src'), 'assets/female/female_011.png?v=8');
+      assert.equal(await page.locator('#sampleB img').getAttribute('src'), 'assets/male/male_011.png?v=8');
+      await page.locator('#sampleA img').evaluate(img => img.decode());
+      await page.screenshot({ path: `/tmp/type-checker-v8-top-${width}.png` });
       await page.locator(`.gender-btn[data-gender="${gender}"]`).click();
       const quizDocument = await ready('quiz');
       assert.notEqual(quizDocument, topDocument);
       assert.equal(await page.locator('#roundLabel').innerText(), '0 / 20');
       const firstPair = await pair();
+      rejectedTypes = new Set((await inspectPair()).map(face => face.type));
       await page.locator('#skipButton').click();
       assert.notDeepEqual(await pair(), firstPair);
+      await inspectPair();
       assert.equal(await page.locator('#roundLabel').innerText(), '0 / 20');
-      for (let i = 0; i < 5; i += 1) await page.locator(i % 2 ? '#rightCard' : '#leftCard').click();
+      for (let i = 0; i < 5; i += 1) { await page.locator(i % 2 ? '#rightCard' : '#leftCard').click(); await inspectPair(); }
       assert.equal(await page.evaluate(() => window.__documentId), quizDocument);
       assert.equal(await page.evaluate(() => window.__adLoads), 1);
       assert.equal((await page.locator('#leftCard').innerText()).trim(), '');
@@ -70,7 +94,8 @@ async function main() {
       await page.goto(routeUrl('result'));
       const resumedDocument = await ready('quiz');
       assert.equal(await page.locator('#roundLabel').innerText(), '5 / 20');
-      for (let i = 5; i < 19; i += 1) await page.locator(i % 2 ? '#rightCard' : '#leftCard').click();
+      for (let i = 5; i < 19; i += 1) { await page.locator(i % 2 ? '#rightCard' : '#leftCard').click(); await inspectPair(); }
+      assert.equal(observedPairs, 21);
       const finalPair = await pair();
       await page.evaluate(() => {
         window.__originalSetItem = Storage.prototype.setItem;
@@ -87,10 +112,30 @@ async function main() {
       const title = await page.locator('#resultTitle').innerText();
       const portrait = await page.locator('#resultPortrait img').getAttribute('src');
       assert.ok(title);
+      const resultData = await page.evaluate(key => {
+        const saved = JSON.parse(sessionStorage.getItem(key));
+        const records = saved.gender === 'female' ? window.FEMALE_FACE_ASSETS : window.MALE_FACE_ASSETS;
+        const byId = new Map(records.map(face => [face.id, face]));
+        const scores = {};
+        for (const id of saved.chosenIds) scores[byId.get(id).type] = (scores[byId.get(id).type] || 0) + 1;
+        const portraitId = document.querySelector('#resultPortrait img').getAttribute('src').match(/(female|male)_\d{3}/)[0];
+        const winner = byId.get(portraitId).type;
+        return { chosen: saved.chosenIds.includes(portraitId), total: Object.values(scores).reduce((a,b) => a+b,0),
+          max: Math.max(...Object.values(scores)), winnerCount: scores[winner], winner,
+          label: window.FACE_RESULT_TYPES[saved.gender].find(type => type.id === winner).label };
+      }, sessionKey);
+      assert.equal(resultData.total, 20);
+      assert.equal(resultData.chosen, true);
+      assert.equal(resultData.max, resultData.winnerCount);
+      assert.equal(title, resultData.label);
+      await page.locator('#resultPortrait img').evaluate(img => img.decode());
+      assert.equal(await page.locator('#resultPortrait img').evaluate(img => Math.abs(img.clientWidth / img.clientHeight - 0.75) < 0.01), true);
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+      await page.screenshot({ path: `/tmp/type-checker-v8-result-${gender}-${width}.png`, fullPage: true });
       assert.ok(portrait.startsWith(`assets/${gender}/`));
       const share = new URL(await page.locator('#xShareButton').getAttribute('href'));
       const shareUrl = new URL(share.searchParams.get('url'));
-      assert.match(shareUrl.pathname, new RegExp(`^/share/v6\\.1/${gender}_\\d{3}/[a-z]+/$`));
+      assert.match(shareUrl.pathname, new RegExp(`^/share/v8/${gender}_\\d{3}/[a-z_]+/$`));
       assert.ok(portrait.includes(shareUrl.pathname.split('/')[3]));
       const sharedPage = await context.newPage();
       await sharedPage.goto(new URL(shareUrl.pathname, site).href);
@@ -125,7 +170,7 @@ async function main() {
       assert.equal(await page.locator('#sessionError').isVisible(), true);
       assert.deepEqual(errors, []);
       await context.close();
-      console.log(`${gender} / ${width}px: 3画面の通常遷移・広告初期化・20問・途中/結果の復元・履歴・直接アクセス・保存エラー OK`);
+      console.log(`${gender} / ${width}px: 3画面・40枚一巡・異タイプ二択・21組目除外・20票の採点・復元・共有・広告・保存エラー OK`);
     }
   } finally {
     await browser.close();

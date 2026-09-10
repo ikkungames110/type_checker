@@ -41,24 +41,24 @@ class SharePagesTest(unittest.TestCase):
         site = f'https://{(ROOT / "CNAME").read_text().strip()}/'
         with tempfile.TemporaryDirectory() as directory:
             destination = Path(directory)
-            self.assertEqual(build_share_pages(destination), 720)
-            self.assertEqual(len(list(destination.rglob("index.html"))), 720)
+            self.assertEqual(build_share_pages(destination), 80)
+            self.assertEqual(len(list(destination.rglob("index.html"))), 80)
             for face in faces:
-                for result_type in types:
-                    relative = f'share/{face["asset_version"]}/{face["id"]}/{result_type["id"]}/'
-                    page = destination / relative / "index.html"
-                    html = page.read_text()
-                    parsed = PageMetadata(html)
-                    self.assertEqual(parsed.scripts, [])
-                    self.assertNotIn("${", html)
-                    self.assertEqual(parsed.canonical, site + relative)
-                    self.assertEqual(parsed.metadata["og:url"], parsed.canonical)
-                    self.assertEqual(parsed.metadata["twitter:card"], "summary_large_image")
-                    self.assertEqual(parsed.metadata["twitter:image"], site + cards[face["id"]]["image"])
-                    self.assertEqual(parsed.metadata["twitter:image"], parsed.metadata["og:image"])
-                    self.assertEqual(parsed.metadata["twitter:title"], result_type["label"] + " | 好みの顔タイプ診断")
-                    self.assertEqual((page.parent / urlsplit(parsed.images[0]).path).resolve(), destination / face["image"])
-                    self.assertIn("自分のタイプを診断する", html)
+                result_type = next(item for item in types[face["gender"]] if item["id"] == face["type"])
+                relative = f'share/{face["asset_version"]}/{face["id"]}/{result_type["id"]}/'
+                page = destination / relative / "index.html"
+                html = page.read_text()
+                parsed = PageMetadata(html)
+                self.assertEqual(parsed.scripts, [])
+                self.assertNotIn("${", html)
+                self.assertEqual(parsed.canonical, site + relative)
+                self.assertEqual(parsed.metadata["og:url"], parsed.canonical)
+                self.assertEqual(parsed.metadata["twitter:card"], "summary_large_image")
+                self.assertEqual(parsed.metadata["twitter:image"], site + cards[face["id"]]["image"])
+                self.assertEqual(parsed.metadata["twitter:image"], parsed.metadata["og:image"])
+                self.assertEqual(parsed.metadata["twitter:title"], result_type["label"] + " | 好みの顔タイプ診断")
+                self.assertEqual((page.parent / urlsplit(parsed.images[0]).path).resolve(), destination / face["image"])
+                self.assertIn("自分のタイプを診断する", html)
 
     def test_new_portrait_requires_matching_share_image(self):
         from build_share_pages import read_browser_data as original

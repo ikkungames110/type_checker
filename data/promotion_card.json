@@ -1,18 +1,18 @@
 {
-  "id": "homepage-promotion-v1",
-  "image": "assets/promo/home-v1-4b4f311ee7e9.png",
-  "image_sha256": "4b4f311ee7e995f96a6822837309260b943a6cd8174cdc53a55e8ef7209a38ee",
+  "id": "homepage-promotion-v8",
+  "image": "assets/promo/home-v8-bfe7983685ba.png",
+  "image_sha256": "bfe7983685bad3be246ba322d32710177d2b13385581e90eeb84ec62c8992f58",
   "width": 1774,
   "height": 887,
-  "source_id": "female_008",
+  "source_id": "female_011",
   "source_data": "data/female_faces.js",
-  "source_image": "assets/female/female_008.png",
-  "source_sha256": "d80fcd92148f757641da5670e14f22048a4dd33a4c4c29f0bb0833818f6a8c0f",
+  "source_image": "assets/female/female_011.png",
+  "source_sha256": "4151894ab5e5e8426740730b240fc5fdcae17676269827100318faabd4053be8",
   "generation": {
     "tool": "image_gen",
     "date": "2026-09-10",
-    "use_case": "ads-marketing",
-    "prompt": "Use case: ads-marketing / compositing, identity-preserve.\nAsset type: final Japanese app promotional banner and X summary_large_image card, landscape 2:1 aspect ratio, ideally 1536x768 pixels.\nPrimary request: Create a polished, immediately readable promotional image for the existing Japanese web app 「好みの顔タイプ診断」, using the supplied home-page female portrait. This is a finished promotional banner, not a screen mockup.\nInput image 1: supporting insert, the EXACT existing portrait photograph to place in the design. Preserve the woman's face, identity, facial proportions, natural skin texture, gaze, hairstyle, gray shirt, and original neutral studio backdrop unchanged. Treat it as an existing photograph to lay out, not as inspiration to draw a different person. No additional people. Keep her whole face and top of hair visible.\nComposition: echo the app home page's text-left, portrait-right composition. Left roughly 60% holds strong Japanese typography, right roughly 40% holds the original portrait in a softly rounded vertical photo panel. The face must be large and clear. Sophisticated Japanese editorial design, generous whitespace, precise alignment, a warm ivory background, muted rose #d84861 accents and near-black text, very subtle blush gradient. Small decorative rose circle/heart motif at most, no busy decorations. Safe margins at least 40px, design legible in a small social preview. Flat final artwork, no device, no mockup frame.\nText (verbatim, exact Japanese glyphs, no extra text):\nSmall top brand: \"SHIAN STUDIO\"\nApp name, clear bold: \"好みの顔タイプ診断\"\nMain headline, largest typography, two lines: \"あなたは、\" then \"どんな顔が好き？\"\nSupporting copy: \"2択 × 20問で、好みの顔が見つかる。\"\nSmall bottom badge: \"女性・男性どちらも診断OK\"\nTypography: contemporary heavy Japanese sans-serif, expressive and beautifully spaced, rose accent on 「好き」 if tasteful. The app name and headline must be clearly differentiated in scale, headline dominant. Keep all wording entirely outside the portrait panel. All punctuation exact.\nConstraints: reuse supplied photo unchanged; do not retouch or regenerate facial features. No score labels, feature tags, arrows, ratings, invented app functionality, unverified claims, additional logos, or watermarks. Portrait in the photograph remains realistic, not illustrated."
+    "use_case": "compositing, identity-preserve",
+    "prompt": "Use case: compositing, identity-preserve. Edit target Image 1: existing final Japanese promotional banner. Supporting insert Image 2: the exact approved female_011 portrait, a fictional Japanese woman age 25. Replace ONLY the photograph inside the rounded portrait panel on the RIGHT of Image 1 with the photograph from Image 2. Preserve Image 2 woman's exact identity, facial proportions, hairstyle, natural skin, ivory shirt and gray photo background. Do not mix the old and new woman's face. Do not beautify or redesign the new face. Keep her complete head and face visible, large, front facing. Keep all Image 1 typography, wording, color, left-side layout, decorations, rounded panel and overall 2:1 landscape aspect ratio. Text verbatim: \"SHIAN STUDIO\", \"好みの顔タイプ診断\", \"あなたは、\", \"どんな顔が好き？\", \"2択 × 20問で、好みの顔が見つかる。\", \"女性・男性どちらも診断OK\". Output the final banner at a 2:1 landscape ratio, no extra labels, no watermark."
   },
   "review_status": "visual_checked"
 }

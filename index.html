@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>好みの顔タイプ診断 | SHIAN STUDIO</title>
-  <meta name="description" content="好みの顔タイプ診断は、2択で気になる顔を選びながら、惹かれやすい雰囲気や特徴を整理するブラウザ診断です。判定方法と注意事項も掲載しています。">
+  <meta name="description" content="好みの顔タイプ診断は、2択で気になる顔を選びながら、惹かれやすい顔のタイプを見つけるブラウザ診断です。判定方法と注意事項も掲載しています。">
   <meta name="author" content="SHIAN STUDIO">
   <link rel="canonical" href="https://type-checker.shianstudio.com/top/">
   <meta property="og:type" content="website">
@@ -13,8 +13,8 @@
   <meta property="og:title" content="あなたは、どんな顔が好き？ | 好みの顔タイプ診断">
   <meta property="og:description" content="2択を直感で選ぶ20問の顔タイプ診断。最後に、あなたが惹かれる顔とタイプ名を表示します。女性・男性どちらも診断できます。">
   <meta property="og:url" content="https://type-checker.shianstudio.com/top/">
-  <meta property="og:image" content="https://type-checker.shianstudio.com/assets/promo/home-v1-4b4f311ee7e9.png">
-  <meta property="og:image:secure_url" content="https://type-checker.shianstudio.com/assets/promo/home-v1-4b4f311ee7e9.png">
+  <meta property="og:image" content="https://type-checker.shianstudio.com/assets/promo/home-v8-bfe7983685ba.png">
+  <meta property="og:image:secure_url" content="https://type-checker.shianstudio.com/assets/promo/home-v8-bfe7983685ba.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1774">
   <meta property="og:image:height" content="887">
@@ -22,7 +22,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="あなたは、どんな顔が好き？ | 好みの顔タイプ診断">
   <meta name="twitter:description" content="2択を直感で選ぶ20問の顔タイプ診断。最後に、あなたが惹かれる顔とタイプ名を表示します。女性・男性どちらも診断できます。">
-  <meta name="twitter:image" content="https://type-checker.shianstudio.com/assets/promo/home-v1-4b4f311ee7e9.png">
+  <meta name="twitter:image" content="https://type-checker.shianstudio.com/assets/promo/home-v8-bfe7983685ba.png">
   <meta name="twitter:image:alt" content="トップ画面の女性の顔写真を使った好みの顔タイプ診断の宣材画像。あなたは、どんな顔が好き？ 2択×20問で、好みの顔が見つかる。女性・男性どちらも診断OK。">
   <style>
     :root {
@@ -271,6 +271,7 @@
 
     .portrait {
       width: 100%;
+      height: auto;
       aspect-ratio: 3 / 4;
       border-radius: 6px;
       background: var(--soft);
@@ -396,12 +397,14 @@
 
     .bar-row {
       display: grid;
-      grid-template-columns: 7em 1fr 2.5em;
+      grid-template-columns: minmax(0, 1fr) 2.5em;
       gap: 10px;
       align-items: center;
       color: var(--muted);
       font-size: 13px;
     }
+
+    .bar-row > span:first-child { grid-column: 1 / -1; }
 
     .bar-track {
       display: block;
@@ -577,9 +580,7 @@
         padding: 7px;
       }
 
-      .bar-row {
-        grid-template-columns: 6em 1fr 2.2em;
-      }
+      .bar-row { grid-template-columns: minmax(0, 1fr) 2.5em; }
     }
   </style>
 </head>
@@ -599,7 +600,7 @@
       <div class="hero">
         <div>
           <h1>最後にあなたのタイプの顔が出ます</h1>
-          <p class="lead">2択を直感で選ぶだけ。好みの顔に含まれる特徴を重ねて、最後にあなたが惹かれる顔とタイプ名を表示します。</p>
+          <p class="lead">2択を直感で選ぶだけ。20回選ぶと、あなたが惹かれる顔とタイプ名が見つかります。</p>
           <div class="choice-row" aria-label="診断対象を選択">
             <button class="gender-btn" data-gender="female">好みの女性を診断</button>
             <button class="gender-btn" data-gender="male">好みの男性を診断</button>
@@ -607,10 +608,10 @@
         </div>
         <div class="preview-stack" aria-hidden="true">
           <div class="sample-card is-front" id="sampleA" data-preview-gender="female">
-            <img class="portrait" src="assets/female/female_008.png?v=6.1" width="1200" height="1600" alt="" fetchpriority="high">
+            <img class="portrait" src="assets/female/female_011.png?v=8" width="1200" height="1600" alt="" fetchpriority="high">
           </div>
           <div class="sample-card" id="sampleB" data-preview-gender="male">
-            <img class="portrait" src="assets/male/male_002.png?v=6.1" width="1200" height="1600" alt="">
+            <img class="portrait" src="assets/male/male_011.png?v=8" width="1200" height="1600" alt="">
           </div>
         </div>
       </div>
@@ -705,7 +706,7 @@
     <section class="content-notes" aria-labelledby="about-diagnosis-title">
       <h2 id="about-diagnosis-title">この診断について</h2>
       <p>
-        好みの顔タイプ診断は、表示された2つの顔から直感で好きな方を選び、選択に含まれる特徴を集計するブラウザ診断です。
+        好みの顔タイプ診断は、表示された2つの顔から直感で好きな方を選び、選んだ顔のタイプを集計するブラウザ診断です。
       </p>
       <div class="content-grid">
         <section class="content-card">
@@ -713,7 +714,8 @@
           <ul>
             <li>女性または男性の診断対象を選びます。</li>
             <li>20回、より好みに近い顔を選びます。</li>
-            <li>結果画面で強く出た特徴とタイプ名を確認できます。</li>
+            <li>最初の20組で40人全員が登場します。迷ったら「どっちもタイプじゃない」で次へ進めます。</li>
+            <li>結果画面で、いちばん惹かれる顔のタイプを確認できます。</li>
           </ul>
         </section>
         <section class="content-card">
@@ -732,56 +734,16 @@
     </section>
   </main>
 
-  <script src="data/female_faces.js?v=6.1"></script>
-  <script src="data/male_faces.js?v=6.1"></script>
-  <script src="data/result_types.js?v=1"></script>
-  <script src="js/face_deck.js"></script>
+  <script src="data/female_faces.js?v=8"></script>
+  <script src="data/male_faces.js?v=8"></script>
+  <script src="data/result_types.js?v=8"></script>
+  <script src="js/face_deck.js?v=8"></script>
+  <script src="js/face_scoring.js?v=8"></script>
   <script>
-    const TAGS = {
-      cool: "クール",
-      cute: "かわいい",
-      tsurime: "つり目",
-      tareme: "たれ目",
-      adult: "大人っぽい",
-      idol: "アイドル感",
-      mysterious: "アンニュイ",
-      shortFace: "中顔面短め",
-      soft: "やわらかい",
-      sharp: "シャープ"
-    };
     const TARGET_SELECTIONS = 20;
-
-    const femaleFaces = [
-      { id: "f01", label: "涼しげな切れ長タイプ", palette: ["#f2d7c8", "#2c2c34", "#a9425a"], tags: { cool: .9, tsurime: .9, adult: .7, mysterious: .6, sharp: .8 } },
-      { id: "f02", label: "甘めアイドルタイプ", palette: ["#f4cbbd", "#5a382f", "#d95f76"], tags: { cute: .9, idol: .9, tareme: .7, shortFace: .7, soft: .8 } },
-      { id: "f03", label: "透明感アンニュイタイプ", palette: ["#ead7cc", "#3e4652", "#b45e66"], tags: { mysterious: .95, soft: .7, adult: .5, tareme: .5, cool: .4 } },
-      { id: "f04", label: "華やかお姉さんタイプ", palette: ["#eec1ae", "#382b31", "#c7475f"], tags: { adult: .95, cool: .55, sharp: .65, tsurime: .45, idol: .35 } },
-      { id: "f05", label: "小動物っぽい愛嬌タイプ", palette: ["#f1c6b5", "#4f332b", "#e16877"], tags: { cute: .95, shortFace: .9, tareme: .85, soft: .9, idol: .45 } },
-      { id: "f06", label: "モードな美人タイプ", palette: ["#dfb7a9", "#17191f", "#8f3448"], tags: { cool: .95, sharp: .95, adult: .85, mysterious: .55, tsurime: .65 } }
-    ];
-
-    const maleFaces = [
-      { id: "m01", label: "塩顔クールタイプ", palette: ["#e7c4b2", "#2e3036", "#9b4e48"], tags: { cool: .95, sharp: .8, mysterious: .65, adult: .45, tsurime: .55 } },
-      { id: "m02", label: "犬系アイドルタイプ", palette: ["#efc7b5", "#4e352d", "#bf6156"], tags: { cute: .85, idol: .9, tareme: .8, soft: .8, shortFace: .45 } },
-      { id: "m03", label: "色気アンニュイタイプ", palette: ["#d8ad9f", "#27242a", "#834549"], tags: { mysterious: .95, adult: .9, cool: .55, sharp: .45, tareme: .35 } },
-      { id: "m04", label: "王道ハンサムタイプ", palette: ["#e2b7a7", "#2c2727", "#aa4d4c"], tags: { adult: .8, idol: .65, sharp: .7, tsurime: .55, cool: .55 } },
-      { id: "m05", label: "やわらか年下タイプ", palette: ["#efc9bb", "#5a4237", "#bd6a60"], tags: { cute: .8, soft: .95, shortFace: .65, tareme: .75, idol: .45 } },
-      { id: "m06", label: "ミステリアス美形タイプ", palette: ["#d9b0a4", "#16191e", "#7f3d4c"], tags: { mysterious: .9, cool: .85, sharp: .85, tsurime: .8, adult: .65 } }
-    ];
-
     const DATASETS = {
-      female: {
-        label: "女性",
-        resultTarget: "女性顔",
-        assets: () => Array.isArray(window.FEMALE_FACE_ASSETS) ? window.FEMALE_FACE_ASSETS : femaleFaces,
-        resultCopy: (topA, topB) => `${topA}と${topB}の反応が強め。顔立ちそのものの整い方に加えて、目元の空気感や輪郭のやわらかさまで含めて「惹かれる女性像」を見ています。`
-      },
-      male: {
-        label: "男性",
-        resultTarget: "男性顔",
-        assets: () => Array.isArray(window.MALE_FACE_ASSETS) ? window.MALE_FACE_ASSETS : maleFaces,
-        resultCopy: (topA, topB) => `${topA}と${topB}の反応が強め。ぱっと見の華やかさより、目元や雰囲気に「自分だけが良さをわかっている」感を見つけると刺さる傾向です。`
-      }
+      female: { label: "女性", resultTarget: "女性顔", assets: () => window.FEMALE_FACE_ASSETS },
+      male: { label: "男性", resultTarget: "男性顔", assets: () => window.MALE_FACE_ASSETS }
     };
 
     const state = {
@@ -790,7 +752,7 @@
       selectedCount: 0,
       faces: [],
       deck: null,
-      preference: {},
+      chosenIds: [],
       lastResult: "",
       shareUrl: ""
     };
@@ -813,7 +775,7 @@
     const xShareButton = document.querySelector("#xShareButton");
     const siteUrl = new URL("../", document.querySelector('link[rel="canonical"]').href).href;
     const toast = document.querySelector("#toast");
-    const SESSION_KEY = "face-diagnosis:v1";
+    const SESSION_KEY = "face-diagnosis:v8";
     const sessionError = document.querySelector("#sessionError");
     let navigating = false;
     let lastSavedSession = null;
@@ -828,10 +790,10 @@
     function saveSession() {
       try {
         const saved = JSON.stringify({
-          version: 1,
+          version: 8,
           gender: state.gender,
           selectedCount: state.selectedCount,
-          preference: state.preference,
+          chosenIds: state.chosenIds,
           deck: state.deck.snapshot()
         });
         sessionStorage.setItem(SESSION_KEY, saved);
@@ -843,7 +805,7 @@
         if (lastSavedSession) {
           const saved = JSON.parse(lastSavedSession);
           state.selectedCount = saved.selectedCount;
-          state.preference = saved.preference;
+          state.chosenIds = saved.chosenIds;
           state.deck = FaceDeck.restore(state.faces, saved.deck, TARGET_SELECTIONS);
         }
         sessionError.textContent = "診断を保存できませんでした。ブラウザのサイトデータ保存を許可して、もう一度お試しください。";
@@ -855,14 +817,14 @@
     function restoreSession() {
       try {
         const saved = JSON.parse(sessionStorage.getItem(SESSION_KEY));
-        if (!saved || saved.version !== 1 || !Object.hasOwn(DATASETS, saved.gender)) return false;
+        if (!saved || saved.version !== 8 || !Object.hasOwn(DATASETS, saved.gender)) return false;
         if (!Number.isInteger(saved.selectedCount) || saved.selectedCount < 0 || saved.selectedCount > TARGET_SELECTIONS) return false;
-        if (!saved.preference || Object.keys(saved.preference).length !== Object.keys(TAGS).length) return false;
-        if (!Object.keys(TAGS).every(key => Number.isFinite(saved.preference[key]) && saved.preference[key] >= 0 && saved.preference[key] <= saved.selectedCount)) return false;
         const dataset = DATASETS[saved.gender];
-        const faces = dataset.assets().filter(face => face.gender === saved.gender || !face.gender);
+        const faces = dataset.assets();
+        if (!Array.isArray(saved.chosenIds) || saved.chosenIds.length !== saved.selectedCount ||
+            !saved.chosenIds.every(id => faces.some(face => face.id === id))) return false;
         const deck = FaceDeck.restore(faces, saved.deck, TARGET_SELECTIONS);
-        Object.assign(state, { gender: saved.gender, dataset, faces, deck, selectedCount: saved.selectedCount, preference: saved.preference });
+        Object.assign(state, { gender: saved.gender, dataset, faces, deck, selectedCount: saved.selectedCount, chosenIds: saved.chosenIds });
         lastSavedSession = JSON.stringify(saved);
         return true;
       } catch {
@@ -886,49 +848,12 @@
       }
     }
 
-    function faceSvg(face, variant = 0, score = {}) {
-      const [skin, hair, lip] = face.palette;
-      const eyeTilt = (face.tags.tsurime || score.tsurime || 0) - (face.tags.tareme || score.tareme || 0);
-      const eyeY = 44 + ((face.tags.shortFace || score.shortFace || 0) * 4);
-      const mouthCurve = (face.tags.cute || score.cute || 0) > .65 ? "M42 72 Q50 78 58 72" : "M42 73 Q50 75 58 73";
-      const jaw = (face.tags.sharp || score.sharp || 0) > .7 ? "78 72 67 96 50 106 33 96 22 72" : "78 72 68 94 50 102 32 94 22 72";
-      const hairPath = variant % 2
-        ? "M18 51 C18 20 38 9 55 14 C75 18 84 36 79 62 C74 51 66 42 55 37 C42 45 30 42 18 51Z"
-        : "M17 57 C14 30 31 12 51 12 C73 12 87 30 82 58 C73 42 62 35 51 35 C37 35 27 43 17 57Z";
-      const brow = eyeTilt > 0 ? ["M34 41 L45 38", "M56 38 L67 41"] : ["M34 39 L45 42", "M56 42 L67 39"];
-
-      return `
-        <svg class="portrait" viewBox="0 0 100 125" role="img" aria-label="${face.label}">
-          <rect width="100" height="125" fill="#f4efe8"/>
-          <circle cx="18" cy="18" r="16" fill="${lip}" opacity=".12"/>
-          <circle cx="84" cy="104" r="22" fill="#277e8e" opacity=".10"/>
-          <path d="${hairPath}" fill="${hair}"/>
-          <polygon points="${jaw}" fill="${skin}"/>
-          <path d="M25 56 C22 73 30 91 50 99 C70 91 78 73 75 56" fill="${skin}"/>
-          <path d="${brow[0]}" stroke="${hair}" stroke-width="2.6" stroke-linecap="round"/>
-          <path d="${brow[1]}" stroke="${hair}" stroke-width="2.6" stroke-linecap="round"/>
-          <path d="M32 ${eyeY} Q39 ${eyeY - eyeTilt * 3} 46 ${eyeY}" stroke="#1d1d1d" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-          <path d="M54 ${eyeY} Q61 ${eyeY - eyeTilt * 3} 68 ${eyeY}" stroke="#1d1d1d" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-          <path d="M50 54 Q47 64 51 66" stroke="#b98274" stroke-width="1.9" fill="none" stroke-linecap="round"/>
-          <path d="${mouthCurve}" stroke="${lip}" stroke-width="2.3" fill="none" stroke-linecap="round"/>
-          <path d="M30 24 C43 31 60 28 72 20" stroke="#fff" stroke-width="3" opacity=".24" fill="none"/>
-        </svg>
-      `;
+    function renderPortrait(face) {
+      return `<img class="portrait" src="${face.image}?v=${encodeURIComponent(face.asset_version)}" width="1200" height="1600" alt="">`;
     }
 
-    function renderPortrait(face, variant = 0, score = {}) {
-      if (face.image) {
-        const version = face.asset_version ? `?v=${encodeURIComponent(face.asset_version)}` : "";
-        return `<img class="portrait" src="${face.image}${version}" alt="">`;
-      }
-
-      return faceSvg(face, variant, score);
-    }
-
-    function renderCard(el, face, side) {
-      el.innerHTML = `
-        ${renderPortrait(face, side === "left" ? 0 : 1)}
-      `;
+    function renderCard(el, face) {
+      el.innerHTML = renderPortrait(face);
     }
 
     function show(screen) {
@@ -945,8 +870,8 @@
       state.gender = gender;
       state.dataset = DATASETS[gender];
       state.selectedCount = 0;
-      state.preference = Object.fromEntries(Object.keys(TAGS).map(key => [key, 0]));
-      state.faces = state.dataset.assets().filter(face => face.gender === gender || !face.gender);
+      state.chosenIds = [];
+      state.faces = state.dataset.assets();
       state.deck = new FaceDeck(state.faces, TARGET_SELECTIONS);
       state.deck.next();
       if (saveSession()) navigate("quiz");
@@ -956,16 +881,14 @@
       const pair = currentPair();
       roundLabel.textContent = `${state.selectedCount} / ${TARGET_SELECTIONS}`;
       progressBar.style.width = `${(state.selectedCount / TARGET_SELECTIONS) * 100}%`;
-      renderCard(leftCard, pair[0], "left");
-      renderCard(rightCard, pair[1], "right");
+      renderCard(leftCard, pair[0]);
+      renderCard(rightCard, pair[1]);
     }
 
     function choose(index) {
       if (navigating || !quizScreen.classList.contains("active") || !state.deck || state.selectedCount >= TARGET_SELECTIONS) return;
       const selected = currentPair()[index];
-      Object.entries(selected.tags).forEach(([key, value]) => {
-        state.preference[key] = (state.preference[key] || 0) + value;
-      });
+      state.chosenIds.push(selected.id);
       state.selectedCount += 1;
 
       if (state.selectedCount >= TARGET_SELECTIONS) {
@@ -988,53 +911,23 @@
       renderRound();
     }
 
-    function sortedScores() {
-      return Object.entries(state.preference)
-        .sort((a, b) => b[1] - a[1])
-        .map(([key, value]) => ({ key, label: TAGS[key], value }));
-    }
-
-    function resultType(keys) {
-      const top = new Set(keys.slice(0, 3));
-      return window.FACE_RESULT_TYPES.find(type => type.tags.every(key => top.has(key)));
-    }
-
-    function bestResultFace() {
-      return state.faces
-        .map(face => ({
-          face,
-          score: Object.keys(TAGS).reduce((sum, key) => {
-            return sum + ((state.preference[key] || 0) * (face.tags[key] || 0));
-          }, 0)
-        }))
-        .sort((a, b) => b.score - a.score)[0].face;
-    }
-
     function renderResult() {
-      const scores = sortedScores();
-      const topKeys = scores.slice(0, 4).map(item => item.key);
-      const type = resultType(topKeys);
-      const title = type.label;
-      const max = Math.max(...scores.map(item => item.value), 1);
-      const base = bestResultFace();
-
-      resultTitle.textContent = title;
-      resultCopy.textContent = state.dataset.resultCopy(TAGS[topKeys[0]], TAGS[topKeys[1]]);
-      resultPortrait.innerHTML = renderPortrait(base, 2, state.preference);
-      resultTags.innerHTML = scores.slice(0, 5).map(item => `<span class="tag">#${item.label}好き</span>`).join("");
-      resultBars.innerHTML = scores.slice(0, 6).map(item => `
+      const { scores, portrait } = FaceScoring.rank(state.faces, state.chosenIds, window.FACE_RESULT_TYPES[state.gender]);
+      const type = scores[0];
+      const max = Math.max(type.value, 1);
+      resultTitle.textContent = type.label;
+      resultCopy.textContent = type.copy;
+      resultPortrait.innerHTML = renderPortrait(portrait);
+      resultTags.textContent = `あなたが選んだ、いちばん惹かれるタイプの顔`;
+      resultBars.innerHTML = '<p class="micro">あなたが選んだ回数</p>' + scores.filter(item => item.value > 0).map(item => `
         <div class="bar-row">
           <span>${item.label}</span>
           <span class="bar-track"><span class="bar-fill" style="width:${Math.round((item.value / max) * 100)}%"></span></span>
-          <span>${item.value.toFixed(1)}</span>
+          <span>${item.value}回</span>
         </div>
       `).join("");
-
-      state.lastResult = `好みの顔タイプ診断の結果(${state.dataset.resultTarget}): ${title}\n${scores.slice(0, 4).map(item => `#${item.label}好き`).join(" ")}`;
-      // Xのクローラーが結果の顔写真を取得できる、静的な共有ページを使う。
-      state.shareUrl = base.image && base.asset_version
-        ? new URL(`share/${base.asset_version}/${base.id}/${type.id}/`, siteUrl).href
-        : siteUrl;
+      state.lastResult = `好みの顔タイプ診断の結果(${state.dataset.resultTarget}): ${type.label}`;
+      state.shareUrl = new URL(`share/${portrait.asset_version}/${portrait.id}/${type.id}/`, siteUrl).href;
       const shareParams = new URLSearchParams({ text: state.lastResult, url: state.shareUrl, hashtags: "好みの顔タイプ診断" });
       xShareButton.href = `https://x.com/intent/tweet?${shareParams}`;
       topStatus.textContent = "診断完了";

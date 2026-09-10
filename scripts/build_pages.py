@@ -20,6 +20,7 @@ def main():
     build_app_pages(destination)
     shutil.copy2(ROOT / "_redirects", destination / "_redirects")
     shutil.copy2(ROOT / "robots.txt", destination / "robots.txt")
+    shutil.copy2(ROOT / "404.html", destination / "404.html")
     for name in ("assets", "data", "docs", "js"):
         shutil.copytree(
             ROOT / name,
