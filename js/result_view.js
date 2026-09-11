@@ -37,8 +37,7 @@ const ResultView = {
       presentation.examples.forEach((face,index) => {
         const figure = document.createElement('figure');const photo = document.createElement('img');
         photo.src = `${face.image}?v=${face.asset_version}`;photo.width = 1200;photo.height = 1600;photo.loading = 'lazy';photo.alt = `${type.code}・${type.classification_label}タイプの顔の例 ${index + 1}`;photo.dataset.faceId = face.id;
-        const caption = document.createElement('figcaption');caption.textContent = `例 ${String(index + 1).padStart(2,'0')}`;
-        figure.append(photo,caption);grid.append(figure);
+        figure.append(photo);grid.append(figure);
       });
       group.append(grid);examples.append(group);
     });

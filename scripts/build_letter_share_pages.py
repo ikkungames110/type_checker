@@ -45,7 +45,7 @@ def build_letter_share_pages(destination):
                 examples = sorted((face for face in faces if face['type'] == result['id']), key=lambda f:f['id'])
                 if len(examples) != 5 or len({face['id'] for face in examples}) != 5:
                     raise ValueError(f'{gender}/{code}: 顔の例が5枚ではありません')
-                images = ''.join(f'<figure><img src="../../../../{escape(face["image"],quote=True)}?v=8" data-face-id="{face["id"]}" width="1200" height="1600" loading="lazy" alt="{code}・{classification}タイプの顔の例 {i}"><figcaption>例 {i:02d}</figcaption></figure>' for i,face in enumerate(examples,1))
+                images = ''.join(f'<figure><img src="../../../../{escape(face["image"],quote=True)}?v=8" data-face-id="{face["id"]}" width="1200" height="1600" loading="lazy" alt="{code}・{classification}タイプの顔の例 {i}"></figure>' for i,face in enumerate(examples,1))
                 if len(codes) > 1:
                     example_html.append(f'<details class="example-group" data-code="{code}"{" open" if index == 0 else ""}><summary>{code} · {classification}の顔5枚</summary><div class="example-grid">{images}</div></details>')
                 else:

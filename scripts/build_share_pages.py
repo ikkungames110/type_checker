@@ -47,7 +47,7 @@ def build_share_pages(destination):
             page.parent.mkdir(parents=True, exist_ok=True)
             escaped = {key: escape(value, quote=True) for key, value in values.items()}
             escaped["examples_html"] = "".join(
-                f'<figure><img src="../../../../{escape(item["image"], quote=True)}?v=8" width="1200" height="1600" loading="lazy" alt="{escape(result_type["classification_label"], quote=True)}タイプの顔の例 {index}"><figcaption>例 {index:02d}</figcaption></figure>'
+                f'<figure><img src="../../../../{escape(item["image"], quote=True)}?v=8" width="1200" height="1600" loading="lazy" alt="{escape(result_type["classification_label"], quote=True)}タイプの顔の例 {index}"></figure>'
                 for index, item in enumerate(examples, 1)
             )
             page.write_text(template.substitute(escaped), encoding="utf-8")

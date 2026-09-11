@@ -20,15 +20,13 @@ const AxisBreakdown = {
         const letter = document.createElement('b');letter.textContent = option.letter;
         const name = document.createElement('span');name.textContent = option.label;
         const percent = document.createElement('strong');percent.textContent = `${Math.round(option.percentage * 10) / 10}%`;
-        const count = document.createElement('small');count.textContent = `${option.count} / ${result.total}票`;
-        label.append(letter,name,percent,count);labels.append(label);
+        label.append(letter,name,percent);labels.append(label);
         const segment = document.createElement('span');segment.className = index === 0 ? 'axis-left' : 'axis-right';segment.style.width = `${option.percentage}%`;bar.append(segment);
       });
       row.append(title,labels,bar);
       if (axis.leaders.length > 1) {const tie = document.createElement('p');tie.className = 'axis-tie';tie.textContent = `${axis.leaders.join('・')}は同じ割合です。`;row.append(tie);}
       container.append(row);
     });
-    const note = document.createElement('p');note.className = 'axis-note';note.textContent = '1枚選ぶたびに、その顔の3文字へ1票ずつ。各軸で多かった文字を組み合わせ、同点の文字は両方を結果に残しています。';container.append(note);
     container.hidden = false;
   }
 };
