@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://type-checker.shianstudio.com/sitemap.xml

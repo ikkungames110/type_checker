@@ -72,3 +72,18 @@ Cloudflare PagesはこのGitHubリポジトリに接続されています。`mai
 - 本番: `https://type-checker.shianstudio.com/`
 
 ビルドは画像の存在・サイズ・ハッシュ・タイプと人数・共有画像・リンクを検査します。`404.html` により、削除済みの旧画像・旧共有ページは404になります。
+
+## 検索向けの設定と公開後の確認
+
+トップには好きな顔の系統・男性／女性の診断の説明、FAQ、現行16タイプへの静的リンクを掲載しています。タイプ一覧は `data/result_types.js` から生成します。`scripts/build_sitemap.py` は `/top/` と現行の単一タイプ16ページを `dist/sitemap.xml` に出力し、`robots.txt` から案内します。診断途中・個人結果・OGP別入口・制作資料・旧形式や複数タイプの共有URLはサイトマップに含めません。既存の共有URLは維持します。ルートは `/top/` へ301転送し、正規URLを統一します。
+
+Google Search Consoleの所有者またはフルユーザーは、公開後に以下を確認してください。
+
+1. `https://type-checker.shianstudio.com/sitemap.xml` を「サイトマップ」から送信する。
+2. `https://type-checker.shianstudio.com/top/` をURL検査し、公開URLのテスト後にインデックス登録をリクエストする。
+3. 「ページのインデックス登録」で除外理由を確認し、Googleが選択した正規URLが `/top/` か確認する。登録されない場合は、この情報を元に追加調査する。
+4. 検索パフォーマンスで「好みの顔タイプ診断」「好きな顔診断」「顔の好み 診断」「好きな顔の系統」「男性 顔 好み 診断」「女性 顔 好み 診断」の表示回数・クリック数・平均掲載順位を数週間単位で比較する。
+
+サイトマップやSEOの変更は上位表示・インデックス登録を保証しません。Search Consoleの送信や登録状況の確認は、このリポジトリのビルドでは行いません。
+
+参考: [Googleのタイトルの指針](https://developers.google.com/search/docs/appearance/title-link?hl=ja)、[サイトマップ](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap?hl=ja)、[再クロールの依頼](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl?hl=ja)。

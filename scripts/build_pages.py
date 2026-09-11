@@ -6,6 +6,7 @@ import shutil
 from check_integrity import main as check_integrity
 from build_share_pages import build_share_pages
 from build_app_pages import build_app_pages
+from build_sitemap import build_sitemap
 from build_top_variants import build_top_variants
 from build_letter_share_pages import build_letter_share_pages
 
@@ -32,6 +33,7 @@ def main():
         )
     build_share_pages(destination)
     build_letter_share_pages(destination)
+    build_sitemap(destination)
     files = [path for path in destination.rglob("*") if path.is_file()]
     print(f"Pages公開用ファイル: {len(files)}件 → {destination}")
 

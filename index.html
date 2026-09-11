@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>好みの顔タイプ診断 | SHIAN STUDIO</title>
-  <meta name="description" content="好みの顔タイプ診断は、2択で気になる顔を選びながら、惹かれやすい顔のタイプを見つけるブラウザ診断です。判定方法と注意事項も掲載しています。">
+  <title>好みの顔タイプ診断｜好きな顔を選ぶ無料診断・男性／女性</title>
+  <meta name="description" content="好きな顔を2択で20回選ぶ、無料の好みの顔タイプ診断。男性・女性それぞれ8タイプから、惹かれる顔の系統をキャラクターと5枚の顔写真で紹介。登録・顔写真のアップロード不要で、スマホから遊べます。">
   <meta name="author" content="SHIAN STUDIO">
   <link rel="canonical" href="https://type-checker.shianstudio.com/top/">
   <meta property="og:type" content="website">
@@ -130,6 +130,18 @@
       line-height: 1.12;
       letter-spacing: 0;
     }
+
+    .hero-name {
+      display: block;
+      font: 700 clamp(18px, 3vw, 24px)/1.6 "Hiragino Sans", "Yu Gothic", sans-serif;
+      margin-bottom: 12px;
+    }
+
+    body:not([data-page="top"]) .top-content { display: none; }
+    .type-links { columns: 2; padding-left: 1.2em; }
+    .type-links li { break-inside: avoid; margin-bottom: 12px; }
+    .type-links small { display: block; text-align: right; }
+    @media (max-width: 760px) { .type-links { columns: 1; } }
 
     .lead {
       margin-top: 18px;
@@ -627,8 +639,10 @@
     <section class="screen active" id="startScreen">
       <div class="hero">
         <div>
-          <h1>その「好き」に、<br>名前を。</h1>
-          <p class="lead">気になる顔を、直感で20回。惹かれるタイプをキャラクターで見つけて、同じタイプの顔5枚で確かめる診断です。</p>
+          <h1><span class="hero-name">好みの顔タイプ診断</span>その「好き」に、<br>名前を。</h1>
+          <p class="lead">好きな顔を、直感で20回。男性・女性それぞれ8タイプから、あなたが惹かれる顔の系統をキャラクターと5枚の顔写真で見つける無料診断です。</p>
+          <p class="micro">登録不要・顔写真のアップロード不要</p>
+          <p class="micro"><a href="https://type-checker.shianstudio.com/top/#about-diagnosis-title">遊び方</a> · <a href="https://type-checker.shianstudio.com/top/#face-types">タイプ一覧</a> · <a href="https://type-checker.shianstudio.com/top/#faq-title">よくある質問</a></p>
           <div class="choice-row" aria-label="診断対象を選択">
             <button class="gender-btn" data-gender="female">好みの女性を診断</button>
             <button class="gender-btn" data-gender="male">好みの男性を診断</button>
@@ -735,9 +749,9 @@
     </aside>
 
     <section class="content-notes" aria-labelledby="about-diagnosis-title">
-      <h2 id="about-diagnosis-title">この診断について</h2>
+      <h2 id="about-diagnosis-title">好きな顔の系統がわかる、好みの顔タイプ診断</h2>
       <p>
-        好みの顔タイプ診断は、表示された2つの顔から直感で好きな方を選び、選んだ顔を8タイプ別に集計するブラウザ診断です。あなたが惹かれる顔のタイプを、3文字とキャラクターで紹介します。
+        「自分はどんな顔が好き？」「好きな顔に共通する雰囲気は？」を、画像を見比べながら探せるブラウザ診断です。やわらかな甘めの顔、自然体で爽やかな顔、凛としたクールな顔など、言葉にしづらい顔の好みを3文字とキャラクターで紹介します。
       </p>
       <div class="content-grid">
         <section class="content-card">
@@ -762,6 +776,44 @@
           </p>
         </section>
       </div>
+    </section>
+
+    <section class="content-notes top-content" aria-labelledby="face-types">
+      <h2 id="face-types">男性・女性の好きな顔タイプ一覧</h2>
+      <p>女性の顔・男性の顔、それぞれ8タイプをご紹介。各タイプのページでキャラクター、顔の例5枚、3文字の意味を確認できます。まず直感で選びたい方は、ページ上部から診断を始めてください。</p>
+      <!-- SEO_TYPE_LINKS -->
+    </section>
+
+    <section class="content-notes top-content" aria-labelledby="faq-title">
+      <h2 id="faq-title">好みの顔診断について、よくある質問</h2>
+      <div class="content-grid">
+        <section class="content-card">
+          <h3>無料で使えますか？登録は必要ですか？</h3>
+          <p>無料で遊べます。会員登録やアプリのインストールは不要です。スマホ・パソコンのブラウザから診断できます。</p>
+        </section>
+        <section class="content-card">
+          <h3>自分の顔写真は必要ですか？</h3>
+          <p>顔写真のアップロードやカメラ撮影は必要ありません。表示された2枚の画像から、好みに近い方を選ぶだけです。画像はAIで生成した架空の成人で、男女各40人を用意しています。</p>
+        </section>
+        <section class="content-card">
+          <h3>男性・女性どちらの顔も診断できますか？</h3>
+          <p>はい。あなた自身の性別に関係なく、好みを知りたい対象を選べます。男性の顔の好みを知りたい場合は「好みの男性を診断」、女性なら「好みの女性を診断」から始めてください。</p>
+        </section>
+        <section class="content-card">
+          <h3>自分の顔の形や、似合うメイクもわかりますか？</h3>
+          <p>この診断で探せるのは、あなたが好きな顔のタイプです。ご自身の顔立ちの測定、似合う服・髪型・メイクの判定には対応していません。好みを振り返るエンターテインメントとしてお楽しみください。</p>
+        </section>
+        <section class="content-card">
+          <h3>どちらも好みの顔ではないときは？</h3>
+          <p>「どっちもタイプじゃない」で次の2枚へ進めます。スキップを除き、好きな方を20回選ぶと結果が表示されます。</p>
+        </section>
+        <section class="content-card">
+          <h3>診断結果では何が見られますか？</h3>
+          <p>惹かれる顔のタイプを示す3文字コードとキャラクター、そのタイプに当てはまる5枚の顔写真を見られます。結果の文字の意味も確認でき、結果のURLをコピーしたり、Xで共有したりできます。</p>
+        </section>
+      </div>
+      <p>制作・運営：SHIAN STUDIO</p>
+      <p><a href="https://type-checker.shianstudio.com/top/#startScreen">好みの顔タイプ診断を始める</a></p>
     </section>
   </main>
 

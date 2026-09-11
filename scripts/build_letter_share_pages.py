@@ -61,7 +61,9 @@ def build_letter_share_pages(destination):
                 else:
                     example_html.append(f'<div class="example-group" data-code="{code}"><div class="example-grid">{images}</div></div>')
             values = {
-                'title':' / '.join(codes), 'description':f'惹かれる{gender_label}の顔のタイプは「{" / ".join(codes)}」。あなたの「好き」も、20回の選択から見つけてみる。',
+                'title':' / '.join(codes),
+                'seo_title':f'{gender_label}の顔タイプ「{winners[0]["label"]}」{codes[0]}' if len(codes) == 1 else ' / '.join(codes),
+                'description':f'好きな{gender_label}の顔タイプ「{winners[0]["label"]}」（{codes[0]}）の特徴を、キャラクターと5枚の顔写真で紹介。無料の好みの顔タイプ診断で、あなたが惹かれる顔の系統も探せます。' if len(codes) == 1 else f'惹かれる{gender_label}の顔のタイプは「{" / ".join(codes)}」。あなたの「好き」も、20回の選択から見つけてみる。',
                 'page_url':site+relative, 'card_url':site+card_image, 'image_alt':f'{" / ".join(codes)}の顔タイプとキャラクター' if card else '好みの顔タイプ診断のキャラクターたち',
                 'gender':gender, 'gender_label':gender_label, 'key':key,
                 'card_mime':'image/jpeg' if card else 'image/png',

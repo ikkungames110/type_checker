@@ -19,7 +19,7 @@ class AppPagesTest(unittest.TestCase):
                 html = (destination / name / "index.html").read_text()
                 parsed = PageMetadata(html)
                 self.assertIn('<base href="../">', html)
-                self.assertIn(f'data-page="{name}"', html)
+                self.assertIn(f'<body data-page="{name}">', html)
                 self.assertEqual(html.count('class="screen active"'), 1)
                 self.assertIn(f'class="screen active" id="{screen}"', html)
                 self.assertEqual(parsed.canonical, site + name + "/")
@@ -34,7 +34,7 @@ class AppPagesTest(unittest.TestCase):
             redirect = (destination / "index.html").read_text()
             self.assertIn('http-equiv="refresh" content="0;url=top/"', redirect)
             self.assertNotIn("adsbyimobile", redirect)
-            self.assertIn("/ /top/ 302", (ROOT / "_redirects").read_text().splitlines())
+            self.assertIn("/ /top/ 301", (ROOT / "_redirects").read_text().splitlines())
 
 
 if __name__ == "__main__":
