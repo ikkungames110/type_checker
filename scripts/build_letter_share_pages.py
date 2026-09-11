@@ -1,6 +1,6 @@
-"""文字別集計の結果を、単独・同点を含む27通り×男女の静的ページにする。"""
+"""タイプ別集計の共有ページを生成する。旧文字別結果のURLも維持する。"""
 from html import escape
-from itertools import product
+from itertools import product, combinations
 import json
 from pathlib import Path
 from string import Template
@@ -20,6 +20,14 @@ def letter_results(types, axes):
         yield codes, [by_code[code] for code in codes]
 
 
+def type_results(types, axes):
+    by_code = {item['code']: item for item in types}
+    ordered = [''.join(letters) for letters in product(*[[o['letter'] for o in a['options']] for a in axes])]
+    for size in range(1, 9):
+        for subset in combinations(ordered, size):
+            yield list(subset), [by_code[code] for code in subset]
+
+
 def build_letter_share_pages(destination):
     types = read_browser_data(ROOT / 'data/result_types.js')
     axes = read_browser_data(ROOT / 'data/type_axes.js')
@@ -28,13 +36,15 @@ def build_letter_share_pages(destination):
     cards = {(c['gender'], c['key']): c for c in manifest['cards']}
     template = Template((ROOT / 'scripts/templates/shared_letters.html').read_text())
     site = f'https://{(ROOT / "CNAME").read_text().strip()}/'
+    promotion = json.loads((ROOT / 'data/promotion_card.json').read_text())
     count = 0
     for gender, gender_label in [('female','女性'), ('male','男性')]:
         faces = read_browser_data(ROOT / f'data/{gender}_faces.js')
-        for codes, winners in letter_results(types[gender], axes):
+        for codes, winners in type_results(types[gender], axes):
             key = '-'.join(codes)
             relative = f'share/letters/{gender}/{key}/'
-            card = cards[(gender,key)]
+            card = cards.get((gender,key))
+            card_image = card['image'] if card else promotion['image']
             type_html = []
             example_html = []
             for index, result in enumerate(winners):
@@ -52,8 +62,9 @@ def build_letter_share_pages(destination):
                     example_html.append(f'<div class="example-group" data-code="{code}"><div class="example-grid">{images}</div></div>')
             values = {
                 'title':' / '.join(codes), 'description':f'惹かれる{gender_label}の顔のタイプは「{" / ".join(codes)}」。あなたの「好き」も、20回の選択から見つけてみる。',
-                'page_url':site+relative, 'card_url':site+card['image'], 'image_alt':f'{" / ".join(codes)}の顔タイプとキャラクター',
+                'page_url':site+relative, 'card_url':site+card_image, 'image_alt':f'{" / ".join(codes)}の顔タイプとキャラクター' if card else '好みの顔タイプ診断のキャラクターたち',
                 'gender':gender, 'gender_label':gender_label, 'key':key,
+                'card_mime':'image/jpeg' if card else 'image/png',
                 'single_class':'single' if len(codes) == 1 else '', 'multiple_class':'multiple' if len(codes) > 1 else '',
             }
             values = {key:escape(value,quote=True) for key,value in values.items()}

@@ -118,10 +118,9 @@ async function main() {
         const records = saved.gender === 'female' ? window.FEMALE_FACE_ASSETS : window.MALE_FACE_ASSETS;
         const types = window.FACE_RESULT_TYPES[saved.gender];
         const byId = new Map(records.map(face => [face.id, face]));
-        const counts = {A:0,R:0,S:0,C:0,Q:0,V:0};
-        saved.chosenIds.forEach(id => {const code=types.find(type=>type.id===byId.get(id).type).code;for(const letter of code)counts[letter]++;});
-        const winners=[['A','R'],['S','C'],['Q','V']].map(pair=>pair.filter(letter=>counts[letter]===Math.max(...pair.map(l=>counts[l]))));
-        const codes=winners.reduce((prefixes,letters)=>prefixes.flatMap(prefix=>letters.map(letter=>prefix+letter)),['']);
+        const counts = Object.fromEntries(types.map(type=>[type.code,0]));
+        saved.chosenIds.forEach(id=>{counts[types.find(type=>type.id===byId.get(id).type).code]++;});
+        const codes=['ASQ','ASV','ACQ','ACV','RSQ','RSV','RCQ','RCV'].filter(code=>counts[code]===Math.max(...Object.values(counts)));
         return {codes,counts,total:saved.chosenIds.length,types:codes.map(code=>{
           const type=types.find(type=>type.code===code);
           return {...type,character:window.FACE_CHARACTERS.find(c=>c.gender===saved.gender&&c.type===type.id),examples:records.filter(face=>face.type===type.id).map(face=>face.id).sort()};
@@ -138,11 +137,15 @@ async function main() {
         await card.locator('img').evaluate(img=>img.decode());
         assert.deepEqual(await page.locator(`#resultExamples [data-code="${type.code}"] img`).evaluateAll(nodes=>nodes.map(n=>n.dataset.faceId).sort()),type.examples);
       }
-      for(const [letter,count] of Object.entries(resultData.counts)){
-        const option=page.locator(`#resultBreakdown [data-letter="${letter}"]`);
-        assert.equal(await option.getAttribute('data-count'),String(count));
-        assert.equal(await option.locator('strong').innerText(),`${count*5}%`);
+      for(const code of resultData.codes){
+        assert.deepEqual(await page.locator(`#resultBreakdown [data-code="${code}"] [data-letter]`).evaluateAll(nodes=>nodes.map(n=>n.dataset.letter)),[...code]);
       }
+      assert.equal(await page.locator('#resultBreakdown [data-letter]').count(),resultData.codes.length*3);
+      const meanings={A:'軽やか',R:'落ち着き',S:'柔らか',C:'凛と',Q:'さりげなさ',V:'華やか'};
+      for(const code of resultData.codes) for(const letter of code){
+        assert.equal(await page.locator(`#resultBreakdown [data-code="${code}"] [data-letter="${letter}"] dd`).innerText(),meanings[letter]);
+      }
+      assert.doesNotMatch(await page.locator('#resultBreakdown').innerText(), /%|回|票/);
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
       const codeText=await page.locator('#resultCodes').innerText();
       const originalShare=await page.locator('#xShareButton').getAttribute('href');
@@ -151,13 +154,16 @@ async function main() {
       assert.ok(share.searchParams.get('text').includes(resultData.codes.join(' / ')));
       const shareUrl=new URL(share.searchParams.get('url'));
       assert.equal(shareUrl.pathname,`/share/letters/${gender}/${resultData.codes.join('-')}/`);
+      assert.equal(shareUrl.search,'');
       const sharedPage=await context.newPage();
       sharedPage.on('pageerror',error=>errors.push(error.message));
       await sharedPage.goto(new URL(shareUrl.pathname+shareUrl.search,site).href);
       assert.deepEqual(await sharedPage.locator('#shared-codes [data-code]').evaluateAll(nodes=>nodes.map(n=>n.dataset.code)),resultData.codes);
       assert.equal(await sharedPage.locator('#shared-types .letter-type').count(),resultData.codes.length);
-      for(const [letter,count] of Object.entries(resultData.counts))assert.equal(await sharedPage.locator(`#shared-breakdown [data-letter="${letter}"]`).getAttribute('data-count'),String(count));
+      assert.equal(await sharedPage.locator('#shared-breakdown').innerText(),await page.locator('#resultBreakdown').innerText());
       assert.equal(await sharedPage.locator('.example-grid img').count(),resultData.codes.length*5);
+      await sharedPage.goto(new URL(shareUrl.pathname+'?a=0&s=20&q=10',site).href);
+      assert.equal(await sharedPage.locator('#shared-breakdown').innerText(),await page.locator('#resultBreakdown').innerText());
       await sharedPage.close();
       await page.screenshot({path:`/tmp/type-checker-letters-result-${gender}-${width}.png`,fullPage:true});
       await page.reload();await ready('result');
@@ -166,8 +172,8 @@ async function main() {
       await page.goBack();await ready('top');await page.goForward();await ready('result');
       assert.equal(await page.locator('#resultCodes').innerText(),codeText);
 
-      // 旧winnerIdを無視して再計算。1軸・2軸・3軸の同点を全部表示する。
-      for(const [second,expected] of [['ACQ',['ASQ','ACQ']],['RCQ',['ASQ','ACQ','RSQ','RCQ']],['RCV',['ASQ','ASV','ACQ','ACV','RSQ','RSV','RCQ','RCV']]]){
+      // 旧winnerIdを無視して再計算。最多同票のタイプだけを表示する。
+      for(const [second,expected] of [['ACQ',['ASQ','ACQ']],['RCQ',['ASQ','RCQ']],['RCV',['ASQ','RCV']]]){
         await page.evaluate(({key,second})=>{
           const saved=JSON.parse(sessionStorage.getItem(key));
           const faces=saved.gender==='female'?FEMALE_FACE_ASSETS:MALE_FACE_ASSETS;
@@ -205,7 +211,7 @@ async function main() {
       assert.equal(await page.locator('#sessionError').isVisible(), true);
       assert.deepEqual(errors, []);
       await context.close();
-      console.log(`${gender} / ${width}px: 3画面・40枚一巡・異タイプ二択・21組目除外・文字別採点・2/4/8タイプ同点・割合・復元・共有・広告・保存エラー OK`);
+      console.log(`${gender} / ${width}px: 3画面・40枚一巡・異タイプ二択・21組目除外・タイプ別採点・同点・文字の意味・復元・共有・広告・保存エラー OK`);
     }
   } finally {
     await browser.close();

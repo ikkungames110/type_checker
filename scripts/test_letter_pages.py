@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from urllib.parse import urlsplit
 from build_top_variants import ROOT, build_top_variants
-from build_letter_share_pages import build_letter_share_pages, letter_results
+from build_letter_share_pages import build_letter_share_pages, type_results
 from build_share_pages import read_browser_data
 from test_share_pages import PageMetadata
 
@@ -38,18 +38,18 @@ class LetterPagesTest(unittest.TestCase):
                 images.append(expected)
             self.assertNotEqual(*images)
 
-    def test_all_54_results_have_every_tied_character_and_five_faces_per_type(self):
+    def test_all_510_results_have_every_tied_character_and_five_faces_per_type(self):
         types=read_browser_data(ROOT/'data/result_types.js')
         axes=read_browser_data(ROOT/'data/type_axes.js')
         characters={(c['gender'],c['type']):c for c in read_browser_data(ROOT/'data/type_characters.js')}
         site=f'https://{(ROOT/"CNAME").read_text().strip()}/'
         with tempfile.TemporaryDirectory() as directory:
             destination=Path(directory)
-            self.assertEqual(build_letter_share_pages(destination),54)
-            self.assertEqual(len(list(destination.rglob('index.html'))),54)
+            self.assertEqual(build_letter_share_pages(destination),510)
+            self.assertEqual(len(list(destination.rglob('index.html'))),510)
             for gender in types:
                 faces=read_browser_data(ROOT/f'data/{gender}_faces.js')
-                for codes,winners in letter_results(types[gender],axes):
+                for codes,winners in type_results(types[gender],axes):
                     relative=f'share/letters/{gender}/{"-".join(codes)}/'
                     page=destination/relative/'index.html'
                     html=page.read_text();parsed=PageMetadata(html)
@@ -63,7 +63,7 @@ class LetterPagesTest(unittest.TestCase):
                     expected.update(destination/f['image'] for f in faces if f['type'] in {t['id'] for t in winners})
                     self.assertEqual(actual,expected)
                     self.assertNotIn('${',html)
-                    self.assertIn('id="shared-breakdown" aria-label="3つの軸の割合" hidden',html)
+                    self.assertIn('id="shared-breakdown" aria-label="結果の文字の意味" hidden',html)
                     self.assertNotIn('50%',html)  # 回答を含まないURLで架空の比率を示さない。
                     self.assertEqual(html.count('class="type-code"'),len(codes))
                     self.assertTrue(all((ROOT/urlsplit(s['src']).path.removeprefix('../../../../')).is_file() for s in parsed.scripts))

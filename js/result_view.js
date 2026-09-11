@@ -11,7 +11,7 @@ const ResultView = {
     codes.classList.toggle('single',result.codes.length === 1);
     const tieNote = document.querySelector('#resultTieNote');
     tieNote.hidden = result.codes.length === 1;
-    tieNote.textContent = `${result.axes.filter(axis => axis.leaders.length > 1).map(axis => axis.leaders.join('・')).join('、')}が同じ割合でした。${result.codes.length}つのタイプに惹かれています。`;
+    tieNote.textContent = `${result.codes.length}つのタイプに同じくらい惹かれています。`;
     const types = document.querySelector('#resultTypes');
     const examples = document.querySelector('#resultExamples');
     types.classList.toggle('multiple',result.codes.length > 1);
