@@ -21,10 +21,6 @@ class SeoTest(unittest.TestCase):
             urls = [node.text for node in ET.parse(destination / 'sitemap.xml').findall(f'.//{{{NAMESPACE}}}loc')]
             self.assertEqual(len(urls), 17)
             self.assertEqual(len(set(urls)), 17)
-            top = (destination / 'top/index.html').read_text()
-            self.assertIn('好みの顔タイプ診断</span>', top)
-            self.assertIn('よくある質問</h2>', top)
-            self.assertNotIn('SEO_TYPE_LINKS', top)
             for url in urls:
                 path = urlparse(url).path
                 html = (destination / path.lstrip('/') / 'index.html').read_text()
@@ -32,7 +28,6 @@ class SeoTest(unittest.TestCase):
                 self.assertEqual(metadata.canonical, url)
                 self.assertNotIn('noindex', metadata.metadata.get('robots', ''))
                 if path != '/top/':
-                    self.assertIn(f'href="{path}"', top)
                     self.assertIn('の顔タイプ「', html.split('</title>')[0])
             self.assertIn('Sitemap: https://type-checker.shianstudio.com/sitemap.xml', (ROOT / 'robots.txt').read_text())
             for name in ('quiz', 'result'):

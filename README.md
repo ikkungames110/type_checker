@@ -75,7 +75,7 @@ Cloudflare PagesはこのGitHubリポジトリに接続されています。`mai
 
 ## 検索向けの設定と公開後の確認
 
-トップには好きな顔の系統・男性／女性の診断の説明、FAQ、現行16タイプへの静的リンクを掲載しています。タイプ一覧は `data/result_types.js` から生成します。`scripts/build_sitemap.py` は `/top/` と現行の単一タイプ16ページを `dist/sitemap.xml` に出力し、`robots.txt` から案内します。診断途中・個人結果・OGP別入口・制作資料・旧形式や複数タイプの共有URLはサイトマップに含めません。既存の共有URLは維持します。ルートは `/top/` へ301転送し、正規URLを統一します。
+トップの表示はSEO改善前の構成を維持しています。`scripts/build_sitemap.py` は `/top/` と現行の単一タイプ16ページを `dist/sitemap.xml` に出力し、`robots.txt` から案内します。診断途中・個人結果・OGP別入口・制作資料・旧形式や複数タイプの共有URLはサイトマップに含めません。既存の共有URLは維持します。ルートは `/top/` へ301転送し、正規URLを統一します。
 
 Google Search Consoleの所有者またはフルユーザーは、公開後に以下を確認してください。
 
