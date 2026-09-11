@@ -97,19 +97,24 @@ async function main() {
         }
       }
       await page.waitForURL('**/result/');
-      await page.locator('#resultPortrait img').evaluate(img => img.decode());
+      await page.locator('.result-character').evaluate(img => img.decode());
       await mark('result');
-      session.resultTitle = await page.locator('#resultTitle').innerText();
-      session.classification = await page.locator('#resultClassification').innerText();
-      session.resultPortrait = await page.locator('#resultPortrait img').getAttribute('src');
-      session.resultSummaryBounds = await page.locator('.result-summary').boundingBox();
-      session.resultPortraitBounds = await page.locator('#resultPortrait').boundingBox();
+      assert.equal(await page.locator('.letter-type').count(), 1);
+      session.resultCode = await page.locator('#resultCodes').innerText();
+      session.resultTitle = await page.locator('.result-title').innerText();
+      session.classification = await page.locator('.result-classification').innerText();
+      session.resultCharacter = await page.locator('.result-character').getAttribute('src');
+      session.resultCardBounds = await page.locator('.letter-type').boundingBox();
+      session.examplePortraits = await page.locator('#resultExamples img').evaluateAll(imgs => imgs.map(img => ({ id: img.dataset.faceId, src: img.getAttribute('src') })));
+      assert.equal(new Set(session.examplePortraits.map(face => face.id)).size, 5);
       session.saved = await page.evaluate(() => JSON.parse(sessionStorage.getItem('face-diagnosis:v8')));
       assert.equal(session.saved.chosenIds.length, 20);
       await snap('result');
+      await page.locator('.letter-type').screenshot({ path: path.join(destination, `${gender}-result-card.png`) });
+      await page.locator('#resultExamples img').evaluateAll(imgs => Promise.all(imgs.map(img => { img.loading = 'eager'; return img.decode(); })));
       await page.screenshot({ path: path.join(destination, `${gender}-result-full.png`), fullPage: true });
       await page.waitForTimeout(2200);
-      await page.evaluate(() => document.querySelector('#resultPortrait').scrollIntoView({ behavior: 'smooth', block: 'center' }));
+      await page.evaluate(() => document.querySelector('#resultExamples').scrollIntoView({ behavior: 'smooth', block: 'center' }));
       await page.waitForTimeout(1600);
       await mark('result-scroll');
       await snap('result-portrait');
@@ -120,7 +125,7 @@ async function main() {
       await video.saveAs(path.join(destination, `${gender}-session.webm`));
       await video.delete();
       report.sessions[gender] = session;
-      console.log(`${gender}: ${session.resultTitle} / 20 choices, 1 skip, recorded`);
+      console.log(`${gender}: ${session.resultCode} / ${session.resultTitle} / 20 choices, 1 skip, recorded`);
     }
   } finally {
     await browser.close();

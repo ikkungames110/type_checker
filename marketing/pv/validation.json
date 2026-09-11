@@ -1,4 +1,8 @@
 {
+  "captureSha256": "cdd3f65484a857c4019f55655f6605f8dbc4385743fcd8f31f240580eb0afec4",
+  "captureDate": "2026-09-11T14:26:24.407Z",
+  "resultMappings": "passed",
+  "manifestHashes": "passed",
   "videos": [
     {
       "seconds": 30,
@@ -7,6 +11,9 @@
         1920
       ],
       "fps": 30,
+      "framesDecoded": 900,
+      "quizFramesChecked": 405,
+      "emptyChoiceCards": 0,
       "fullDecode": "passed",
       "audio": {
         "input_i": "-15.95",
@@ -20,7 +27,9 @@
         "normalization_type": "dynamic",
         "target_offset": "0.28"
       },
-      "bytes": 3029737
+      "fastStart": true,
+      "bytes": 2840649,
+      "sha256": "3568f84dcaf38de92188336dee23c84df92f71520daae1c801acc235b3254c1f"
     },
     {
       "seconds": 15,
@@ -29,6 +38,9 @@
         1920
       ],
       "fps": 30,
+      "framesDecoded": 450,
+      "quizFramesChecked": 135,
+      "emptyChoiceCards": 0,
       "fullDecode": "passed",
       "audio": {
         "input_i": "-16.01",
@@ -42,14 +54,9 @@
         "normalization_type": "dynamic",
         "target_offset": "0.14"
       },
-      "bytes": 1653329
+      "fastStart": true,
+      "bytes": 1603531,
+      "sha256": "2c1a6fc54cc64bc1dfef0b0cf823ecc49e4f18f4f330ddaad82e3d7c38ac7612"
     }
-  ],
-  "manifestHashes": "passed",
-  "quizFramesChecked": 900,
-  "emptyChoiceCards": 0,
-  "siteTests": {
-    "node": 15,
-    "python": 6
-  }
+  ]
 }

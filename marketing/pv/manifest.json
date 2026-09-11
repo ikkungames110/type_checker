@@ -1,12 +1,69 @@
 {
   "title": "好きな顔、秒で選べる？",
   "sourceSite": "https://type-checker.shianstudio.com/",
-  "captureDate": "2026-09-10T12:29:54.378Z",
+  "captureDate": "2026-09-11T14:26:24.407Z",
   "size": [
     1080,
     1920
   ],
   "fps": 30,
+  "edition": "2026-09-current-results",
+  "results": {
+    "female": {
+      "code": "ACQ",
+      "title": "気づけば隣にいてほしい顔",
+      "character": "assets/characters/v1/female_fresh.png?v=45f3b7d55849",
+      "examples": [
+        {
+          "id": "female_011",
+          "src": "assets/female/female_011.png?v=v8"
+        },
+        {
+          "id": "female_012",
+          "src": "assets/female/female_012.png?v=v8"
+        },
+        {
+          "id": "female_013",
+          "src": "assets/female/female_013.png?v=v8"
+        },
+        {
+          "id": "female_014",
+          "src": "assets/female/female_014.png?v=v8"
+        },
+        {
+          "id": "female_015",
+          "src": "assets/female/female_015.png?v=v8"
+        }
+      ]
+    },
+    "male": {
+      "code": "ACQ",
+      "title": "隣で笑っていてほしい、癒やし顔",
+      "character": "assets/characters/v1/male_fresh_soft.png?v=b43f427c2f92",
+      "examples": [
+        {
+          "id": "male_011",
+          "src": "assets/male/male_011.png?v=v8"
+        },
+        {
+          "id": "male_012",
+          "src": "assets/male/male_012.png?v=v8"
+        },
+        {
+          "id": "male_013",
+          "src": "assets/male/male_013.png?v=v8"
+        },
+        {
+          "id": "male_014",
+          "src": "assets/male/male_014.png?v=v8"
+        },
+        {
+          "id": "male_015",
+          "src": "assets/male/male_015.png?v=v8"
+        }
+      ]
+    }
+  },
   "music": "今回のPV用にプログラムで作曲・合成したオリジナル音源。外部楽曲・サンプルなし。",
   "voice": {
     "engine": "Microsoft Edge online TTS via edge-tts",
@@ -56,12 +113,12 @@
   ],
   "files": {
     "post-caption.txt": {
-      "bytes": 403,
-      "sha256": "83788575ebbf4926832c5f0764206c1c42f5082808043f3c7d4a54130e461956"
+      "bytes": 540,
+      "sha256": "0c8413109e51443f432ad3532c6293505567164f7548cd63eda9c96097320b91"
     },
     "type-checker-15s.mp4": {
-      "bytes": 1653329,
-      "sha256": "7b185d5092e84b17defc2c5a1d8e7c3690c0d20f2f98cf3f0caba216073c85e7"
+      "bytes": 1603531,
+      "sha256": "2c1a6fc54cc64bc1dfef0b0cf823ecc49e4f18f4f330ddaad82e3d7c38ac7612"
     },
     "type-checker-15s.srt": {
       "bytes": 388,
@@ -72,8 +129,8 @@
       "sha256": "8278e60f010a0a1fd151d68a04ac1a16dd8f92b04f11ea1b5637037b75c86581"
     },
     "type-checker-30s.mp4": {
-      "bytes": 3029737,
-      "sha256": "8576113eae9bda2db15cdb8f9c1ebe420c337edb3dccd5c7f025d230ae7cc96d"
+      "bytes": 2840649,
+      "sha256": "3568f84dcaf38de92188336dee23c84df92f71520daae1c801acc235b3254c1f"
     },
     "type-checker-30s.srt": {
       "bytes": 683,

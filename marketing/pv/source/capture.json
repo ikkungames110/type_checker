@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-09-10T12:29:54.378Z",
+  "capturedAt": "2026-09-11T14:26:24.407Z",
   "site": "https://type-checker.shianstudio.com/",
   "viewport": {
     "width": 440,
@@ -10,281 +10,281 @@
       "events": [
         {
           "name": "top",
-          "time": 4.490876443
+          "time": 4.3916206010000005
         },
         {
           "name": "tap",
-          "time": 5.7267378220000005,
+          "time": 5.604655676,
           "selector": "[data-gender=\"female\"]",
           "x": 115.796875,
-          "y": 293.34375
+          "y": 329.59375
         },
         {
           "name": "quiz",
-          "time": 6.093053561
+          "time": 5.968730628
         },
         {
           "name": "choice-before",
-          "time": 8.041189736,
+          "time": 7.933080065,
           "index": 1
         },
         {
           "name": "tap",
-          "time": 8.048155785999999,
-          "selector": "#leftCard",
-          "x": 116.296875,
-          "y": 316.3125
-        },
-        {
-          "name": "choice-before",
-          "time": 9.193714155,
-          "index": 2
-        },
-        {
-          "name": "tap",
-          "time": 9.201066167999999,
+          "time": 7.948964629,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 10.370305238999999,
-          "index": 3
+          "time": 9.140908406000001,
+          "index": 2
         },
         {
           "name": "tap",
-          "time": 10.418423221,
+          "time": 9.147626426,
           "selector": "#leftCard",
           "x": 116.296875,
           "y": 316.3125
         },
         {
-          "name": "skip-before",
-          "time": 11.566263177000002
+          "name": "choice-before",
+          "time": 10.307478295000001,
+          "index": 3
         },
         {
           "name": "tap",
-          "time": 12.887585948,
+          "time": 10.334942552000001,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 314.3125
+        },
+        {
+          "name": "skip-before",
+          "time": 11.566306138
+        },
+        {
+          "name": "tap",
+          "time": 12.876023524,
           "selector": "#skipButton",
           "x": 220,
           "y": 483.25
         },
         {
           "name": "skip-after",
-          "time": 13.016760866999999
+          "time": 12.972422853
         },
         {
           "name": "choice-before",
-          "time": 14.321210169,
+          "time": 14.277165233,
           "index": 4
         },
         {
           "name": "tap",
-          "time": 14.328432658,
+          "time": 14.28973204,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 14.940083744999999,
+          "time": 14.901662566,
           "index": 5
         },
         {
           "name": "tap",
-          "time": 14.947103245000001,
+          "time": 14.913401964,
           "selector": "#leftCard",
           "x": 116.296875,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 15.524925919,
+          "time": 15.578872549,
           "index": 6
         },
         {
           "name": "tap",
-          "time": 15.531653552,
+          "time": 15.595695923,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 16.114150068,
+          "time": 16.206018052,
           "index": 7
         },
         {
           "name": "tap",
-          "time": 16.121224653,
+          "time": 16.213257994,
           "selector": "#leftCard",
           "x": 116.296875,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 16.712693307000002,
+          "time": 16.853802097,
           "index": 8
         },
         {
           "name": "tap",
-          "time": 16.725069183000002,
+          "time": 16.860897285,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 17.334172259000002,
+          "time": 17.432878078,
           "index": 9
         },
         {
           "name": "tap",
-          "time": 17.34202129,
-          "selector": "#leftCard",
-          "x": 116.296875,
-          "y": 316.3125
+          "time": 17.43982489,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 314.3125
         },
         {
           "name": "choice-before",
-          "time": 17.945618892000002,
+          "time": 18.029600247999998,
           "index": 10
         },
         {
           "name": "tap",
-          "time": 17.952320582,
-          "selector": "#leftCard",
-          "x": 116.296875,
+          "time": 18.03571689,
+          "selector": "#rightCard",
+          "x": 323.703125,
           "y": 314.3125
         },
         {
           "name": "choice-before",
-          "time": 18.555018021,
+          "time": 18.651316817999998,
           "index": 11
         },
         {
           "name": "tap",
-          "time": 18.561496248000005,
+          "time": 18.666212196,
           "selector": "#leftCard",
           "x": 116.296875,
-          "y": 314.3125
+          "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 19.159223499000003,
+          "time": 19.289624496000002,
           "index": 12
         },
         {
           "name": "tap",
-          "time": 19.166638557000002,
+          "time": 19.296498962,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 19.756568542,
+          "time": 19.909260606,
           "index": 13
         },
         {
           "name": "tap",
-          "time": 19.77208537,
+          "time": 19.922683365,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 314.3125
         },
         {
           "name": "choice-before",
-          "time": 20.407379489000004,
+          "time": 20.529222963,
           "index": 14
         },
         {
           "name": "tap",
-          "time": 20.42134577,
+          "time": 20.535963139,
           "selector": "#leftCard",
           "x": 116.296875,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 21.165958457000002,
+          "time": 21.149555908,
           "index": 15
         },
         {
           "name": "tap",
-          "time": 21.181437717,
+          "time": 21.155176934,
           "selector": "#leftCard",
           "x": 116.296875,
           "y": 314.3125
         },
         {
           "name": "choice-before",
-          "time": 21.80728905,
+          "time": 21.798768972999998,
           "index": 16
         },
         {
           "name": "tap",
-          "time": 21.826469864000003,
-          "selector": "#leftCard",
-          "x": 116.296875,
-          "y": 314.3125
+          "time": 21.809908351,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 22.457793501,
+          "time": 22.434159648,
           "index": 17
         },
         {
           "name": "tap",
-          "time": 22.468649319,
+          "time": 22.440687011,
           "selector": "#leftCard",
           "x": 116.296875,
-          "y": 314.3125
+          "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 23.088381641,
+          "time": 23.030652322,
           "index": 18
         },
         {
           "name": "tap",
-          "time": 23.094426288,
+          "time": 23.038565732,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 23.693999651000002,
+          "time": 23.652097345,
           "index": 19
         },
         {
           "name": "tap",
-          "time": 23.701418699,
-          "selector": "#leftCard",
-          "x": 116.296875,
-          "y": 316.3125
+          "time": 23.662409582,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 314.3125
         },
         {
           "name": "choice-before",
-          "time": 24.277179882,
+          "time": 24.284645002,
           "index": 20
         },
         {
           "name": "tap",
-          "time": 24.4942625,
+          "time": 24.506155125,
           "selector": "#rightCard",
           "x": 323.703125,
-          "y": 316.3125
+          "y": 314.3125
         },
         {
           "name": "result",
-          "time": 24.771598936000004
+          "time": 24.90412992
         },
         {
           "name": "result-scroll",
-          "time": 29.255644286000003
+          "time": 29.469154218
         }
       ],
       "quizBounds": {
@@ -305,48 +305,66 @@
         "width": 360,
         "height": 48
       },
-      "resultTitle": "何度でも会いたくなる、余韻の顔",
-      "classification": "(ソフトエレガントタイプ)",
-      "resultPortrait": "assets/female/female_028.png?v=v8",
-      "resultSummaryBounds": {
+      "resultCode": "ACQ",
+      "resultTitle": "気づけば隣にいてほしい顔",
+      "classification": "(フレッシュタイプ)",
+      "resultCharacter": "assets/characters/v1/female_fresh.png?v=45f3b7d55849",
+      "resultCardBounds": {
         "x": 17.59375,
-        "y": 85.5,
+        "y": 294.6875,
         "width": 404.8125,
-        "height": 190.46875
+        "height": 548.375
       },
-      "resultPortraitBounds": {
-        "x": 34.59375,
-        "y": 463.96875,
-        "width": 370.8125,
-        "height": 494.40625
-      },
+      "examplePortraits": [
+        {
+          "id": "female_011",
+          "src": "assets/female/female_011.png?v=v8"
+        },
+        {
+          "id": "female_012",
+          "src": "assets/female/female_012.png?v=v8"
+        },
+        {
+          "id": "female_013",
+          "src": "assets/female/female_013.png?v=v8"
+        },
+        {
+          "id": "female_014",
+          "src": "assets/female/female_014.png?v=v8"
+        },
+        {
+          "id": "female_015",
+          "src": "assets/female/female_015.png?v=v8"
+        }
+      ],
       "saved": {
         "version": 8,
         "gender": "female",
         "selectedCount": 20,
         "chosenIds": [
-          "female_026",
           "female_014",
-          "female_036",
-          "female_015",
-          "female_030",
-          "female_017",
-          "female_031",
-          "female_032",
-          "female_039",
           "female_029",
-          "female_013",
-          "female_027",
-          "female_011",
+          "female_020",
           "female_005",
-          "female_035",
+          "female_011",
+          "female_027",
+          "female_017",
           "female_028",
-          "female_007",
-          "female_002",
+          "female_004",
+          "female_039",
           "female_012",
-          "female_032"
+          "female_030",
+          "female_002",
+          "female_015",
+          "female_019",
+          "female_001",
+          "female_021",
+          "female_031",
+          "female_013",
+          "female_011"
         ],
-        "winnerId": "soft_elegant",
+        "scoringVersion": "type-votes-v2",
+        "selectedCode": "ACQ",
         "deck": {
           "version": 2,
           "faceKeys": [
@@ -393,42 +411,42 @@
           ],
           "questionCount": 20,
           "current": [
-            "female_016",
-            "female_032"
+            "female_003",
+            "female_011"
           ],
           "unseen": [
+            "female_001",
+            "female_002",
+            "female_004",
+            "female_005",
             "female_006",
             "female_007",
             "female_008",
             "female_009",
             "female_010",
-            "female_011",
             "female_012",
             "female_013",
             "female_014",
             "female_015",
+            "female_016",
             "female_017",
             "female_018",
             "female_019",
             "female_020",
+            "female_021",
+            "female_022",
+            "female_023",
+            "female_024",
+            "female_025",
             "female_026",
             "female_027",
             "female_028",
             "female_029",
-            "female_030",
-            "female_031",
-            "female_033",
-            "female_034",
-            "female_035",
-            "female_036",
-            "female_037",
-            "female_038",
-            "female_039",
-            "female_040"
+            "female_030"
           ],
           "rejectedTypes": [
-            "feminine",
-            "cute"
+            "cool",
+            "elegant"
           ],
           "allTypes": false,
           "shownPairs": 21,
@@ -440,281 +458,281 @@
       "events": [
         {
           "name": "top",
-          "time": 4.420864121999999
+          "time": 4.042825359000002
         },
         {
           "name": "tap",
-          "time": 5.638747670000004,
+          "time": 5.253686603000002,
           "selector": "[data-gender=\"male\"]",
           "x": 324.203125,
-          "y": 293.34375
+          "y": 329.59375
         },
         {
           "name": "quiz",
-          "time": 5.989105733000004
+          "time": 5.565121800000001
         },
         {
           "name": "choice-before",
-          "time": 7.956989708000001,
+          "time": 7.519391315000001,
           "index": 1
         },
         {
           "name": "tap",
-          "time": 7.963722550999999,
+          "time": 7.526205383000001,
           "selector": "#leftCard",
           "x": 116.296875,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 9.118368751000002,
+          "time": 8.706447628000001,
           "index": 2
         },
         {
           "name": "tap",
-          "time": 9.125620573,
+          "time": 8.712820372000001,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 10.275660204,
+          "time": 9.922066532999997,
           "index": 3
         },
         {
           "name": "tap",
-          "time": 10.282773237,
+          "time": 9.929097948999996,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 314.3125
         },
         {
           "name": "skip-before",
-          "time": 11.473761422000003
+          "time": 11.095135703
         },
         {
           "name": "tap",
-          "time": 12.782859475999997,
+          "time": 12.403672431999999,
           "selector": "#skipButton",
           "x": 220,
           "y": 483.25
         },
         {
           "name": "skip-after",
-          "time": 12.910560164000001
+          "time": 12.531122299999996
         },
         {
           "name": "choice-before",
-          "time": 14.214538852999999,
+          "time": 13.834453884000002,
           "index": 4
         },
         {
           "name": "tap",
-          "time": 14.221160968000003,
+          "time": 13.841909652999995,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 14.801874592,
+          "time": 14.453507569000001,
           "index": 5
         },
         {
           "name": "tap",
-          "time": 14.808720204999998,
+          "time": 14.460680763999997,
           "selector": "#leftCard",
           "x": 116.296875,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 15.400529392000005,
+          "time": 15.103573547,
           "index": 6
         },
         {
           "name": "tap",
-          "time": 15.407058951,
+          "time": 15.109985927000002,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 16.002319335,
+          "time": 15.714800650999997,
           "index": 7
         },
         {
           "name": "tap",
-          "time": 16.007466698000005,
+          "time": 15.721631003000002,
           "selector": "#leftCard",
           "x": 116.296875,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 16.598900179000005,
+          "time": 16.297708648,
           "index": 8
         },
         {
           "name": "tap",
-          "time": 16.605690945000003,
-          "selector": "#rightCard",
-          "x": 323.703125,
-          "y": 316.3125
+          "time": 16.302669816,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 314.3125
         },
         {
           "name": "choice-before",
-          "time": 17.238219656000002,
+          "time": 16.897324332999997,
           "index": 9
         },
         {
           "name": "tap",
-          "time": 17.258987179000002,
+          "time": 16.902552363999995,
           "selector": "#leftCard",
           "x": 116.296875,
-          "y": 316.3125
+          "y": 314.3125
         },
         {
           "name": "choice-before",
-          "time": 17.884243804999997,
+          "time": 17.495527391999996,
           "index": 10
         },
         {
           "name": "tap",
-          "time": 17.903565306000004,
+          "time": 17.504408964000003,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 18.554807229999998,
+          "time": 18.114772024999997,
           "index": 11
         },
         {
           "name": "tap",
-          "time": 18.576501213000004,
+          "time": 18.121091299,
           "selector": "#leftCard",
           "x": 116.296875,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 19.218961444,
+          "time": 18.700363192999998,
           "index": 12
         },
         {
           "name": "tap",
-          "time": 19.226996570000004,
-          "selector": "#rightCard",
-          "x": 323.703125,
-          "y": 316.3125
+          "time": 18.707382355,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 314.3125
         },
         {
           "name": "choice-before",
-          "time": 19.836192802,
+          "time": 19.293447289999996,
           "index": 13
         },
         {
           "name": "tap",
-          "time": 19.843283560000003,
+          "time": 19.307049295,
           "selector": "#rightCard",
           "x": 323.703125,
-          "y": 314.3125
+          "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 20.433425195000005,
+          "time": 19.934793305,
           "index": 14
         },
         {
           "name": "tap",
-          "time": 20.444247621000002,
+          "time": 19.942164293,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 314.3125
         },
         {
           "name": "choice-before",
-          "time": 21.064933667,
+          "time": 20.527511921,
           "index": 15
         },
         {
           "name": "tap",
-          "time": 21.072146991,
-          "selector": "#rightCard",
-          "x": 323.703125,
-          "y": 314.3125
-        },
-        {
-          "name": "choice-before",
-          "time": 21.670034108,
-          "index": 16
-        },
-        {
-          "name": "tap",
-          "time": 21.687915740000005,
-          "selector": "#rightCard",
-          "x": 323.703125,
-          "y": 314.3125
-        },
-        {
-          "name": "choice-before",
-          "time": 22.304147608,
-          "index": 17
-        },
-        {
-          "name": "tap",
-          "time": 22.317586471000002,
+          "time": 20.534358510999997,
           "selector": "#leftCard",
           "x": 116.296875,
           "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 22.937028198,
+          "time": 21.112972883,
+          "index": 16
+        },
+        {
+          "name": "tap",
+          "time": 21.119579636,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 21.699332518999995,
+          "index": 17
+        },
+        {
+          "name": "tap",
+          "time": 21.706497705,
+          "selector": "#leftCard",
+          "x": 116.296875,
+          "y": 316.3125
+        },
+        {
+          "name": "choice-before",
+          "time": 22.282550806,
           "index": 18
         },
         {
           "name": "tap",
-          "time": 22.944532831000004,
-          "selector": "#leftCard",
-          "x": 116.296875,
-          "y": 314.3125
+          "time": 22.289317873,
+          "selector": "#rightCard",
+          "x": 323.703125,
+          "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 23.530548119,
+          "time": 22.860623717000003,
           "index": 19
         },
         {
           "name": "tap",
-          "time": 23.537184972000002,
+          "time": 22.866317804999998,
           "selector": "#leftCard",
           "x": 116.296875,
-          "y": 314.3125
+          "y": 316.3125
         },
         {
           "name": "choice-before",
-          "time": 24.043598011,
+          "time": 23.415872729999997,
           "index": 20
         },
         {
           "name": "tap",
-          "time": 24.271690707,
+          "time": 23.6500323,
           "selector": "#rightCard",
           "x": 323.703125,
           "y": 316.3125
         },
         {
           "name": "result",
-          "time": 24.506623384999997
+          "time": 24.044113398
         },
         {
           "name": "result-scroll",
-          "time": 29.036871003
+          "time": 28.572578951999997
         }
       ],
       "quizBounds": {
@@ -735,48 +753,66 @@
         "width": 360,
         "height": 48
       },
+      "resultCode": "ACQ",
       "resultTitle": "隣で笑っていてほしい、癒やし顔",
       "classification": "(フレッシュソフトタイプ)",
-      "resultPortrait": "assets/male/male_013.png?v=v8",
-      "resultSummaryBounds": {
+      "resultCharacter": "assets/characters/v1/male_fresh_soft.png?v=b43f427c2f92",
+      "resultCardBounds": {
         "x": 17.59375,
-        "y": 85.5,
+        "y": 294.6875,
         "width": 404.8125,
-        "height": 190.46875
+        "height": 548.375
       },
-      "resultPortraitBounds": {
-        "x": 34.59375,
-        "y": 463.96875,
-        "width": 370.8125,
-        "height": 494.40625
-      },
+      "examplePortraits": [
+        {
+          "id": "male_011",
+          "src": "assets/male/male_011.png?v=v8"
+        },
+        {
+          "id": "male_012",
+          "src": "assets/male/male_012.png?v=v8"
+        },
+        {
+          "id": "male_013",
+          "src": "assets/male/male_013.png?v=v8"
+        },
+        {
+          "id": "male_014",
+          "src": "assets/male/male_014.png?v=v8"
+        },
+        {
+          "id": "male_015",
+          "src": "assets/male/male_015.png?v=v8"
+        }
+      ],
       "saved": {
         "version": 8,
         "gender": "male",
         "selectedCount": 20,
         "chosenIds": [
-          "male_023",
-          "male_006",
-          "male_011",
-          "male_033",
-          "male_004",
-          "male_015",
-          "male_010",
-          "male_024",
-          "male_040",
-          "male_002",
-          "male_012",
-          "male_025",
-          "male_035",
-          "male_014",
-          "male_003",
-          "male_020",
+          "male_036",
           "male_013",
-          "male_005",
-          "male_022",
-          "male_031"
+          "male_031",
+          "male_020",
+          "male_015",
+          "male_039",
+          "male_002",
+          "male_014",
+          "male_035",
+          "male_018",
+          "male_021",
+          "male_004",
+          "male_011",
+          "male_032",
+          "male_037",
+          "male_012",
+          "male_016",
+          "male_003",
+          "male_030",
+          "male_022"
         ],
-        "winnerId": "fresh_soft",
+        "scoringVersion": "type-votes-v2",
+        "selectedCode": "ACQ",
         "deck": {
           "version": 2,
           "faceKeys": [
@@ -823,29 +859,29 @@
           ],
           "questionCount": 20,
           "current": [
-            "male_009",
-            "male_031"
+            "male_019",
+            "male_022"
           ],
           "unseen": [
             "male_006",
             "male_007",
             "male_008",
+            "male_009",
             "male_010",
             "male_011",
             "male_012",
             "male_013",
             "male_014",
             "male_015",
+            "male_016",
+            "male_017",
+            "male_018",
+            "male_020",
             "male_021",
-            "male_022",
             "male_023",
             "male_024",
             "male_025",
-            "male_026",
-            "male_027",
-            "male_028",
-            "male_029",
-            "male_030",
+            "male_031",
             "male_032",
             "male_033",
             "male_034",
@@ -857,8 +893,8 @@
             "male_040"
           ],
           "rejectedTypes": [
-            "charming_soft",
-            "fresh_hard"
+            "elegant_hard",
+            "charming_soft"
           ],
           "allTypes": false,
           "shownPairs": 21,

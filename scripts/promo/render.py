@@ -134,7 +134,9 @@ def video_frame(gender, seconds):
         raise RuntimeError(f'録画を読めません: {gender} / {seconds}')
     # 写真のデコードを待つ瞬間だけを詰める。補間画像は作らず、直後の実録画フレームを使う。
     for _ in range(12):
-        regions = (frame[202:432, 28:201], frame[202:432, 238:410])
+        b = CAPTURE['sessions'][gender]['duelBounds']
+        x, y, w, h = [round(b[k]) for k in ('x', 'y', 'width', 'height')]
+        regions = (frame[y+20:y+h-20, x+10:x+w//2-20], frame[y+20:y+h-20, x+w//2+20:x+w-10])
         if all(float(region.std(axis=(0, 1)).mean()) > 8 for region in regions):
             break
         ok, candidate = cap.read()
@@ -180,24 +182,31 @@ def portraits(im, t, y=620, width=416, height=555):
         paste_round(im, tile, left + i * (tile.width + gap), y + wobble, 30)
 
 
+@lru_cache(maxsize=8)
 def result_tile(gender, width, height):
-    session = CAPTURE['sessions'][gender]
-    tile = Image.new('RGB', (width, height), '#fffaf5')
-    b = session['resultSummaryBounds']
-    src = screenshot(gender, 'result-full')
-    # 原画面の見出し・分類をそのまま切り出す。
-    title = src.crop((round(b['x'] * 2), round(b['y'] * 2), round((b['x'] + b['width']) * 2), round((b['y'] + b['height']) * 2)))
-    title = title.resize((width - 26, round(title.height * (width - 26) / title.width)), Image.Resampling.LANCZOS)
-    tile.paste(title, (13, 14))
-    portrait = session['resultPortrait'].split('?')[0]
-    ph = min(round((width - 32) * 4 / 3), height - title.height - 42)
-    tile.paste(photo(portrait, width - 32, ph), (16, title.height + 26))
+    """最新の結果カードを実画面のまま縮小。キャラクターと分類を一致させる。"""
+    src = screenshot(gender, 'result-card')
+    tile = Image.new('RGB', (width, height), '#f3f4ec')
+    fitted = ImageOps.contain(src, (width, height), Image.Resampling.LANCZOS)
+    tile.paste(fitted, ((width-fitted.width)//2, (height-fitted.height)//2))
     return tile
 
 
-@lru_cache(maxsize=4)
-def cached_result_tile(gender, width, height):
-    return result_tile(gender, width, height)
+def reaction(im, value, t, start, x=650, y=1375):
+    """演出のリアクション字幕を、画面外の吹き出しで弾ませる。"""
+    elapsed = t-start
+    if elapsed < 0:
+        return
+    scale = 1 + .10 * math.exp(-elapsed*7) * math.sin(elapsed*24)
+    width = min(800, int(ImageDraw.Draw(im).textlength(value, font=font(58))) + 84)
+    bubble = Image.new('RGBA', (width+20, 150))
+    d = ImageDraw.Draw(bubble)
+    d.rounded_rectangle((0, 0, width, 110), 40, INK)
+    d.polygon([(width-90, 100), (width-50, 100), (width-35, 139)], fill=INK)
+    text(bubble, value, width/2, 22, 58, CREAM, anchor='mt')
+    bubble = bubble.resize((round(bubble.width*scale), round(bubble.height*scale)), Image.Resampling.LANCZOS)
+    im.paste(bubble, (round(x-bubble.width/2), round(y)), bubble)
+
 
 
 def frame_at(t):
@@ -217,7 +226,9 @@ def frame_at(t):
         center(im, 'こっち！' if t < 4.2 else '…いや、こっち！', 275 + entrance(t, 3 if t < 4.2 else 4.2), 105, CORAL)
         start = event('female', 'choice-before', 1) - .4
         screen_video(im, 'female', start + (t - 3) * 1.13, 470)
-        center(im, 'タップで選ぶだけ。', 1548, 41)
+        reaction(im, '待って、迷う！', t, 4.5, x=680, y=1468)
+        if t < 4.5:
+            center(im, 'タップで選ぶだけ。', 1548, 41)
     elif t < 10:
         center(im, 'え、選べない？', 265 + entrance(t, 6), 102)
         start = event('female', 'skip-before')
@@ -249,19 +260,14 @@ def frame_at(t):
         center(im, 'あなたの好みが、もうすぐ。', 1530, 40, CREAM)
     elif t < 23:
         center(im, '好み、出ちゃった。', 264 + entrance(t, 18.5), 90, CORAL)
-        b = CAPTURE['sessions']['female']['resultSummaryBounds']
-        src = screenshot('female', 'result-full')
-        summary = src.crop((round(b['x']*2), round(b['y']*2), round((b['x']+b['width'])*2), round((b['y']+b['height'])*2)))
-        summary = summary.resize((840, round(summary.height*840/summary.width)), Image.Resampling.LANCZOS)
-        paste_round(im, summary, 80, 440 + entrance(t, 18.5), 24)
-        p = CAPTURE['sessions']['female']['resultPortrait'].split('?')[0]
-        photo_y = max(802, 440 + summary.height + 28)
-        photo_h = min(720, 1522 - photo_y)
-        photo_w = round(photo_h * .75)
-        paste_round(im, photo(p, photo_w, photo_h), 505 - photo_w / 2, photo_y, 28)
-        if t > 20.0:
-            rounded(im, (570, 1350, 940, 1455), INK, 45)
-            text(im, 'え、好き。', 607, 1372, 64, CREAM)
+        session = CAPTURE['sessions']['female']
+        center(im, session['resultCode'], 402 + entrance(t, 18.5), 128)
+        card = result_tile('female', 640, 865)
+        paste_round(im, card, 185, 550 + entrance(t, 18.5), 26)
+        reaction(im, 'え、好き。', t, 20, x=735, y=1295)
+        # 結果に対応する現行の顔5枚を、動画でも省略せず見せる。
+        for i, face in enumerate(session['examplePortraits']):
+            paste_round(im, photo(face['src'].split('?')[0], 112, 149), 194+i*128, 1440, 12, shadow=False)
         # 一度だけの紙吹雪。顔とコピーの可読性を保つため外周に配置。
         d = ImageDraw.Draw(im)
         for i in range(20):
@@ -270,13 +276,14 @@ def frame_at(t):
                 continue
             y = 420 + ((t - 18.5) * (130 + i * 5) + i * 117) % 1160
             d.rectangle((x, y, x + 12, y + 28), fill=[CORAL, '#d5ad2c', '#4f988a'][i % 3])
-        text(im, '実際の診断結果の一例', 74, 1570, 27, '#70666b', bold=False)
+        text(im, '実際の診断結果の一例', 74, 1610, 25, '#70666b', bold=False)
     elif t < 26:
         center(im, '友だちと', 265 + entrance(t, 23), 90)
         center(im, '比べてみて！', 397 + entrance(t, 23), 110, CORAL)
         for i, gender in enumerate(['female', 'male']):
-            tile = cached_result_tile(gender, 405, 835)
-            paste_round(im, tile, 70 + i * 450, 630 + math.sin(t*2+i)*7, 26)
+            tile = result_tile(gender, 405, 805)
+            center(im, CAPTURE['sessions'][gender]['resultCode'], 568, 65, x=272+i*450)
+            paste_round(im, tile, 70 + i * 450, 665 + math.sin(t*2+i)*7, 26)
         center(im, '同じ？ 違う？ それも楽しい。', 1528, 39)
     else:
         center(im, 'あなたは、どの顔？', 270 + entrance(t, 26), 84)
@@ -472,6 +479,8 @@ def main():
     manifest={
         'title':'好きな顔、秒で選べる？', 'sourceSite':CAPTURE['site'],
         'captureDate':CAPTURE['capturedAt'], 'size':[W,H], 'fps':FPS,
+        'edition':'2026-09-current-results',
+        'results':{gender:{'code':s['resultCode'],'title':s['resultTitle'],'character':s['resultCharacter'],'examples':s['examplePortraits']} for gender,s in CAPTURE['sessions'].items()},
         'music':'今回のPV用にプログラムで作曲・合成したオリジナル音源。外部楽曲・サンプルなし。',
         'voice':json.loads((VOICE/'voices.json').read_text()),
         'shortEdits':CUTS,
