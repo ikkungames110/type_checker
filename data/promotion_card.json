@@ -1,18 +1,49 @@
 {
-  "id": "homepage-promotion-v8",
-  "image": "assets/promo/home-v8-bfe7983685ba.png",
-  "image_sha256": "bfe7983685bad3be246ba322d32710177d2b13385581e90eeb84ec62c8992f58",
-  "width": 1774,
-  "height": 887,
-  "source_id": "female_011",
-  "source_data": "data/female_faces.js",
-  "source_image": "assets/female/female_011.png",
-  "source_sha256": "4151894ab5e5e8426740730b240fc5fdcae17676269827100318faabd4053be8",
+  "id": "homepage-characters-v1",
+  "image": "assets/promo/home-characters-v1-da2cfdfb4c53.png",
+  "image_sha256": "da2cfdfb4c53c023be91fd4579842d4205a250b01c0f3530f172bc887bb78198",
+  "width": 1200,
+  "height": 600,
+  "source_data": "data/type_characters.js",
+  "source_characters": [
+    {
+      "id": "female_cute",
+      "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+    },
+    {
+      "id": "female_active_cute",
+      "sha256": "bfc781b12726dd2003773398e830228ee74c2d731b764b039d005cadc3a23e85"
+    },
+    {
+      "id": "female_fresh",
+      "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+    },
+    {
+      "id": "female_cool_casual",
+      "sha256": "d97c4f4081270c7b2ad49dcb3d9d51bbaadf887a97f05a797776e955ee9d5478"
+    },
+    {
+      "id": "male_elegant_soft",
+      "sha256": "9a8c88a29d2e4aedf4956515fd8da5a84ab99dc4889ed9de528dbbcd5405e90d"
+    },
+    {
+      "id": "male_elegant_hard",
+      "sha256": "3d89a63a81d43aeb638fa0762befb1582d44d59e68426e1a0db663a95d5ff5e0"
+    },
+    {
+      "id": "male_cool_soft",
+      "sha256": "e0d140754be14adb1aa94ffab98bd59e716eb538bc7bf77bbf0601324ba1e73e"
+    },
+    {
+      "id": "male_cool_hard",
+      "sha256": "326708f9105a5cb34a702b048d7eef566465cee0b0d50ffdab4268ca071fb64c"
+    }
+  ],
   "generation": {
-    "tool": "image_gen",
-    "date": "2026-09-10",
-    "use_case": "compositing, identity-preserve",
-    "prompt": "Use case: compositing, identity-preserve. Edit target Image 1: existing final Japanese promotional banner. Supporting insert Image 2: the exact approved female_011 portrait, a fictional Japanese woman age 25. Replace ONLY the photograph inside the rounded portrait panel on the RIGHT of Image 1 with the photograph from Image 2. Preserve Image 2 woman's exact identity, facial proportions, hairstyle, natural skin, ivory shirt and gray photo background. Do not mix the old and new woman's face. Do not beautify or redesign the new face. Keep her complete head and face visible, large, front facing. Keep all Image 1 typography, wording, color, left-side layout, decorations, rounded panel and overall 2:1 landscape aspect ratio. Text verbatim: \"SHIAN STUDIO\", \"好みの顔タイプ診断\", \"あなたは、\", \"どんな顔が好き？\", \"2択 × 20問で、好みの顔が見つかる。\", \"女性・男性どちらも診断OK\". Output the final banner at a 2:1 landscape ratio, no extra labels, no watermark."
+    "tool": "Playwright HTML render",
+    "template": "scripts/templates/promotion_card.html",
+    "template_sha256": "427b1451389af785053a8c8994ff2264a1e591339ad159b422745950da0a746f",
+    "prompt": "独自のデフォルメキャラクター8体を並べ、その「好き」に、名前を。という見出しを添える。顔写真は載せない。"
   },
   "review_status": "visual_checked"
 }

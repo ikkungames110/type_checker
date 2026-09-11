@@ -25,35 +25,43 @@
   <meta name="twitter:image:alt" content="${image_alt}">
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; color: #161616; background: linear-gradient(135deg, #fff3f5, #fbfaf7 50%, #eaf3f3); font: 16px/1.8 "Hiragino Sans", "Yu Gothic", "Meiryo", system-ui, sans-serif; }
+    body { margin: 0; color: #161616; background: #f7f6f0; font: 16px/1.8 "Hiragino Sans", "Yu Gothic", "Meiryo", system-ui, sans-serif; }
     main { max-width: 940px; margin: 0 auto; padding: 32px 20px 48px; }
     .brand { color: #161616; font-size: 19px; font-weight: 800; text-decoration: none; }
     .result { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); align-items: center; gap: 36px; margin-top: 28px; }
-    .portrait { display: block; width: 100%; height: auto; border: 12px solid #fff; border-radius: 10px; box-shadow: 0 18px 48px #201d191f; }
+    .character { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; padding: 18px; background: #eceee3; border-radius: 20px; }
     .eyebrow { color: #666a70; font-size: 14px; }
-    h1 { margin: 12px 0 10px; color: #d84861; font-size: clamp(28px, 5vw, 42px); line-height: 1.35; }
+    h1 { margin: 12px 0 10px; color: #526851; font-size: clamp(28px, 5vw, 42px); line-height: 1.35; }
     .result-classification { margin: 0 0 20px; color: #666a70; font-size: 14px; text-align: right; }
-    .cta { display: block; margin-top: 28px; padding: 16px; background: #d84861; border-radius: 8px; color: #fff; text-align: center; text-decoration: none; font-size: 18px; font-weight: 800; }
-    .cta:hover { background: #bb354d; }
+    .cta { display: block; margin-top: 28px; padding: 16px; background: #526851; border-radius: 8px; color: #fff; text-align: center; text-decoration: none; font-size: 18px; font-weight: 800; }
+    .cta:hover { background: #3e533e; }
     a:focus-visible { outline: 3px solid #277e8e; outline-offset: 4px; }
     footer { margin-top: 32px; color: #666a70; font-size: 13px; }
-    @media (max-width: 650px) { .result { grid-template-columns: 1fr; gap: 24px; } .portrait { max-width: 380px; margin: auto; } .summary { grid-row: 1; } }
+    .examples { margin-top: 40px; padding-top: 24px; border-top: 1px solid #dce1d3; }
+    .examples h2 { font-size: 24px; margin: 0 0 8px; }
+    .examples > p { color: #666a70; font-size: 13px; }
+    .examples-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+    .examples-grid figure { margin: 0; min-width: 0; }
+    .examples-grid img { width: 100%; height: auto; aspect-ratio: 3 / 4; border-radius: 8px; display: block; }
+    .examples-grid figcaption { text-align: center; font-size: 11px; color: #666a70; margin-top: 6px; }
+    @media (max-width: 650px) { .result { grid-template-columns: 1fr; gap: 24px; } .character { max-width: 340px; margin: auto; } .examples-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   </style>
 </head>
 <body>
   <main>
     <a class="brand" href="../../../../top/">好みの顔タイプ診断</a>
     <section class="result">
-      <img class="portrait" src="../../../../${portrait_path}" width="1200" height="1600" alt="${image_alt}">
+      <img class="character" src="../../../../${character_path}" width="1024" height="1024" alt="${image_alt}">
       <div class="summary">
         <p class="eyebrow">シェアされた診断結果 · ${gender_label}の顔</p>
         <h1>${title}</h1>
         <p class="result-classification">(${classification_label}タイプ)</p>
-        <p>20問の2択で見つかった、好みの顔です。<br>あなたは、どんな顔がタイプ？</p>
+        <p>${result_copy}</p>
         <a class="cta" href="../../../../top/">自分のタイプを診断する</a>
       </div>
     </section>
-    <footer>写真は診断用にAIで生成した架空の成人です。SHIAN STUDIO</footer>
+    <section class="examples" aria-labelledby="examples-title"><h2 id="examples-title">例えば、こんな顔</h2><p>このタイプの顔を、5枚並べてみました。</p><div class="examples-grid">${examples_html}</div></section>
+    <footer>写真は診断用にAIで生成した架空の成人です。キャラクターは顔のタイプを表すイメージです。SHIAN STUDIO</footer>
   </main>
 </body>
 </html>

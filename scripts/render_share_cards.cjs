@@ -1,5 +1,4 @@
-// 既存の顔写真をHTMLに配置し、Xカード用のJPEGとして書き出す。
-// 写真そのものや採点用の特徴量は変更しない。
+// 結果タイプのキャラクターをXカードに配置。既存80共有URLの対応は維持。
 const { chromium } = require('playwright');
 const { readFile, writeFile, mkdir, unlink } = require('node:fs/promises');
 const { createHash } = require('node:crypto');
@@ -20,6 +19,8 @@ async function main() {
     if (error.code !== 'ENOENT') throw error;
   }
   const templateHash = hash(await readFile(path.join(root, template)));
+  const characters = parseData(await readFile(path.join(root, 'data/type_characters.js'), 'utf8'));
+  const resultTypes = parseData(await readFile(path.join(root, 'data/result_types.js'), 'utf8'));
   const browser = await chromium.launch({
     headless: true,
     ...(process.env.SHARE_CARD_CHROMIUM ? { executablePath: process.env.SHARE_CARD_CHROMIUM } : {})
@@ -37,12 +38,19 @@ async function main() {
         if (sourceHash !== face.generation.image_sha256) throw new Error(`${face.id}: 元画像のハッシュ不一致`);
         const directory = `assets/share/${face.asset_version}`;
         await mkdir(path.join(root, directory), { recursive: true });
-        await page.evaluate(async ({ portrait, gender }) => {
-          const image = document.getElementById('portrait');
-          image.src = portrait;
-          document.getElementById('target').textContent = `私が惹かれる${gender === 'female' ? '女性' : '男性'}の顔は…`;
+        const character = characters.find(item => item.gender === gender && item.type === face.type);
+        const type = resultTypes[gender].find(item => item.id === face.type);
+        if (!character || !type) throw new Error(`${face.id}: キャラクター・タイプがない`);
+        const artwork = await readFile(path.join(root, character.image));
+        if (hash(artwork) !== character.sha256) throw new Error(`${character.id}: キャラクターのハッシュ不一致`);
+        await page.evaluate(async ({ characterImage, gender, type }) => {
+          const image = document.getElementById('character');
+          image.src = characterImage;
+          document.getElementById('target').textContent = `私が惹かれる${gender === 'female' ? '女性' : '男性'}の顔のタイプ`;
+          document.getElementById('type-title').textContent = type.label;
+          document.getElementById('classification').textContent = `(${type.classification_label}タイプ)`;
           await image.decode();
-        }, { portrait: `data:image/png;base64,${original.toString('base64')}`, gender });
+        }, { characterImage: `data:image/png;base64,${artwork.toString('base64')}`, gender, type });
         const bytes = await page.screenshot({ type: 'jpeg', quality: 90 });
         const imageHash = hash(bytes);
         const image = `${directory}/${face.id}-${imageHash.slice(0, 12)}.jpg`;
@@ -50,10 +58,12 @@ async function main() {
         cards.push({
           id: face.id, gender, asset_version: face.asset_version, image,
           source_image: face.image, source_sha256: sourceHash,
+          character_id: character.id, character_sha256: character.sha256,
+          type_id: type.id, type_label: type.label, classification_label: type.classification_label,
           image_sha256: imageHash, width: 1200, height: 600
         });
       }
-      console.log(`${gender}: 顔写真付き共有カード${records.length}枚を書き出しました`);
+      console.log(`${gender}: キャラクター共有カード${records.length}枚を書き出しました`);
     }
   } finally {
     await browser.close();

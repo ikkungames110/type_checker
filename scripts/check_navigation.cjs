@@ -57,8 +57,8 @@ async function main() {
 
       await page.goto(site.href);
       const topDocument = await ready('top');
-      assert.equal(await page.locator('#sampleA img').getAttribute('src'), 'assets/female/female_011.png?v=8');
-      assert.equal(await page.locator('#sampleB img').getAttribute('src'), 'assets/male/male_011.png?v=8');
+      assert.equal(await page.locator('#sampleA img').getAttribute('src'), 'assets/characters/v1/female_fresh.png');
+      assert.equal(await page.locator('#sampleB img').getAttribute('src'), 'assets/characters/v1/male_fresh_soft.png');
       await page.locator('#sampleA img').evaluate(img => img.decode());
       await page.screenshot({ path: `/tmp/type-checker-v8-top-${width}.png` });
       await page.locator(`.gender-btn[data-gender="${gender}"]`).click();
@@ -110,7 +110,7 @@ async function main() {
       await page.locator('#rightCard').click();
       assert.notEqual(await ready('result'), resumedDocument);
       const title = await page.locator('#resultTitle').innerText();
-      const portrait = await page.locator('#resultPortrait img').getAttribute('src');
+      const characterSrc = await page.locator('#resultCharacter').getAttribute('src');
       assert.ok(title);
       const resultData = await page.evaluate(key => {
         const saved = JSON.parse(sessionStorage.getItem(key));
@@ -118,11 +118,14 @@ async function main() {
         const byId = new Map(records.map(face => [face.id, face]));
         const scores = {};
         for (const id of saved.chosenIds) scores[byId.get(id).type] = (scores[byId.get(id).type] || 0) + 1;
-        const portraitId = document.querySelector('#resultPortrait img').getAttribute('src').match(/(female|male)_\d{3}/)[0];
+        const shareLink = new URL(document.querySelector('#xShareButton').href);
+        const portraitId = new URL(shareLink.searchParams.get('url')).pathname.split('/')[3];
         const winner = byId.get(portraitId).type;
         return { chosen: saved.chosenIds.includes(portraitId), total: Object.values(scores).reduce((a,b) => a+b,0),
           max: Math.max(...Object.values(scores)), winnerCount: scores[winner], winner,
-          savedWinner: saved.winnerId,
+          savedWinner: saved.winnerId, portraitId,
+          expectedExamples: records.filter(face => face.type === winner).map(face => face.id).sort(),
+          character: window.FACE_CHARACTERS.find(item => item.gender === saved.gender && item.type === winner),
           classification: window.FACE_RESULT_TYPES[saved.gender].find(type => type.id === winner).classification_label,
           label: window.FACE_RESULT_TYPES[saved.gender].find(type => type.id === winner).label };
       }, sessionKey);
@@ -133,24 +136,29 @@ async function main() {
       assert.equal(resultData.savedWinner, resultData.winner);
       assert.equal(await page.locator('#resultClassification').innerText(), `(${resultData.classification}タイプ)`);
       assert.equal(await page.locator('#resultBars').count(), 0);
-      await page.locator('#resultPortrait img').evaluate(img => img.decode());
-      assert.equal(await page.locator('#resultPortrait img').evaluate(img => Math.abs(img.clientWidth / img.clientHeight - 0.75) < 0.01), true);
+      await page.locator('#resultCharacter').evaluate(img => img.decode());
+      assert.deepEqual(await page.locator('#resultExamples img').evaluateAll(images => images.map(img => img.dataset.faceId).sort()), resultData.expectedExamples);
+      assert.equal(await page.locator('#resultExamples img').count(), 5);
+      assert.equal(await page.locator('#resultCharacter').evaluate(img => Math.abs(img.clientWidth / img.clientHeight - 1) < 0.01), true);
+      assert.ok(characterSrc.startsWith(resultData.character.image));
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
       await page.screenshot({ path: `/tmp/type-checker-v8-result-${gender}-${width}.png`, fullPage: true });
-      assert.ok(portrait.startsWith(`assets/${gender}/`));
+      assert.ok(characterSrc.startsWith('assets/characters/v1/'));
       const share = new URL(await page.locator('#xShareButton').getAttribute('href'));
       const shareUrl = new URL(share.searchParams.get('url'));
       assert.match(shareUrl.pathname, new RegExp(`^/share/v8/${gender}_\\d{3}/[a-z_]+/$`));
-      assert.ok(portrait.includes(shareUrl.pathname.split('/')[3]));
+      assert.equal(resultData.portraitId, shareUrl.pathname.split('/')[3]);
       const sharedPage = await context.newPage();
       await sharedPage.goto(new URL(shareUrl.pathname, site).href);
       assert.equal(await sharedPage.locator('.result-classification').innerText(), `(${resultData.classification}タイプ)`);
       assert.equal(new URL(await sharedPage.locator('.cta').getAttribute('href'), sharedPage.url()).href, routeUrl('top'));
+      assert.equal(await sharedPage.locator('.examples-grid img').count(), 5);
+      assert.equal(await sharedPage.locator('.character').getAttribute('src'), '../../../../' + resultData.character.image + '?v=' + resultData.character.sha256.slice(0, 12));
       await sharedPage.close();
       await page.reload();
       await ready('result');
       assert.equal(await page.locator('#resultTitle').innerText(), title);
-      assert.equal(await page.locator('#resultPortrait img').getAttribute('src'), portrait);
+      assert.equal(await page.locator('#resultCharacter').getAttribute('src'), characterSrc);
 
       // 完了後に戻っても20問目を再回答させず、進む操作で同じ結果を開ける。
       await page.goBack();

@@ -49,6 +49,8 @@ def check_share_cards(check, referenced):
     check(manifest["template"] == "scripts/templates/share_card.html", "共有画像: テンプレートが不正")
     check(hashlib.sha256((ROOT / manifest["template"]).read_bytes()).hexdigest() == manifest["template_sha256"], "共有画像: テンプレート変更後に画像を書き出し直してください")
     faces = {face["id"]: face for gender in ("female", "male") for face in read_browser_data(ROOT / f"data/{gender}_faces.js")}
+    characters = {(item["gender"], item["type"]): item for item in read_browser_data(ROOT / "data/type_characters.js")}
+    types = read_browser_data(ROOT / "data/result_types.js")
     cards = manifest["cards"]
     check(len(cards) == len(faces) and {card["id"] for card in cards} == set(faces), "共有画像: 本番の顔と件数・IDが不一致")
     for card in cards:
@@ -58,6 +60,10 @@ def check_share_cards(check, referenced):
         context = f'共有画像: {card["id"]}'
         check(card["gender"] == face["gender"] and card["asset_version"] == face["asset_version"], f"{context}: 性別・バージョンが不一致")
         check(card["source_image"] == face["image"] and card["source_sha256"] == face["generation"]["image_sha256"], f"{context}: 元の顔写真が更新されています。共有画像も書き出し直してください")
+        character = characters[(face["gender"], face["type"])]
+        result_type = next(item for item in types[face["gender"]] if item["id"] == face["type"])
+        check(card.get("character_id") == character["id"] and card.get("character_sha256") == character["sha256"], f"{context}: キャラクターが更新されています。共有画像も書き出し直してください")
+        check(card.get("type_id") == result_type["id"] and card.get("type_label") == result_type["label"] and card.get("classification_label") == result_type["classification_label"], f"{context}: タイプ表示が更新されています。共有画像も書き出し直してください")
         expected_path = f'assets/share/{face["asset_version"]}/{face["id"]}-{card["image_sha256"][:12]}.jpg'
         check(card["image"] == expected_path, f"{context}: 画像パスが不正")
         image_path = ROOT / expected_path
@@ -77,18 +83,21 @@ def check_promotion_card(check, referenced):
     from build_share_pages import read_browser_data
 
     card = json.loads((ROOT / "data/promotion_card.json").read_text())
-    faces = read_browser_data(ROOT / card["source_data"])
-    face = next((face for face in faces if face["id"] == card["source_id"]), None)
-    check(face is not None, "宣材画像: 元写真のタイプ別レコードがない")
-    if face is not None:
-        check(card["source_image"] == face["image"] and card["source_sha256"] == face["generation"]["image_sha256"], "宣材画像: 元写真が更新されています。宣材も見直してください")
+    check(card["source_data"] == "data/type_characters.js", "宣材画像: キャラクターの記録が参照されていない")
+    characters = {item["id"]: item for item in read_browser_data(ROOT / card["source_data"])}
+    sources = card["source_characters"]
+    check(len(sources) == 8 and len({source["id"] for source in sources}) == 8, "宣材画像: 異なる8体が指定されていない")
+    for source in sources:
+        character = characters.get(source["id"])
+        check(character is not None and character["sha256"] == source["sha256"], f'宣材画像: キャラクターが更新されています {source["id"]}')
+    generation = card["generation"]
+    check(generation["template"] == "scripts/templates/promotion_card.html" and hashlib.sha256((ROOT / generation["template"]).read_bytes()).hexdigest() == generation["template_sha256"], "宣材画像: テンプレート変更後に再生成してください")
     html = (ROOT / "index.html").read_text()
     parser = Links()
     parser.feed(html)
-    check(card["source_image"] in {urlsplit(target).path for target in parser.targets}, "宣材画像: 元写真がトップ画面で使われていない")
     check(bool(card["generation"]["prompt"]) and card["review_status"] == "visual_checked", "宣材画像: 制作記録・目視確認がない")
 
-    expected_path = f'assets/promo/home-v8-{card["image_sha256"][:12]}.png'
+    expected_path = f'assets/promo/home-characters-v1-{card["image_sha256"][:12]}.png'
     check(card["image"] == expected_path, "宣材画像: 画像パスが不正")
     image_path = ROOT / expected_path
     check(image_path.is_file(), "宣材画像: 画像がない")
@@ -115,6 +124,32 @@ def check_promotion_card(check, referenced):
         check(meta.get(f"og:image:{dimension}") == str(card[dimension]), f"宣材画像: {dimension}がメタ情報と不一致")
     for key in ("title", "description", "image:alt"):
         check(bool(meta.get(f"og:{key}")) and meta.get(f"og:{key}") == meta.get(f"twitter:{key}"), f"宣材画像: {key}のOGP・X設定がないか不一致")
+
+
+def check_characters(check, referenced):
+    from build_share_pages import read_browser_data
+
+    types = read_browser_data(ROOT / "data/result_types.js")
+    characters = read_browser_data(ROOT / "data/type_characters.js")
+    prompts = json.loads((ROOT / "data/character_prompts_v1.json").read_text())["characters"]
+    expected = {(gender, item["id"]) for gender, items in types.items() for item in items}
+    check(len(characters) == 16 and {(item["gender"], item["type"]) for item in characters} == expected, "キャラクター: 男女8タイプずつの対応が不正")
+    check(len({item["sha256"] for item in characters}) == 16, "キャラクター: 画像が重複")
+    for character in characters:
+        context = character["id"]
+        check(context == f'{character["gender"]}_{character["type"]}', f"{context}: キャラクターIDが不正")
+        check(character["image"] == f'assets/characters/v1/{context}.png', f"{context}: キャラクターのパスが不正")
+        prompt = next((item for item in prompts if item["id"] == context), None)
+        check(prompt is not None and hashlib.sha256(prompt["prompt"].encode()).hexdigest() == character["prompt_sha256"], f"{context}: キャラクターのプロンプト記録が不一致")
+        check(character["generation_tool"] == "built-in image_gen" and character["review_status"] == "visual_checked", f"{context}: 制作・確認記録がない")
+        path = ROOT / character["image"]
+        check(path.is_file(), f"{context}: キャラクター画像がない")
+        if not path.is_file():
+            continue
+        raw = path.read_bytes()
+        check(raw.startswith(b"\x89PNG\r\n\x1a\n") and struct.unpack(">II", raw[16:24]) == (character["width"], character["height"]), f"{context}: キャラクターの画像寸法が不正")
+        check(hashlib.sha256(raw).hexdigest() == character["sha256"], f"{context}: キャラクターのハッシュ不一致")
+        referenced.add(path.resolve())
 
 
 def check_pv_assets(check, referenced):
@@ -185,17 +220,16 @@ def main():
             referenced.add(path.resolve())
     for key in ("source_sha256", "image_sha256", "prompt_sha256"):
         check(len({f["generation"][key] for f in records}) == 80, f"顔写真: {key}が重複")
+    check_characters(check, referenced)
     check_share_cards(check, referenced)
     check_promotion_card(check, referenced)
     check_pv_assets(check, referenced)
-    promotion = json.loads((ROOT / "data/promotion_card.json").read_text())
-    check(promotion["source_id"] == "female_011", "宣材画像: female_011が使われていない")
     images = {p.resolve() for p in (ROOT / "assets").rglob("*") if p.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}}
-    check(images == referenced and len(images) == 162, "旧画像または対応データのない画像が残っています")
+    check(images == referenced and len(images) == 178, "旧画像または対応データのない画像が残っています")
     check(not (ROOT / "assets/previews").exists(), "旧試作画像が残っています")
     html = (ROOT / "index.html").read_text()
-    for gender in expected:
-        check(f'assets/{gender}/{gender}_011.png?v=8' in html, f"トップ画像: {gender}_011が使われていない")
+    for character_id in ("female_fresh", "male_fresh_soft"):
+        check(f'assets/characters/v1/{character_id}.png' in html, f"トップ画像: {character_id}が使われていない")
     domain = (ROOT / "CNAME").read_text().strip()
     check(f'<link rel="canonical" href="https://{domain}/top/">' in html, "トップのcanonicalが不一致")
     def local_path(source, target):
@@ -218,7 +252,7 @@ def main():
             local_path(source, target)
     if errors:
         raise SystemExit("\n".join(errors))
-    print("整合性OK: 本番80枚（男女8タイプ×5人・全員25歳）・共有80枚・宣材1枚・PVサムネイル1枚、旧画像なし、タイプ・生成記録・PV・ハッシュ・リンク")
+    print("整合性OK: 顔80枚・キャラクター16体・キャラクター共有80枚・宣材1枚・PVサムネイル1枚、タイプ・生成記録・ハッシュ・リンク")
 
 
 if __name__ == "__main__":

@@ -10,20 +10,20 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="好みの顔タイプ診断">
   <meta property="og:locale" content="ja_JP">
-  <meta property="og:title" content="あなたは、どんな顔が好き？ | 好みの顔タイプ診断">
-  <meta property="og:description" content="2択を直感で選ぶ20問の顔タイプ診断。最後に、あなたが惹かれる顔とタイプ名を表示します。女性・男性どちらも診断できます。">
+  <meta property="og:title" content="その「好き」に、名前を。 | 好みの顔タイプ診断">
+  <meta property="og:description" content="気になる顔を20回選んで、惹かれるタイプをキャラクターで発見。同じタイプの顔5枚も見られます。女性・男性を選んで診断できます。">
   <meta property="og:url" content="https://type-checker.shianstudio.com/top/">
-  <meta property="og:image" content="https://type-checker.shianstudio.com/assets/promo/home-v8-bfe7983685ba.png">
-  <meta property="og:image:secure_url" content="https://type-checker.shianstudio.com/assets/promo/home-v8-bfe7983685ba.png">
+  <meta property="og:image" content="https://type-checker.shianstudio.com/assets/promo/home-characters-v1-da2cfdfb4c53.png">
+  <meta property="og:image:secure_url" content="https://type-checker.shianstudio.com/assets/promo/home-characters-v1-da2cfdfb4c53.png">
   <meta property="og:image:type" content="image/png">
-  <meta property="og:image:width" content="1774">
-  <meta property="og:image:height" content="887">
-  <meta property="og:image:alt" content="トップ画面の女性の顔写真を使った好みの顔タイプ診断の宣材画像。あなたは、どんな顔が好き？ 2択×20問で、好みの顔が見つかる。女性・男性どちらも診断OK。">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="600">
+  <meta property="og:image:alt" content="デフォルメされた男女8体のキャラクターが並ぶ好みの顔タイプ診断のカード。その「好き」に、名前を。気になる顔を、直感で20回。">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="あなたは、どんな顔が好き？ | 好みの顔タイプ診断">
-  <meta name="twitter:description" content="2択を直感で選ぶ20問の顔タイプ診断。最後に、あなたが惹かれる顔とタイプ名を表示します。女性・男性どちらも診断できます。">
-  <meta name="twitter:image" content="https://type-checker.shianstudio.com/assets/promo/home-v8-bfe7983685ba.png">
-  <meta name="twitter:image:alt" content="トップ画面の女性の顔写真を使った好みの顔タイプ診断の宣材画像。あなたは、どんな顔が好き？ 2択×20問で、好みの顔が見つかる。女性・男性どちらも診断OK。">
+  <meta name="twitter:title" content="その「好き」に、名前を。 | 好みの顔タイプ診断">
+  <meta name="twitter:description" content="気になる顔を20回選んで、惹かれるタイプをキャラクターで発見。同じタイプの顔5枚も見られます。女性・男性を選んで診断できます。">
+  <meta name="twitter:image" content="https://type-checker.shianstudio.com/assets/promo/home-characters-v1-da2cfdfb4c53.png">
+  <meta name="twitter:image:alt" content="デフォルメされた男女8体のキャラクターが並ぶ好みの顔タイプ診断のカード。その「好き」に、名前を。気になる顔を、直感で20回。">
   <style>
     :root {
       color-scheme: light;
@@ -32,7 +32,7 @@
       --line: #dedede;
       --paper: #fbfaf7;
       --panel: #ffffff;
-      --accent: #d84861;
+      --accent: #526851;
       --accent-2: #277e8e;
       --soft: #f1ece4;
       --shadow: 0 18px 48px rgba(32, 29, 25, 0.12);
@@ -48,7 +48,7 @@
       min-height: 100vh;
       color: var(--ink);
       background:
-        linear-gradient(135deg, rgba(216, 72, 97, 0.11), transparent 34%),
+        linear-gradient(135deg, rgba(121, 143, 111, 0.09), transparent 34%),
         linear-gradient(225deg, rgba(39, 126, 142, 0.1), transparent 36%),
         var(--paper);
     }
@@ -105,7 +105,7 @@
 
     .hero {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+      grid-template-columns: minmax(0, 1.05fr) minmax(240px, .95fr);
       gap: clamp(18px, 5vw, 54px);
       align-items: center;
     }
@@ -117,10 +117,12 @@
     }
 
     h1 {
-      font-size: clamp(34px, 7vw, 68px);
-      line-height: 1.02;
+      font-family: "Noto Serif CJK JP", "Yu Mincho", "Hiragino Mincho ProN", serif;
+      font-size: clamp(32px, 4.2vw, 50px);
+      font-weight: 500;
+      line-height: 1.65;
       letter-spacing: 0;
-      max-width: 8em;
+      max-width: none;
     }
 
     h2 {
@@ -226,8 +228,8 @@
     }
 
     .sample-card {
-      width: min(86vw, 330px);
-      aspect-ratio: 3 / 4;
+      width: min(85%, 330px);
+      aspect-ratio: 1 / 1;
       grid-area: 1 / 1;
       border-radius: 8px;
       background: var(--panel);
@@ -247,8 +249,11 @@
       opacity: 1;
     }
 
-    .sample-card .portrait {
+    .sample-card .character {
+      width: 100%;
       height: 100%;
+      object-fit: contain;
+      padding: 10px;
     }
 
     .question {
@@ -299,18 +304,18 @@
     .result-layout {
       display: grid;
       grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
-      grid-template-areas: "portrait summary" "portrait share" "portrait details";
+      grid-template-areas: "portrait summary" "portrait share" "examples examples" "details details";
       gap: 20px clamp(18px, 5vw, 54px);
       align-items: center;
     }
 
     .result-card {
       grid-area: portrait;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: var(--panel);
+      border: 1px solid #dfe4d8;
+      border-radius: 20px;
+      background: #eff0e7;
       padding: clamp(16px, 3vw, 24px);
-      box-shadow: var(--shadow);
+      box-shadow: none;
       display: grid;
       gap: 16px;
     }
@@ -326,11 +331,11 @@
       display: grid;
       gap: 12px;
       padding: 18px;
-      border: 1px solid #e6cbd1;
+      border: 1px solid #dce2d6;
       border-radius: 12px;
-      background: #fff3f5;
+      background: #f1f3ec;
       text-align: center;
-      font-size: 15px;
+      font-size: 13px;
     }
 
     .x-share-btn {
@@ -378,10 +383,10 @@
 
     .result-title {
       color: var(--accent);
-      font-size: clamp(28px, 5vw, 46px);
-      line-height: 1.08;
+      font-size: clamp(27px, 4.5vw, 40px);
+      line-height: 1.4;
       letter-spacing: 0;
-      font-weight: 900;
+      font-weight: 700;
     }
 
     .result-copy {
@@ -397,6 +402,36 @@
       line-height: 1.5;
       text-align: right;
     }
+
+    .result-character {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+      object-fit: contain;
+    }
+
+    .result-character-caption {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+    .result-examples {
+      grid-area: examples;
+      margin-top: 16px;
+      border-top: 1px solid var(--line);
+      padding-top: 28px;
+    }
+
+    .result-examples h2 { font-size: clamp(22px, 3vw, 28px); }
+    .result-examples > p { font-size: 13px; color: var(--muted); margin: 10px 0 18px; }
+    .example-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+    .example-grid figure { margin: 0; min-width: 0; }
+    .example-grid img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; display: block; border-radius: 8px; }
+    .example-grid figcaption { text-align: center; font-size: 11px; color: var(--muted); margin-top: 7px; }
+    .result-examples .example-note { font-size: 11px; margin-bottom: 0; }
 
     .tags {
       display: flex;
@@ -547,8 +582,11 @@
       }
 
       .result-layout {
-        grid-template-areas: "summary" "share" "portrait" "details";
+        grid-template-areas: "portrait" "summary" "examples" "share" "details";
       }
+
+      .result-card { width: min(100%, 360px); justify-self: center; padding: 12px; }
+      .example-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 9px; }
 
       .preview-stack {
         min-height: 310px;
@@ -589,8 +627,8 @@
     <section class="screen active" id="startScreen">
       <div class="hero">
         <div>
-          <h1>最後にあなたのタイプの顔が出ます</h1>
-          <p class="lead">2択を直感で選ぶだけ。20回選ぶと、あなたが惹かれる顔とタイプ名が見つかります。</p>
+          <h1>その「好き」に、<br>名前を。</h1>
+          <p class="lead">気になる顔を、直感で20回。惹かれるタイプをキャラクターで見つけて、同じタイプの顔5枚で確かめる診断です。</p>
           <div class="choice-row" aria-label="診断対象を選択">
             <button class="gender-btn" data-gender="female">好みの女性を診断</button>
             <button class="gender-btn" data-gender="male">好みの男性を診断</button>
@@ -598,10 +636,10 @@
         </div>
         <div class="preview-stack" aria-hidden="true">
           <div class="sample-card is-front" id="sampleA" data-preview-gender="female">
-            <img class="portrait" src="assets/female/female_011.png?v=8" width="1200" height="1600" alt="" fetchpriority="high">
+            <img class="character" src="assets/characters/v1/female_fresh.png" width="1024" height="1024" alt="" fetchpriority="high">
           </div>
           <div class="sample-card" id="sampleB" data-preview-gender="male">
-            <img class="portrait" src="assets/male/male_011.png?v=8" width="1200" height="1600" alt="">
+            <img class="character" src="assets/characters/v1/male_fresh_soft.png" width="1024" height="1024" alt="">
           </div>
         </div>
       </div>
@@ -636,16 +674,22 @@
           <p class="result-copy" id="resultCopy"></p>
         </div>
         <div class="result-share">
-          <strong>顔写真と結果をシェアしよう</strong>
+          <strong>好きなタイプを、キャラクターでシェア</strong>
           <a class="x-share-btn" id="xShareButton" href="https://x.com/intent/tweet" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.835L0 1.154h7.594l5.243 6.932zm-1.29 19.49h2.039L6.487 3.24H4.3z"/></svg>
             <span>Xで結果をシェア</span>
           </a>
         </div>
         <div class="result-card">
-          <div id="resultPortrait"></div>
-          <div class="tags" id="resultTags"></div>
+          <img id="resultCharacter" class="result-character" width="1024" height="1024" alt="">
+          <p class="result-character-caption">あなたが惹かれる顔のタイプ</p>
         </div>
+        <section class="result-examples" aria-labelledby="examplesTitle">
+          <h2 id="examplesTitle">例えば、こんな顔</h2>
+          <p>同じタイプの顔を、5枚並べてみました。</p>
+          <div class="example-grid" id="resultExamples"></div>
+          <p class="example-note">写真は診断用に生成した、架空の成人の顔です。</p>
+        </section>
         <div class="result-details">
           <div class="actions">
             <button class="ghost-btn" id="shareButton">結果をコピー</button>
@@ -729,6 +773,8 @@
   <script src="data/female_faces.js?v=8.1"></script>
   <script src="data/male_faces.js?v=8"></script>
   <script src="data/result_types.js?v=8.1"></script>
+  <script src="data/type_characters.js?v=1"></script>
+  <script src="js/type_presentation.js?v=1"></script>
   <script src="js/face_deck.js?v=8"></script>
   <script src="js/face_scoring.js?v=8.1"></script>
   <script>
@@ -760,8 +806,8 @@
     const rightCard = document.querySelector("#rightCard");
     const skipButton = document.querySelector("#skipButton");
     const duel = document.querySelector("#duel");
-    const resultPortrait = document.querySelector("#resultPortrait");
-    const resultTags = document.querySelector("#resultTags");
+    const resultCharacter = document.querySelector("#resultCharacter");
+    const resultExamples = document.querySelector("#resultExamples");
     const resultTitle = document.querySelector("#resultTitle");
     const resultClassification = document.querySelector("#resultClassification");
     const resultCopy = document.querySelector("#resultCopy");
@@ -918,8 +964,23 @@
       resultTitle.textContent = type.label;
       resultClassification.textContent = `(${type.classification_label}タイプ)`;
       resultCopy.textContent = type.copy;
-      resultPortrait.innerHTML = renderPortrait(portrait);
-      resultTags.textContent = `あなたが選んだ、いちばん惹かれるタイプの顔`;
+      const presentation = TypePresentation.resolve(state.gender, type.id, state.faces, window.FACE_CHARACTERS);
+      resultCharacter.src = `${presentation.character.image}?v=${presentation.character.sha256.slice(0, 12)}`;
+      resultCharacter.alt = `${type.classification_label}タイプを表すキャラクター`;
+      resultExamples.replaceChildren(...presentation.examples.map((face, index) => {
+        const figure = document.createElement("figure");
+        const image = document.createElement("img");
+        image.src = `${face.image}?v=${face.asset_version}`;
+        image.width = 1200;
+        image.height = 1600;
+        image.loading = "lazy";
+        image.alt = `${type.classification_label}タイプの顔の例 ${index + 1}`;
+        image.dataset.faceId = face.id;
+        const caption = document.createElement("figcaption");
+        caption.textContent = `例 ${String(index + 1).padStart(2, "0")}`;
+        figure.append(image, caption);
+        return figure;
+      }));
       state.lastResult = `好みの顔タイプ診断の結果(${state.dataset.resultTarget}): ${type.label}`;
       state.shareUrl = new URL(`share/${portrait.asset_version}/${portrait.id}/${type.id}/`, siteUrl).href;
       const shareParams = new URLSearchParams({ text: state.lastResult, url: state.shareUrl, hashtags: "好みの顔タイプ診断" });
