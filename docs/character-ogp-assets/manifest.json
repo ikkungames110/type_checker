@@ -1,13 +1,13 @@
 {
   "source": "docs/character-ogp.html",
   "method": "Playwright HTML/CSS render using existing character PNGs",
-  "code_status": "proposal",
+  "code_status": "active",
   "render_sources": {
-    "docs/character-ogp.html": "b69bd0926a227eb684191d6a76c979d7a61bd18dadb6722ec569af5795798413",
+    "docs/character-ogp.html": "5206ede16cb8f6e283a2365bcecddfa5fdb40b671c3a96baa1eeff60eb0a105a",
     "docs/character-ogp-assets/cards.css": "c58e975c754e09b88b687ac59be75c0027d5c12797997bc11b9a19488294a564",
     "docs/character-ogp-assets/gallery.css": "8653370a020ab313e72ca9c4bd5761bb01123b3a5b86edc62418cdef00c60b24",
-    "docs/character-ogp-assets/concepts.js": "89c1d9f7e6b2bbd08f07a5bc7207c5090e712d3b521802038126db3dc6e1dc9b",
-    "docs/character-ogp-assets/app.js": "935272d735be48bfe483698f8da8f768fd156de7d344205055b65f3d637b1377"
+    "docs/character-ogp-assets/concepts.js": "b20c808bee18dec11af7ba6ecbcbcb4a0e6abf8f9ac2f60fd3f25a4e6bdbc609",
+    "docs/character-ogp-assets/app.js": "204854b01c3e9bf9b79ece34bc8411d33f4212ca8e7a4ae24f14c34c66c2538d"
   },
   "cards": [
     {

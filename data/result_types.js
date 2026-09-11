@@ -1,53 +1,61 @@
-// 所属タイプだけで採点。表示名と結果文を診断・共有ページで共用する。
+// 3文字コード・表示名・結果文を診断と共有ページで共用する。
 window.FACE_RESULT_TYPES = {
   "female": [
     {
       "id": "cute",
       "label": "守りたくなる甘め顔",
       "copy": "ふとした表情まで愛おしい。やわらかな甘さに、つい心をつかまれるあなた。",
-      "classification_label": "キュート"
+      "classification_label": "キュート",
+      "code": "ASQ"
     },
     {
       "id": "active_cute",
       "label": "笑った瞬間、恋が始まる顔",
       "copy": "ぱっと心が明るくなる存在感。いきいきした目元と愛嬌に、ときめきやすいあなた。",
-      "classification_label": "アクティブキュート"
+      "classification_label": "アクティブキュート",
+      "code": "ASV"
     },
     {
       "id": "fresh",
       "label": "気づけば隣にいてほしい顔",
       "copy": "自然体の爽やかさが、いちばんの魅力。気負わず笑い合えそうな顔に惹かれるあなた。",
-      "classification_label": "フレッシュ"
+      "classification_label": "フレッシュ",
+      "code": "ACQ"
     },
     {
       "id": "cool_casual",
       "label": "飾らないのに、目を奪う顔",
       "copy": "さりげないかっこよさが刺さる。軽やかで媚びない表情に、何度も目が向くあなた。",
-      "classification_label": "クールカジュアル"
+      "classification_label": "クールカジュアル",
+      "code": "ACV"
     },
     {
       "id": "feminine",
       "label": "やさしい色気に、ほどける顔",
       "copy": "やわらかな華やかさに、思わずうっとり。優美な雰囲気と甘い余韻に弱いあなた。",
-      "classification_label": "フェミニン"
+      "classification_label": "フェミニン",
+      "code": "RSV"
     },
     {
       "id": "soft_elegant",
       "label": "何度でも会いたくなる、余韻の顔",
       "copy": "控えめなのに、ずっと心に残る。穏やかな品と繊細な美しさに惹かれるあなた。",
-      "classification_label": "ソフトエレガント"
+      "classification_label": "ソフトエレガント",
+      "code": "RSQ"
     },
     {
       "id": "elegant",
       "label": "一目で主役をさらう、華やぎ顔",
       "copy": "視線を集める華やかさに、心が動く。くっきりした存在感のある顔が好きなあなた。",
-      "classification_label": "エレガント"
+      "classification_label": "エレガント",
+      "code": "RCV"
     },
     {
       "id": "cool",
       "label": "静かな目力に、吸い込まれる顔",
       "copy": "凛とした表情に、思わず見入ってしまう。すっきりした美しさと静かな強さが刺さるあなた。",
-      "classification_label": "クール"
+      "classification_label": "クール",
+      "code": "RCQ"
     }
   ],
   "male": [
@@ -55,49 +63,57 @@ window.FACE_RESULT_TYPES = {
       "id": "charming_soft",
       "label": "甘い笑顔に、つい甘やかしたくなる顔",
       "copy": "やさしい目元と親しみやすい甘さ。そばにいると笑顔になれそうな顔に弱いあなた。",
-      "classification_label": "チャーミングソフト"
+      "classification_label": "チャーミングソフト",
+      "code": "ASQ"
     },
     {
       "id": "charming_hard",
       "label": "目が合うだけで、恋が始まる顔",
       "copy": "はっきりした目力の奥にある愛嬌。華やかなのに親しみやすいギャップに惹かれるあなた。",
-      "classification_label": "チャーミングハード"
+      "classification_label": "チャーミングハード",
+      "code": "ASV"
     },
     {
       "id": "fresh_soft",
       "label": "隣で笑っていてほしい、癒やし顔",
       "copy": "自然体の爽やかさと、穏やかな表情。毎日会いたくなる親しみやすさが刺さるあなた。",
-      "classification_label": "フレッシュソフト"
+      "classification_label": "フレッシュソフト",
+      "code": "ACQ"
     },
     {
       "id": "fresh_hard",
       "label": "さらっとかっこいい、青春の主役顔",
       "copy": "気取らないのに、きりっと印象に残る。軽やかな爽やかさと精悍さにときめくあなた。",
-      "classification_label": "フレッシュハード"
+      "classification_label": "フレッシュハード",
+      "code": "ACV"
     },
     {
       "id": "elegant_soft",
       "label": "やさしい色気で、距離を縮める顔",
       "copy": "上品な華やかさと、やわらかな目元。近づくほど魅力が増しそうな顔に惹かれるあなた。",
-      "classification_label": "エレガントソフト"
+      "classification_label": "エレガントソフト",
+      "code": "RSQ"
     },
     {
       "id": "elegant_hard",
       "label": "登場した瞬間、空気が変わる顔",
       "copy": "堂々とした華やかさに、目を奪われる。彫りの深さと強い存在感が好きなあなた。",
-      "classification_label": "エレガントハード"
+      "classification_label": "エレガントハード",
+      "code": "RSV"
     },
     {
       "id": "cool_soft",
       "label": "静かな横顔まで、沼になる顔",
       "copy": "涼しげな目元と、どこか余韻のある表情。静かな知性を感じる顔に惹かれるあなた。",
-      "classification_label": "クールソフト"
+      "classification_label": "クールソフト",
+      "code": "RCQ"
     },
     {
       "id": "cool_hard",
       "label": "その眼差しに、心を持っていかれる顔",
       "copy": "鋭い目力と、引き締まった顔立ち。凛々しさのあるかっこよさに心が動くあなた。",
-      "classification_label": "クールハード"
+      "classification_label": "クールハード",
+      "code": "RCV"
     }
   ]
 };

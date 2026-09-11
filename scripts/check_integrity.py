@@ -63,7 +63,7 @@ def check_share_cards(check, referenced):
         character = characters[(face["gender"], face["type"])]
         result_type = next(item for item in types[face["gender"]] if item["id"] == face["type"])
         check(card.get("character_id") == character["id"] and card.get("character_sha256") == character["sha256"], f"{context}: キャラクターが更新されています。共有画像も書き出し直してください")
-        check(card.get("type_id") == result_type["id"] and card.get("type_label") == result_type["label"] and card.get("classification_label") == result_type["classification_label"], f"{context}: タイプ表示が更新されています。共有画像も書き出し直してください")
+        check(card.get("type_id") == result_type["id"] and card.get("type_code") == result_type["code"] and card.get("type_label") == result_type["label"] and card.get("classification_label") == result_type["classification_label"], f"{context}: タイプ表示が更新されています。共有画像も書き出し直してください")
         expected_path = f'assets/share/{face["asset_version"]}/{face["id"]}-{card["image_sha256"][:12]}.jpg'
         check(card["image"] == expected_path, f"{context}: 画像パスが不正")
         image_path = ROOT / expected_path
@@ -77,6 +77,38 @@ def check_share_cards(check, referenced):
         check(image_path.resolve() not in referenced, f"{context}: 画像参照が重複")
         referenced.add(image_path.resolve())
 
+
+
+def check_letter_share_cards(check, referenced):
+    from build_share_pages import read_browser_data
+    from build_letter_share_pages import letter_results
+    manifest = json.loads((ROOT / "data/letter_share_cards.json").read_text())
+    check(manifest["template"] == "scripts/templates/letter_share_card.html", "3文字共有: テンプレートが不正")
+    check(hashlib.sha256((ROOT / manifest["template"]).read_bytes()).hexdigest() == manifest["template_sha256"], "3文字共有: テンプレート変更後に再生成してください")
+    types = read_browser_data(ROOT / "data/result_types.js")
+    axes = read_browser_data(ROOT / "data/type_axes.js")
+    characters = {(c["gender"],c["type"]):c for c in read_browser_data(ROOT / "data/type_characters.js")}
+    expected = {(gender, "-".join(codes)): winners for gender in types for codes,winners in letter_results(types[gender], axes)}
+    cards = manifest["cards"]
+    check(len(cards) == 54 and {(c["gender"],c["key"]) for c in cards} == set(expected), "3文字共有: 男女27通りのコードが不足・重複")
+    for card in cards:
+        context = f'3文字共有 {card["gender"]}/{card["key"]}'
+        winners = expected.get((card["gender"],card["key"]))
+        if winners is None:
+            continue
+        check(card["codes"] == [t["code"] for t in winners], f"{context}: コードが不一致")
+        check(card["types"] == [{key:t[key] for key in ("id","code","label","classification_label")} for t in winners], f"{context}: タイプ表示変更後に再生成してください")
+        check(card["characters"] == [{"id":characters[(card["gender"],t["id"])]["id"],"sha256":characters[(card["gender"],t["id"])]["sha256"]} for t in winners], f"{context}: キャラクター変更後に再生成してください")
+        expected_path = f'assets/share/letters/{card["gender"]}/{card["key"]}-{card["image_sha256"][:12]}.jpg'
+        check(card["image"] == expected_path, f"{context}: 画像パスが不正")
+        path = ROOT / expected_path
+        check(path.is_file(), f"{context}: 画像がない")
+        if not path.is_file():
+            continue
+        raw = path.read_bytes()
+        check(jpeg_dimensions(raw) == (card["width"],card["height"]) == (1200,600), f"{context}: JPEG・寸法が不正")
+        check(hashlib.sha256(raw).hexdigest() == card["image_sha256"] and len(raw) < 5_000_000, f"{context}: 画像ハッシュ・容量が不正")
+        referenced.add(path.resolve())
 
 
 def check_promotion_card(check, referenced):
@@ -188,6 +220,12 @@ def main():
         "female": ["cute", "active_cute", "fresh", "cool_casual", "feminine", "soft_elegant", "elegant", "cool"],
         "male": ["charming_soft", "charming_hard", "fresh_soft", "fresh_hard", "elegant_soft", "elegant_hard", "cool_soft", "cool_hard"],
     }
+    axes = read_browser_data(ROOT / "data/type_axes.js")
+    from itertools import product
+    check([[o["letter"] for o in a["options"]] for a in axes] == [["A","R"],["S","C"],["Q","V"]], "3文字の軸が不正")
+    expected_codes = {"".join(letters) for letters in product(*[[o["letter"] for o in a["options"]] for a in axes])}
+    for gender in types:
+        check({t.get("code") for t in types[gender]} == expected_codes, f"{gender}: 3文字8タイプの対応が不正")
     records = []
     for gender, ids in expected.items():
         faces = read_browser_data(ROOT / f"data/{gender}_faces.js")
@@ -222,10 +260,11 @@ def main():
         check(len({f["generation"][key] for f in records}) == 80, f"顔写真: {key}が重複")
     check_characters(check, referenced)
     check_share_cards(check, referenced)
+    check_letter_share_cards(check, referenced)
     check_promotion_card(check, referenced)
     check_pv_assets(check, referenced)
     images = {p.resolve() for p in (ROOT / "assets").rglob("*") if p.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}}
-    check(images == referenced and len(images) == 178, "旧画像または対応データのない画像が残っています")
+    check(images == referenced and len(images) == 232, "旧画像または対応データのない画像が残っています")
     check(not (ROOT / "assets/previews").exists(), "旧試作画像が残っています")
     html = (ROOT / "index.html").read_text()
     for character_id in ("female_fresh", "male_fresh_soft"):
@@ -252,7 +291,7 @@ def main():
             local_path(source, target)
     if errors:
         raise SystemExit("\n".join(errors))
-    print("整合性OK: 顔80枚・キャラクター16体・キャラクター共有80枚・宣材1枚・PVサムネイル1枚、タイプ・生成記録・ハッシュ・リンク")
+    print("整合性OK: 顔80枚・キャラクター16体・キャラクター共有80枚・3文字共有54枚・宣材1枚・PVサムネイル1枚、タイプ・生成記録・ハッシュ・リンク")
 
 
 if __name__ == "__main__":

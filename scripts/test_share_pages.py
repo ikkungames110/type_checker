@@ -66,6 +66,7 @@ class SharePagesTest(unittest.TestCase):
                 self.assertEqual(actual_examples, expected_examples)
                 self.assertEqual(len(actual_examples), 5)
                 self.assertEqual(cards[face["id"]]["character_id"], character["id"])
+                self.assertIn(f'<div class="shared-code">{result_type["code"]}</div>', html)
                 self.assertIn("例えば、こんな顔", html)
                 self.assertIn("自分のタイプを診断する", html)
 

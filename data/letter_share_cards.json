@@ -1,0 +1,2170 @@
+{
+  "template": "scripts/templates/letter_share_card.html",
+  "template_sha256": "e3127d1adb52bed553b78f2d408852754015a6668c09b27a8b1f683a968cf5d2",
+  "cards": [
+    {
+      "gender": "female",
+      "codes": [
+        "ASQ"
+      ],
+      "key": "ASQ",
+      "image": "assets/share/letters/female/ASQ-3023f563b10d.jpg",
+      "image_sha256": "3023f563b10d6853e5d6e63cac46cf6d254db1d817f230c3d5795e00928cccca",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cute",
+          "code": "ASQ",
+          "label": "守りたくなる甘め顔",
+          "classification_label": "キュート"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_cute",
+          "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ASV"
+      ],
+      "key": "ASV",
+      "image": "assets/share/letters/female/ASV-0e180b04180a.jpg",
+      "image_sha256": "0e180b04180aa33554e2686158f32ea66c642c9c05bf0c9605fb879cf4f95105",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "active_cute",
+          "code": "ASV",
+          "label": "笑った瞬間、恋が始まる顔",
+          "classification_label": "アクティブキュート"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_active_cute",
+          "sha256": "bfc781b12726dd2003773398e830228ee74c2d731b764b039d005cadc3a23e85"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ASQ",
+        "ASV"
+      ],
+      "key": "ASQ-ASV",
+      "image": "assets/share/letters/female/ASQ-ASV-b8f48dc7844d.jpg",
+      "image_sha256": "b8f48dc7844d4f6b8b1b647ddc6da818e777bce153a78db4b95ba88dbed2f53b",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cute",
+          "code": "ASQ",
+          "label": "守りたくなる甘め顔",
+          "classification_label": "キュート"
+        },
+        {
+          "id": "active_cute",
+          "code": "ASV",
+          "label": "笑った瞬間、恋が始まる顔",
+          "classification_label": "アクティブキュート"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_cute",
+          "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+        },
+        {
+          "id": "female_active_cute",
+          "sha256": "bfc781b12726dd2003773398e830228ee74c2d731b764b039d005cadc3a23e85"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ACQ"
+      ],
+      "key": "ACQ",
+      "image": "assets/share/letters/female/ACQ-b26754636f15.jpg",
+      "image_sha256": "b26754636f15b742da1eb48139ca1896badf0b0c5153648fb0965879e7ab5b3a",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "fresh",
+          "code": "ACQ",
+          "label": "気づけば隣にいてほしい顔",
+          "classification_label": "フレッシュ"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_fresh",
+          "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ACV"
+      ],
+      "key": "ACV",
+      "image": "assets/share/letters/female/ACV-a2bfafbd6c83.jpg",
+      "image_sha256": "a2bfafbd6c836036aeb1de073595728cdfcb1b71b207e07d32a15165e9c13d9c",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cool_casual",
+          "code": "ACV",
+          "label": "飾らないのに、目を奪う顔",
+          "classification_label": "クールカジュアル"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_cool_casual",
+          "sha256": "d97c4f4081270c7b2ad49dcb3d9d51bbaadf887a97f05a797776e955ee9d5478"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ACQ",
+        "ACV"
+      ],
+      "key": "ACQ-ACV",
+      "image": "assets/share/letters/female/ACQ-ACV-e0f76216f900.jpg",
+      "image_sha256": "e0f76216f90087f7f797b987431bbeb873fa883abca248ea64cf41d13400f278",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "fresh",
+          "code": "ACQ",
+          "label": "気づけば隣にいてほしい顔",
+          "classification_label": "フレッシュ"
+        },
+        {
+          "id": "cool_casual",
+          "code": "ACV",
+          "label": "飾らないのに、目を奪う顔",
+          "classification_label": "クールカジュアル"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_fresh",
+          "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+        },
+        {
+          "id": "female_cool_casual",
+          "sha256": "d97c4f4081270c7b2ad49dcb3d9d51bbaadf887a97f05a797776e955ee9d5478"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ASQ",
+        "ACQ"
+      ],
+      "key": "ASQ-ACQ",
+      "image": "assets/share/letters/female/ASQ-ACQ-5a74c6521ff2.jpg",
+      "image_sha256": "5a74c6521ff252875dd5321d41bb845a15d12429e2a21890e2c9623423a73345",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cute",
+          "code": "ASQ",
+          "label": "守りたくなる甘め顔",
+          "classification_label": "キュート"
+        },
+        {
+          "id": "fresh",
+          "code": "ACQ",
+          "label": "気づけば隣にいてほしい顔",
+          "classification_label": "フレッシュ"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_cute",
+          "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+        },
+        {
+          "id": "female_fresh",
+          "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ASV",
+        "ACV"
+      ],
+      "key": "ASV-ACV",
+      "image": "assets/share/letters/female/ASV-ACV-77dad5f646ad.jpg",
+      "image_sha256": "77dad5f646adbcb207a770f4467b09b33d2f13a4728646021bb2858f4e1a1ed0",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "active_cute",
+          "code": "ASV",
+          "label": "笑った瞬間、恋が始まる顔",
+          "classification_label": "アクティブキュート"
+        },
+        {
+          "id": "cool_casual",
+          "code": "ACV",
+          "label": "飾らないのに、目を奪う顔",
+          "classification_label": "クールカジュアル"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_active_cute",
+          "sha256": "bfc781b12726dd2003773398e830228ee74c2d731b764b039d005cadc3a23e85"
+        },
+        {
+          "id": "female_cool_casual",
+          "sha256": "d97c4f4081270c7b2ad49dcb3d9d51bbaadf887a97f05a797776e955ee9d5478"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ASQ",
+        "ASV",
+        "ACQ",
+        "ACV"
+      ],
+      "key": "ASQ-ASV-ACQ-ACV",
+      "image": "assets/share/letters/female/ASQ-ASV-ACQ-ACV-a74887ee1106.jpg",
+      "image_sha256": "a74887ee1106ab3726666edb248f1bc1c5c2ecc80336916f4fd47f5e5a427ac6",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cute",
+          "code": "ASQ",
+          "label": "守りたくなる甘め顔",
+          "classification_label": "キュート"
+        },
+        {
+          "id": "active_cute",
+          "code": "ASV",
+          "label": "笑った瞬間、恋が始まる顔",
+          "classification_label": "アクティブキュート"
+        },
+        {
+          "id": "fresh",
+          "code": "ACQ",
+          "label": "気づけば隣にいてほしい顔",
+          "classification_label": "フレッシュ"
+        },
+        {
+          "id": "cool_casual",
+          "code": "ACV",
+          "label": "飾らないのに、目を奪う顔",
+          "classification_label": "クールカジュアル"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_cute",
+          "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+        },
+        {
+          "id": "female_active_cute",
+          "sha256": "bfc781b12726dd2003773398e830228ee74c2d731b764b039d005cadc3a23e85"
+        },
+        {
+          "id": "female_fresh",
+          "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+        },
+        {
+          "id": "female_cool_casual",
+          "sha256": "d97c4f4081270c7b2ad49dcb3d9d51bbaadf887a97f05a797776e955ee9d5478"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "RSQ"
+      ],
+      "key": "RSQ",
+      "image": "assets/share/letters/female/RSQ-1f623bee36cc.jpg",
+      "image_sha256": "1f623bee36cce09f14c11d97b42a102cbdbd28066db5c82d97574911a0dc3518",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "soft_elegant",
+          "code": "RSQ",
+          "label": "何度でも会いたくなる、余韻の顔",
+          "classification_label": "ソフトエレガント"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_soft_elegant",
+          "sha256": "d222f2a9ed2a0ae59493bf208ca45c18cfa153a11e9b7dedb1831a53fa5065cf"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "RSV"
+      ],
+      "key": "RSV",
+      "image": "assets/share/letters/female/RSV-4b6d86a2ded5.jpg",
+      "image_sha256": "4b6d86a2ded56632d57e30135290af5c2905988341e6dfa1b537ed378636176d",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "feminine",
+          "code": "RSV",
+          "label": "やさしい色気に、ほどける顔",
+          "classification_label": "フェミニン"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_feminine",
+          "sha256": "75c7f439f12b28514b1f5f65d103a93e385c75d7ec600b398bbc5f3254b81b75"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "RSQ",
+        "RSV"
+      ],
+      "key": "RSQ-RSV",
+      "image": "assets/share/letters/female/RSQ-RSV-89b19bf9b4cc.jpg",
+      "image_sha256": "89b19bf9b4cc2677f02a521037d0025495b5fb97f381a0060f38e26573cf641e",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "soft_elegant",
+          "code": "RSQ",
+          "label": "何度でも会いたくなる、余韻の顔",
+          "classification_label": "ソフトエレガント"
+        },
+        {
+          "id": "feminine",
+          "code": "RSV",
+          "label": "やさしい色気に、ほどける顔",
+          "classification_label": "フェミニン"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_soft_elegant",
+          "sha256": "d222f2a9ed2a0ae59493bf208ca45c18cfa153a11e9b7dedb1831a53fa5065cf"
+        },
+        {
+          "id": "female_feminine",
+          "sha256": "75c7f439f12b28514b1f5f65d103a93e385c75d7ec600b398bbc5f3254b81b75"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "RCQ"
+      ],
+      "key": "RCQ",
+      "image": "assets/share/letters/female/RCQ-e36f2ed27e89.jpg",
+      "image_sha256": "e36f2ed27e89b38d7987c3734a0b6053cc4d42af5c0637a5a3eb95fb0337a62f",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cool",
+          "code": "RCQ",
+          "label": "静かな目力に、吸い込まれる顔",
+          "classification_label": "クール"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_cool",
+          "sha256": "efee898c2e34b26848421ea81b0943146fc3e5cb6a3b29a229538a68a369c1ae"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "RCV"
+      ],
+      "key": "RCV",
+      "image": "assets/share/letters/female/RCV-8b92194aef31.jpg",
+      "image_sha256": "8b92194aef31e7e72e1143b42c0e16546f444d1ceda4d3ad2756d9e7eca406d2",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "elegant",
+          "code": "RCV",
+          "label": "一目で主役をさらう、華やぎ顔",
+          "classification_label": "エレガント"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_elegant",
+          "sha256": "f1ab47baa73756d727efff8c0640f683479e14fad68dc8aba5fadc792a6618d2"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "RCQ",
+        "RCV"
+      ],
+      "key": "RCQ-RCV",
+      "image": "assets/share/letters/female/RCQ-RCV-a9d82486a0c3.jpg",
+      "image_sha256": "a9d82486a0c389853cbabb0ca1ba5be0ec83992dba2e3a1caf28cae17e625a4c",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cool",
+          "code": "RCQ",
+          "label": "静かな目力に、吸い込まれる顔",
+          "classification_label": "クール"
+        },
+        {
+          "id": "elegant",
+          "code": "RCV",
+          "label": "一目で主役をさらう、華やぎ顔",
+          "classification_label": "エレガント"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_cool",
+          "sha256": "efee898c2e34b26848421ea81b0943146fc3e5cb6a3b29a229538a68a369c1ae"
+        },
+        {
+          "id": "female_elegant",
+          "sha256": "f1ab47baa73756d727efff8c0640f683479e14fad68dc8aba5fadc792a6618d2"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "RSQ",
+        "RCQ"
+      ],
+      "key": "RSQ-RCQ",
+      "image": "assets/share/letters/female/RSQ-RCQ-c6184f1e6aed.jpg",
+      "image_sha256": "c6184f1e6aedb3efe0555b5af1491ae6efe7466cd0eee3dfa4ed2f0f68dbefe2",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "soft_elegant",
+          "code": "RSQ",
+          "label": "何度でも会いたくなる、余韻の顔",
+          "classification_label": "ソフトエレガント"
+        },
+        {
+          "id": "cool",
+          "code": "RCQ",
+          "label": "静かな目力に、吸い込まれる顔",
+          "classification_label": "クール"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_soft_elegant",
+          "sha256": "d222f2a9ed2a0ae59493bf208ca45c18cfa153a11e9b7dedb1831a53fa5065cf"
+        },
+        {
+          "id": "female_cool",
+          "sha256": "efee898c2e34b26848421ea81b0943146fc3e5cb6a3b29a229538a68a369c1ae"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "RSV",
+        "RCV"
+      ],
+      "key": "RSV-RCV",
+      "image": "assets/share/letters/female/RSV-RCV-5ea688594d67.jpg",
+      "image_sha256": "5ea688594d67baee3a271c0a434cc1f4224861c083e0c5558e975c3c6343d027",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "feminine",
+          "code": "RSV",
+          "label": "やさしい色気に、ほどける顔",
+          "classification_label": "フェミニン"
+        },
+        {
+          "id": "elegant",
+          "code": "RCV",
+          "label": "一目で主役をさらう、華やぎ顔",
+          "classification_label": "エレガント"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_feminine",
+          "sha256": "75c7f439f12b28514b1f5f65d103a93e385c75d7ec600b398bbc5f3254b81b75"
+        },
+        {
+          "id": "female_elegant",
+          "sha256": "f1ab47baa73756d727efff8c0640f683479e14fad68dc8aba5fadc792a6618d2"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "RSQ",
+        "RSV",
+        "RCQ",
+        "RCV"
+      ],
+      "key": "RSQ-RSV-RCQ-RCV",
+      "image": "assets/share/letters/female/RSQ-RSV-RCQ-RCV-e06c5f4d90e5.jpg",
+      "image_sha256": "e06c5f4d90e5b35727ac1481d8bc4a41a7d57aba7ad076859b70e80df448674a",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "soft_elegant",
+          "code": "RSQ",
+          "label": "何度でも会いたくなる、余韻の顔",
+          "classification_label": "ソフトエレガント"
+        },
+        {
+          "id": "feminine",
+          "code": "RSV",
+          "label": "やさしい色気に、ほどける顔",
+          "classification_label": "フェミニン"
+        },
+        {
+          "id": "cool",
+          "code": "RCQ",
+          "label": "静かな目力に、吸い込まれる顔",
+          "classification_label": "クール"
+        },
+        {
+          "id": "elegant",
+          "code": "RCV",
+          "label": "一目で主役をさらう、華やぎ顔",
+          "classification_label": "エレガント"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_soft_elegant",
+          "sha256": "d222f2a9ed2a0ae59493bf208ca45c18cfa153a11e9b7dedb1831a53fa5065cf"
+        },
+        {
+          "id": "female_feminine",
+          "sha256": "75c7f439f12b28514b1f5f65d103a93e385c75d7ec600b398bbc5f3254b81b75"
+        },
+        {
+          "id": "female_cool",
+          "sha256": "efee898c2e34b26848421ea81b0943146fc3e5cb6a3b29a229538a68a369c1ae"
+        },
+        {
+          "id": "female_elegant",
+          "sha256": "f1ab47baa73756d727efff8c0640f683479e14fad68dc8aba5fadc792a6618d2"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ASQ",
+        "RSQ"
+      ],
+      "key": "ASQ-RSQ",
+      "image": "assets/share/letters/female/ASQ-RSQ-ed4c95af6471.jpg",
+      "image_sha256": "ed4c95af6471b4f92a76b3e410e0c401af9332464b91b0b84e25c3a0a6eaa4f6",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cute",
+          "code": "ASQ",
+          "label": "守りたくなる甘め顔",
+          "classification_label": "キュート"
+        },
+        {
+          "id": "soft_elegant",
+          "code": "RSQ",
+          "label": "何度でも会いたくなる、余韻の顔",
+          "classification_label": "ソフトエレガント"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_cute",
+          "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+        },
+        {
+          "id": "female_soft_elegant",
+          "sha256": "d222f2a9ed2a0ae59493bf208ca45c18cfa153a11e9b7dedb1831a53fa5065cf"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ASV",
+        "RSV"
+      ],
+      "key": "ASV-RSV",
+      "image": "assets/share/letters/female/ASV-RSV-0015adcd6260.jpg",
+      "image_sha256": "0015adcd62606d3c43248345eef602cb011e86cec572bbbd0fa3d30f94017034",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "active_cute",
+          "code": "ASV",
+          "label": "笑った瞬間、恋が始まる顔",
+          "classification_label": "アクティブキュート"
+        },
+        {
+          "id": "feminine",
+          "code": "RSV",
+          "label": "やさしい色気に、ほどける顔",
+          "classification_label": "フェミニン"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_active_cute",
+          "sha256": "bfc781b12726dd2003773398e830228ee74c2d731b764b039d005cadc3a23e85"
+        },
+        {
+          "id": "female_feminine",
+          "sha256": "75c7f439f12b28514b1f5f65d103a93e385c75d7ec600b398bbc5f3254b81b75"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ASQ",
+        "ASV",
+        "RSQ",
+        "RSV"
+      ],
+      "key": "ASQ-ASV-RSQ-RSV",
+      "image": "assets/share/letters/female/ASQ-ASV-RSQ-RSV-3446a56181b6.jpg",
+      "image_sha256": "3446a56181b67b94ec240e646d3af971f99611e4b2e66cf3b5f0fc23cc7fda8d",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cute",
+          "code": "ASQ",
+          "label": "守りたくなる甘め顔",
+          "classification_label": "キュート"
+        },
+        {
+          "id": "active_cute",
+          "code": "ASV",
+          "label": "笑った瞬間、恋が始まる顔",
+          "classification_label": "アクティブキュート"
+        },
+        {
+          "id": "soft_elegant",
+          "code": "RSQ",
+          "label": "何度でも会いたくなる、余韻の顔",
+          "classification_label": "ソフトエレガント"
+        },
+        {
+          "id": "feminine",
+          "code": "RSV",
+          "label": "やさしい色気に、ほどける顔",
+          "classification_label": "フェミニン"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_cute",
+          "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+        },
+        {
+          "id": "female_active_cute",
+          "sha256": "bfc781b12726dd2003773398e830228ee74c2d731b764b039d005cadc3a23e85"
+        },
+        {
+          "id": "female_soft_elegant",
+          "sha256": "d222f2a9ed2a0ae59493bf208ca45c18cfa153a11e9b7dedb1831a53fa5065cf"
+        },
+        {
+          "id": "female_feminine",
+          "sha256": "75c7f439f12b28514b1f5f65d103a93e385c75d7ec600b398bbc5f3254b81b75"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ACQ",
+        "RCQ"
+      ],
+      "key": "ACQ-RCQ",
+      "image": "assets/share/letters/female/ACQ-RCQ-da45328fcffc.jpg",
+      "image_sha256": "da45328fcffcd1a54654eea6c8277f2cee9b5f096103cb77d29185bcf1ca399d",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "fresh",
+          "code": "ACQ",
+          "label": "気づけば隣にいてほしい顔",
+          "classification_label": "フレッシュ"
+        },
+        {
+          "id": "cool",
+          "code": "RCQ",
+          "label": "静かな目力に、吸い込まれる顔",
+          "classification_label": "クール"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_fresh",
+          "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+        },
+        {
+          "id": "female_cool",
+          "sha256": "efee898c2e34b26848421ea81b0943146fc3e5cb6a3b29a229538a68a369c1ae"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ACV",
+        "RCV"
+      ],
+      "key": "ACV-RCV",
+      "image": "assets/share/letters/female/ACV-RCV-2920767adf37.jpg",
+      "image_sha256": "2920767adf376d59d6a9ef81d53e1cf7121237539ee230fa02f631c5f4163d05",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cool_casual",
+          "code": "ACV",
+          "label": "飾らないのに、目を奪う顔",
+          "classification_label": "クールカジュアル"
+        },
+        {
+          "id": "elegant",
+          "code": "RCV",
+          "label": "一目で主役をさらう、華やぎ顔",
+          "classification_label": "エレガント"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_cool_casual",
+          "sha256": "d97c4f4081270c7b2ad49dcb3d9d51bbaadf887a97f05a797776e955ee9d5478"
+        },
+        {
+          "id": "female_elegant",
+          "sha256": "f1ab47baa73756d727efff8c0640f683479e14fad68dc8aba5fadc792a6618d2"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ACQ",
+        "ACV",
+        "RCQ",
+        "RCV"
+      ],
+      "key": "ACQ-ACV-RCQ-RCV",
+      "image": "assets/share/letters/female/ACQ-ACV-RCQ-RCV-7233f017be4c.jpg",
+      "image_sha256": "7233f017be4c658474ea3fe4483dfc2baf84e93c3aa717a86f00beca7176f811",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "fresh",
+          "code": "ACQ",
+          "label": "気づけば隣にいてほしい顔",
+          "classification_label": "フレッシュ"
+        },
+        {
+          "id": "cool_casual",
+          "code": "ACV",
+          "label": "飾らないのに、目を奪う顔",
+          "classification_label": "クールカジュアル"
+        },
+        {
+          "id": "cool",
+          "code": "RCQ",
+          "label": "静かな目力に、吸い込まれる顔",
+          "classification_label": "クール"
+        },
+        {
+          "id": "elegant",
+          "code": "RCV",
+          "label": "一目で主役をさらう、華やぎ顔",
+          "classification_label": "エレガント"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_fresh",
+          "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+        },
+        {
+          "id": "female_cool_casual",
+          "sha256": "d97c4f4081270c7b2ad49dcb3d9d51bbaadf887a97f05a797776e955ee9d5478"
+        },
+        {
+          "id": "female_cool",
+          "sha256": "efee898c2e34b26848421ea81b0943146fc3e5cb6a3b29a229538a68a369c1ae"
+        },
+        {
+          "id": "female_elegant",
+          "sha256": "f1ab47baa73756d727efff8c0640f683479e14fad68dc8aba5fadc792a6618d2"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ASQ",
+        "ACQ",
+        "RSQ",
+        "RCQ"
+      ],
+      "key": "ASQ-ACQ-RSQ-RCQ",
+      "image": "assets/share/letters/female/ASQ-ACQ-RSQ-RCQ-2ad587868a87.jpg",
+      "image_sha256": "2ad587868a8798321432d48d6db42a1f87a3a64d0e3d33920704cf4cdf789c97",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cute",
+          "code": "ASQ",
+          "label": "守りたくなる甘め顔",
+          "classification_label": "キュート"
+        },
+        {
+          "id": "fresh",
+          "code": "ACQ",
+          "label": "気づけば隣にいてほしい顔",
+          "classification_label": "フレッシュ"
+        },
+        {
+          "id": "soft_elegant",
+          "code": "RSQ",
+          "label": "何度でも会いたくなる、余韻の顔",
+          "classification_label": "ソフトエレガント"
+        },
+        {
+          "id": "cool",
+          "code": "RCQ",
+          "label": "静かな目力に、吸い込まれる顔",
+          "classification_label": "クール"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_cute",
+          "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+        },
+        {
+          "id": "female_fresh",
+          "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+        },
+        {
+          "id": "female_soft_elegant",
+          "sha256": "d222f2a9ed2a0ae59493bf208ca45c18cfa153a11e9b7dedb1831a53fa5065cf"
+        },
+        {
+          "id": "female_cool",
+          "sha256": "efee898c2e34b26848421ea81b0943146fc3e5cb6a3b29a229538a68a369c1ae"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ASV",
+        "ACV",
+        "RSV",
+        "RCV"
+      ],
+      "key": "ASV-ACV-RSV-RCV",
+      "image": "assets/share/letters/female/ASV-ACV-RSV-RCV-648fd2f6d1bc.jpg",
+      "image_sha256": "648fd2f6d1bc7d2da3af7a31921be78f57259b959097ac27840073a303b5da67",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "active_cute",
+          "code": "ASV",
+          "label": "笑った瞬間、恋が始まる顔",
+          "classification_label": "アクティブキュート"
+        },
+        {
+          "id": "cool_casual",
+          "code": "ACV",
+          "label": "飾らないのに、目を奪う顔",
+          "classification_label": "クールカジュアル"
+        },
+        {
+          "id": "feminine",
+          "code": "RSV",
+          "label": "やさしい色気に、ほどける顔",
+          "classification_label": "フェミニン"
+        },
+        {
+          "id": "elegant",
+          "code": "RCV",
+          "label": "一目で主役をさらう、華やぎ顔",
+          "classification_label": "エレガント"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_active_cute",
+          "sha256": "bfc781b12726dd2003773398e830228ee74c2d731b764b039d005cadc3a23e85"
+        },
+        {
+          "id": "female_cool_casual",
+          "sha256": "d97c4f4081270c7b2ad49dcb3d9d51bbaadf887a97f05a797776e955ee9d5478"
+        },
+        {
+          "id": "female_feminine",
+          "sha256": "75c7f439f12b28514b1f5f65d103a93e385c75d7ec600b398bbc5f3254b81b75"
+        },
+        {
+          "id": "female_elegant",
+          "sha256": "f1ab47baa73756d727efff8c0640f683479e14fad68dc8aba5fadc792a6618d2"
+        }
+      ]
+    },
+    {
+      "gender": "female",
+      "codes": [
+        "ASQ",
+        "ASV",
+        "ACQ",
+        "ACV",
+        "RSQ",
+        "RSV",
+        "RCQ",
+        "RCV"
+      ],
+      "key": "ASQ-ASV-ACQ-ACV-RSQ-RSV-RCQ-RCV",
+      "image": "assets/share/letters/female/ASQ-ASV-ACQ-ACV-RSQ-RSV-RCQ-RCV-94f2302b3003.jpg",
+      "image_sha256": "94f2302b300309f944219d9ee3e2fd1e4efcc4bb21f67a8b3315aacaf7904dbe",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cute",
+          "code": "ASQ",
+          "label": "守りたくなる甘め顔",
+          "classification_label": "キュート"
+        },
+        {
+          "id": "active_cute",
+          "code": "ASV",
+          "label": "笑った瞬間、恋が始まる顔",
+          "classification_label": "アクティブキュート"
+        },
+        {
+          "id": "fresh",
+          "code": "ACQ",
+          "label": "気づけば隣にいてほしい顔",
+          "classification_label": "フレッシュ"
+        },
+        {
+          "id": "cool_casual",
+          "code": "ACV",
+          "label": "飾らないのに、目を奪う顔",
+          "classification_label": "クールカジュアル"
+        },
+        {
+          "id": "soft_elegant",
+          "code": "RSQ",
+          "label": "何度でも会いたくなる、余韻の顔",
+          "classification_label": "ソフトエレガント"
+        },
+        {
+          "id": "feminine",
+          "code": "RSV",
+          "label": "やさしい色気に、ほどける顔",
+          "classification_label": "フェミニン"
+        },
+        {
+          "id": "cool",
+          "code": "RCQ",
+          "label": "静かな目力に、吸い込まれる顔",
+          "classification_label": "クール"
+        },
+        {
+          "id": "elegant",
+          "code": "RCV",
+          "label": "一目で主役をさらう、華やぎ顔",
+          "classification_label": "エレガント"
+        }
+      ],
+      "characters": [
+        {
+          "id": "female_cute",
+          "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+        },
+        {
+          "id": "female_active_cute",
+          "sha256": "bfc781b12726dd2003773398e830228ee74c2d731b764b039d005cadc3a23e85"
+        },
+        {
+          "id": "female_fresh",
+          "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+        },
+        {
+          "id": "female_cool_casual",
+          "sha256": "d97c4f4081270c7b2ad49dcb3d9d51bbaadf887a97f05a797776e955ee9d5478"
+        },
+        {
+          "id": "female_soft_elegant",
+          "sha256": "d222f2a9ed2a0ae59493bf208ca45c18cfa153a11e9b7dedb1831a53fa5065cf"
+        },
+        {
+          "id": "female_feminine",
+          "sha256": "75c7f439f12b28514b1f5f65d103a93e385c75d7ec600b398bbc5f3254b81b75"
+        },
+        {
+          "id": "female_cool",
+          "sha256": "efee898c2e34b26848421ea81b0943146fc3e5cb6a3b29a229538a68a369c1ae"
+        },
+        {
+          "id": "female_elegant",
+          "sha256": "f1ab47baa73756d727efff8c0640f683479e14fad68dc8aba5fadc792a6618d2"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ASQ"
+      ],
+      "key": "ASQ",
+      "image": "assets/share/letters/male/ASQ-1fa5f634260d.jpg",
+      "image_sha256": "1fa5f634260d9a2f61fafaea709fbdb805e4fd185d1d6f5f7c7d24681c6a0fbc",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "charming_soft",
+          "code": "ASQ",
+          "label": "甘い笑顔に、つい甘やかしたくなる顔",
+          "classification_label": "チャーミングソフト"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_charming_soft",
+          "sha256": "5fbc2b5e7be80a77cf10ff6eee0e025ef1eb9e2d9d390aaa48ee6ee7b30da6f5"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ASV"
+      ],
+      "key": "ASV",
+      "image": "assets/share/letters/male/ASV-8d9d0b5758df.jpg",
+      "image_sha256": "8d9d0b5758df265c624a9a35c76b12f43d12e4d12dd355c5421d570083c0cc6c",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "charming_hard",
+          "code": "ASV",
+          "label": "目が合うだけで、恋が始まる顔",
+          "classification_label": "チャーミングハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_charming_hard",
+          "sha256": "e1cfdefdb3ae72786991dc2109eb8cb6cf5a38271cb6bcdd87f773a6f5bc6154"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ASQ",
+        "ASV"
+      ],
+      "key": "ASQ-ASV",
+      "image": "assets/share/letters/male/ASQ-ASV-ec77f8b28a12.jpg",
+      "image_sha256": "ec77f8b28a12f629e4fa1ad995c1c08af29c3ac8b8b9f4d26472817ac7de7369",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "charming_soft",
+          "code": "ASQ",
+          "label": "甘い笑顔に、つい甘やかしたくなる顔",
+          "classification_label": "チャーミングソフト"
+        },
+        {
+          "id": "charming_hard",
+          "code": "ASV",
+          "label": "目が合うだけで、恋が始まる顔",
+          "classification_label": "チャーミングハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_charming_soft",
+          "sha256": "5fbc2b5e7be80a77cf10ff6eee0e025ef1eb9e2d9d390aaa48ee6ee7b30da6f5"
+        },
+        {
+          "id": "male_charming_hard",
+          "sha256": "e1cfdefdb3ae72786991dc2109eb8cb6cf5a38271cb6bcdd87f773a6f5bc6154"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ACQ"
+      ],
+      "key": "ACQ",
+      "image": "assets/share/letters/male/ACQ-7ad2e2710e3d.jpg",
+      "image_sha256": "7ad2e2710e3d6806cee871b0c2d5e3fd3e82a9cac4f8ff3a9c6b4e9c72292744",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "fresh_soft",
+          "code": "ACQ",
+          "label": "隣で笑っていてほしい、癒やし顔",
+          "classification_label": "フレッシュソフト"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_fresh_soft",
+          "sha256": "b43f427c2f92772a5c00c5c990d2eb2fd1a883dcf345c0ff19fa031f9bfe355f"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ACV"
+      ],
+      "key": "ACV",
+      "image": "assets/share/letters/male/ACV-4eca65083217.jpg",
+      "image_sha256": "4eca65083217d8ebc6bdda43e3c8259f9d882f230307b8c0cdfce97c26b94372",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "fresh_hard",
+          "code": "ACV",
+          "label": "さらっとかっこいい、青春の主役顔",
+          "classification_label": "フレッシュハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_fresh_hard",
+          "sha256": "4c1fa213da4f960138dc2e1af7aa6b99d529bb653c0e0061c22667f3d414bcd0"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ACQ",
+        "ACV"
+      ],
+      "key": "ACQ-ACV",
+      "image": "assets/share/letters/male/ACQ-ACV-4adc79123b62.jpg",
+      "image_sha256": "4adc79123b62fa685e62013ff358d4ab4de171cab1a07a421990515b0622450f",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "fresh_soft",
+          "code": "ACQ",
+          "label": "隣で笑っていてほしい、癒やし顔",
+          "classification_label": "フレッシュソフト"
+        },
+        {
+          "id": "fresh_hard",
+          "code": "ACV",
+          "label": "さらっとかっこいい、青春の主役顔",
+          "classification_label": "フレッシュハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_fresh_soft",
+          "sha256": "b43f427c2f92772a5c00c5c990d2eb2fd1a883dcf345c0ff19fa031f9bfe355f"
+        },
+        {
+          "id": "male_fresh_hard",
+          "sha256": "4c1fa213da4f960138dc2e1af7aa6b99d529bb653c0e0061c22667f3d414bcd0"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ASQ",
+        "ACQ"
+      ],
+      "key": "ASQ-ACQ",
+      "image": "assets/share/letters/male/ASQ-ACQ-dc508420c1b9.jpg",
+      "image_sha256": "dc508420c1b901a80ebb24dad83ea894e1f6fe03b49c6419481e6f24210a6ebe",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "charming_soft",
+          "code": "ASQ",
+          "label": "甘い笑顔に、つい甘やかしたくなる顔",
+          "classification_label": "チャーミングソフト"
+        },
+        {
+          "id": "fresh_soft",
+          "code": "ACQ",
+          "label": "隣で笑っていてほしい、癒やし顔",
+          "classification_label": "フレッシュソフト"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_charming_soft",
+          "sha256": "5fbc2b5e7be80a77cf10ff6eee0e025ef1eb9e2d9d390aaa48ee6ee7b30da6f5"
+        },
+        {
+          "id": "male_fresh_soft",
+          "sha256": "b43f427c2f92772a5c00c5c990d2eb2fd1a883dcf345c0ff19fa031f9bfe355f"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ASV",
+        "ACV"
+      ],
+      "key": "ASV-ACV",
+      "image": "assets/share/letters/male/ASV-ACV-71b69ad25fce.jpg",
+      "image_sha256": "71b69ad25fce8355f3d166b9ce82b1f5bc0c02fd7956816a381399a7fe62b4df",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "charming_hard",
+          "code": "ASV",
+          "label": "目が合うだけで、恋が始まる顔",
+          "classification_label": "チャーミングハード"
+        },
+        {
+          "id": "fresh_hard",
+          "code": "ACV",
+          "label": "さらっとかっこいい、青春の主役顔",
+          "classification_label": "フレッシュハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_charming_hard",
+          "sha256": "e1cfdefdb3ae72786991dc2109eb8cb6cf5a38271cb6bcdd87f773a6f5bc6154"
+        },
+        {
+          "id": "male_fresh_hard",
+          "sha256": "4c1fa213da4f960138dc2e1af7aa6b99d529bb653c0e0061c22667f3d414bcd0"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ASQ",
+        "ASV",
+        "ACQ",
+        "ACV"
+      ],
+      "key": "ASQ-ASV-ACQ-ACV",
+      "image": "assets/share/letters/male/ASQ-ASV-ACQ-ACV-fe36cf2499fb.jpg",
+      "image_sha256": "fe36cf2499fb4937af93d5ac79c3c2e208c4d84882ab2166625e7cfd004c187f",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "charming_soft",
+          "code": "ASQ",
+          "label": "甘い笑顔に、つい甘やかしたくなる顔",
+          "classification_label": "チャーミングソフト"
+        },
+        {
+          "id": "charming_hard",
+          "code": "ASV",
+          "label": "目が合うだけで、恋が始まる顔",
+          "classification_label": "チャーミングハード"
+        },
+        {
+          "id": "fresh_soft",
+          "code": "ACQ",
+          "label": "隣で笑っていてほしい、癒やし顔",
+          "classification_label": "フレッシュソフト"
+        },
+        {
+          "id": "fresh_hard",
+          "code": "ACV",
+          "label": "さらっとかっこいい、青春の主役顔",
+          "classification_label": "フレッシュハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_charming_soft",
+          "sha256": "5fbc2b5e7be80a77cf10ff6eee0e025ef1eb9e2d9d390aaa48ee6ee7b30da6f5"
+        },
+        {
+          "id": "male_charming_hard",
+          "sha256": "e1cfdefdb3ae72786991dc2109eb8cb6cf5a38271cb6bcdd87f773a6f5bc6154"
+        },
+        {
+          "id": "male_fresh_soft",
+          "sha256": "b43f427c2f92772a5c00c5c990d2eb2fd1a883dcf345c0ff19fa031f9bfe355f"
+        },
+        {
+          "id": "male_fresh_hard",
+          "sha256": "4c1fa213da4f960138dc2e1af7aa6b99d529bb653c0e0061c22667f3d414bcd0"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "RSQ"
+      ],
+      "key": "RSQ",
+      "image": "assets/share/letters/male/RSQ-d2c3b4761429.jpg",
+      "image_sha256": "d2c3b4761429b13e35d2677ba3a5f0d8e34c9355c223b7438f80099c70e86489",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "elegant_soft",
+          "code": "RSQ",
+          "label": "やさしい色気で、距離を縮める顔",
+          "classification_label": "エレガントソフト"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_elegant_soft",
+          "sha256": "9a8c88a29d2e4aedf4956515fd8da5a84ab99dc4889ed9de528dbbcd5405e90d"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "RSV"
+      ],
+      "key": "RSV",
+      "image": "assets/share/letters/male/RSV-49d1a371b182.jpg",
+      "image_sha256": "49d1a371b182e85bcc102a2627e1c70378ee3006be533b71e7025c1fd34be998",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "elegant_hard",
+          "code": "RSV",
+          "label": "登場した瞬間、空気が変わる顔",
+          "classification_label": "エレガントハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_elegant_hard",
+          "sha256": "3d89a63a81d43aeb638fa0762befb1582d44d59e68426e1a0db663a95d5ff5e0"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "RSQ",
+        "RSV"
+      ],
+      "key": "RSQ-RSV",
+      "image": "assets/share/letters/male/RSQ-RSV-44385e23c70e.jpg",
+      "image_sha256": "44385e23c70e16f5a44ea4a54712ec81ecbc64956ebf9b6ed27bd29990cc64b9",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "elegant_soft",
+          "code": "RSQ",
+          "label": "やさしい色気で、距離を縮める顔",
+          "classification_label": "エレガントソフト"
+        },
+        {
+          "id": "elegant_hard",
+          "code": "RSV",
+          "label": "登場した瞬間、空気が変わる顔",
+          "classification_label": "エレガントハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_elegant_soft",
+          "sha256": "9a8c88a29d2e4aedf4956515fd8da5a84ab99dc4889ed9de528dbbcd5405e90d"
+        },
+        {
+          "id": "male_elegant_hard",
+          "sha256": "3d89a63a81d43aeb638fa0762befb1582d44d59e68426e1a0db663a95d5ff5e0"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "RCQ"
+      ],
+      "key": "RCQ",
+      "image": "assets/share/letters/male/RCQ-c166ba9d2430.jpg",
+      "image_sha256": "c166ba9d2430de7d03aa1597022e3d5089fee619824374e12e59deed0e644ec6",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cool_soft",
+          "code": "RCQ",
+          "label": "静かな横顔まで、沼になる顔",
+          "classification_label": "クールソフト"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_cool_soft",
+          "sha256": "e0d140754be14adb1aa94ffab98bd59e716eb538bc7bf77bbf0601324ba1e73e"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "RCV"
+      ],
+      "key": "RCV",
+      "image": "assets/share/letters/male/RCV-0e12a85aee8d.jpg",
+      "image_sha256": "0e12a85aee8da7fb96868e74e2a65f9033f7a79f70ac4398fbb6bdaf0464ab08",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cool_hard",
+          "code": "RCV",
+          "label": "その眼差しに、心を持っていかれる顔",
+          "classification_label": "クールハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_cool_hard",
+          "sha256": "326708f9105a5cb34a702b048d7eef566465cee0b0d50ffdab4268ca071fb64c"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "RCQ",
+        "RCV"
+      ],
+      "key": "RCQ-RCV",
+      "image": "assets/share/letters/male/RCQ-RCV-13375e85a14d.jpg",
+      "image_sha256": "13375e85a14d48f50372e53fa653cfe0e27db271496eb78ebd13dddabe52616b",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "cool_soft",
+          "code": "RCQ",
+          "label": "静かな横顔まで、沼になる顔",
+          "classification_label": "クールソフト"
+        },
+        {
+          "id": "cool_hard",
+          "code": "RCV",
+          "label": "その眼差しに、心を持っていかれる顔",
+          "classification_label": "クールハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_cool_soft",
+          "sha256": "e0d140754be14adb1aa94ffab98bd59e716eb538bc7bf77bbf0601324ba1e73e"
+        },
+        {
+          "id": "male_cool_hard",
+          "sha256": "326708f9105a5cb34a702b048d7eef566465cee0b0d50ffdab4268ca071fb64c"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "RSQ",
+        "RCQ"
+      ],
+      "key": "RSQ-RCQ",
+      "image": "assets/share/letters/male/RSQ-RCQ-7338462ef1eb.jpg",
+      "image_sha256": "7338462ef1ebf4daf37d0af0e1ecb2a0c4ee3cedd2d44ea5bd6db1b29f62ba07",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "elegant_soft",
+          "code": "RSQ",
+          "label": "やさしい色気で、距離を縮める顔",
+          "classification_label": "エレガントソフト"
+        },
+        {
+          "id": "cool_soft",
+          "code": "RCQ",
+          "label": "静かな横顔まで、沼になる顔",
+          "classification_label": "クールソフト"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_elegant_soft",
+          "sha256": "9a8c88a29d2e4aedf4956515fd8da5a84ab99dc4889ed9de528dbbcd5405e90d"
+        },
+        {
+          "id": "male_cool_soft",
+          "sha256": "e0d140754be14adb1aa94ffab98bd59e716eb538bc7bf77bbf0601324ba1e73e"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "RSV",
+        "RCV"
+      ],
+      "key": "RSV-RCV",
+      "image": "assets/share/letters/male/RSV-RCV-2ef477aec779.jpg",
+      "image_sha256": "2ef477aec779a2368f4b784837f9dbccf685db0c1a337214497d5b1de15e4c93",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "elegant_hard",
+          "code": "RSV",
+          "label": "登場した瞬間、空気が変わる顔",
+          "classification_label": "エレガントハード"
+        },
+        {
+          "id": "cool_hard",
+          "code": "RCV",
+          "label": "その眼差しに、心を持っていかれる顔",
+          "classification_label": "クールハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_elegant_hard",
+          "sha256": "3d89a63a81d43aeb638fa0762befb1582d44d59e68426e1a0db663a95d5ff5e0"
+        },
+        {
+          "id": "male_cool_hard",
+          "sha256": "326708f9105a5cb34a702b048d7eef566465cee0b0d50ffdab4268ca071fb64c"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "RSQ",
+        "RSV",
+        "RCQ",
+        "RCV"
+      ],
+      "key": "RSQ-RSV-RCQ-RCV",
+      "image": "assets/share/letters/male/RSQ-RSV-RCQ-RCV-8a37ec829dcf.jpg",
+      "image_sha256": "8a37ec829dcf36e03c99104845ffa99dc0bbe2347b24ad6a263bef2d502a1879",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "elegant_soft",
+          "code": "RSQ",
+          "label": "やさしい色気で、距離を縮める顔",
+          "classification_label": "エレガントソフト"
+        },
+        {
+          "id": "elegant_hard",
+          "code": "RSV",
+          "label": "登場した瞬間、空気が変わる顔",
+          "classification_label": "エレガントハード"
+        },
+        {
+          "id": "cool_soft",
+          "code": "RCQ",
+          "label": "静かな横顔まで、沼になる顔",
+          "classification_label": "クールソフト"
+        },
+        {
+          "id": "cool_hard",
+          "code": "RCV",
+          "label": "その眼差しに、心を持っていかれる顔",
+          "classification_label": "クールハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_elegant_soft",
+          "sha256": "9a8c88a29d2e4aedf4956515fd8da5a84ab99dc4889ed9de528dbbcd5405e90d"
+        },
+        {
+          "id": "male_elegant_hard",
+          "sha256": "3d89a63a81d43aeb638fa0762befb1582d44d59e68426e1a0db663a95d5ff5e0"
+        },
+        {
+          "id": "male_cool_soft",
+          "sha256": "e0d140754be14adb1aa94ffab98bd59e716eb538bc7bf77bbf0601324ba1e73e"
+        },
+        {
+          "id": "male_cool_hard",
+          "sha256": "326708f9105a5cb34a702b048d7eef566465cee0b0d50ffdab4268ca071fb64c"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ASQ",
+        "RSQ"
+      ],
+      "key": "ASQ-RSQ",
+      "image": "assets/share/letters/male/ASQ-RSQ-bf8953fefc41.jpg",
+      "image_sha256": "bf8953fefc41b5d3461af9a8bc95f1a9dcdcc8fc67f2a7ddcc10491667465de3",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "charming_soft",
+          "code": "ASQ",
+          "label": "甘い笑顔に、つい甘やかしたくなる顔",
+          "classification_label": "チャーミングソフト"
+        },
+        {
+          "id": "elegant_soft",
+          "code": "RSQ",
+          "label": "やさしい色気で、距離を縮める顔",
+          "classification_label": "エレガントソフト"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_charming_soft",
+          "sha256": "5fbc2b5e7be80a77cf10ff6eee0e025ef1eb9e2d9d390aaa48ee6ee7b30da6f5"
+        },
+        {
+          "id": "male_elegant_soft",
+          "sha256": "9a8c88a29d2e4aedf4956515fd8da5a84ab99dc4889ed9de528dbbcd5405e90d"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ASV",
+        "RSV"
+      ],
+      "key": "ASV-RSV",
+      "image": "assets/share/letters/male/ASV-RSV-46d4993390ee.jpg",
+      "image_sha256": "46d4993390ee13234cfe52be9a9f956397c02966ef30eb765ecbf8f26938379d",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "charming_hard",
+          "code": "ASV",
+          "label": "目が合うだけで、恋が始まる顔",
+          "classification_label": "チャーミングハード"
+        },
+        {
+          "id": "elegant_hard",
+          "code": "RSV",
+          "label": "登場した瞬間、空気が変わる顔",
+          "classification_label": "エレガントハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_charming_hard",
+          "sha256": "e1cfdefdb3ae72786991dc2109eb8cb6cf5a38271cb6bcdd87f773a6f5bc6154"
+        },
+        {
+          "id": "male_elegant_hard",
+          "sha256": "3d89a63a81d43aeb638fa0762befb1582d44d59e68426e1a0db663a95d5ff5e0"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ASQ",
+        "ASV",
+        "RSQ",
+        "RSV"
+      ],
+      "key": "ASQ-ASV-RSQ-RSV",
+      "image": "assets/share/letters/male/ASQ-ASV-RSQ-RSV-de27cd2383b9.jpg",
+      "image_sha256": "de27cd2383b96d7e92a260a334022c43dee01df940aeb1d2aa5a1e9619b05b2b",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "charming_soft",
+          "code": "ASQ",
+          "label": "甘い笑顔に、つい甘やかしたくなる顔",
+          "classification_label": "チャーミングソフト"
+        },
+        {
+          "id": "charming_hard",
+          "code": "ASV",
+          "label": "目が合うだけで、恋が始まる顔",
+          "classification_label": "チャーミングハード"
+        },
+        {
+          "id": "elegant_soft",
+          "code": "RSQ",
+          "label": "やさしい色気で、距離を縮める顔",
+          "classification_label": "エレガントソフト"
+        },
+        {
+          "id": "elegant_hard",
+          "code": "RSV",
+          "label": "登場した瞬間、空気が変わる顔",
+          "classification_label": "エレガントハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_charming_soft",
+          "sha256": "5fbc2b5e7be80a77cf10ff6eee0e025ef1eb9e2d9d390aaa48ee6ee7b30da6f5"
+        },
+        {
+          "id": "male_charming_hard",
+          "sha256": "e1cfdefdb3ae72786991dc2109eb8cb6cf5a38271cb6bcdd87f773a6f5bc6154"
+        },
+        {
+          "id": "male_elegant_soft",
+          "sha256": "9a8c88a29d2e4aedf4956515fd8da5a84ab99dc4889ed9de528dbbcd5405e90d"
+        },
+        {
+          "id": "male_elegant_hard",
+          "sha256": "3d89a63a81d43aeb638fa0762befb1582d44d59e68426e1a0db663a95d5ff5e0"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ACQ",
+        "RCQ"
+      ],
+      "key": "ACQ-RCQ",
+      "image": "assets/share/letters/male/ACQ-RCQ-134532a9c6a1.jpg",
+      "image_sha256": "134532a9c6a14764188b6313befa4f602a42fbf6bf3944e1234a8815438fab27",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "fresh_soft",
+          "code": "ACQ",
+          "label": "隣で笑っていてほしい、癒やし顔",
+          "classification_label": "フレッシュソフト"
+        },
+        {
+          "id": "cool_soft",
+          "code": "RCQ",
+          "label": "静かな横顔まで、沼になる顔",
+          "classification_label": "クールソフト"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_fresh_soft",
+          "sha256": "b43f427c2f92772a5c00c5c990d2eb2fd1a883dcf345c0ff19fa031f9bfe355f"
+        },
+        {
+          "id": "male_cool_soft",
+          "sha256": "e0d140754be14adb1aa94ffab98bd59e716eb538bc7bf77bbf0601324ba1e73e"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ACV",
+        "RCV"
+      ],
+      "key": "ACV-RCV",
+      "image": "assets/share/letters/male/ACV-RCV-ad43b2e79a78.jpg",
+      "image_sha256": "ad43b2e79a780bea03f81680294b8846831699011c0357b916587d76c40e3bec",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "fresh_hard",
+          "code": "ACV",
+          "label": "さらっとかっこいい、青春の主役顔",
+          "classification_label": "フレッシュハード"
+        },
+        {
+          "id": "cool_hard",
+          "code": "RCV",
+          "label": "その眼差しに、心を持っていかれる顔",
+          "classification_label": "クールハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_fresh_hard",
+          "sha256": "4c1fa213da4f960138dc2e1af7aa6b99d529bb653c0e0061c22667f3d414bcd0"
+        },
+        {
+          "id": "male_cool_hard",
+          "sha256": "326708f9105a5cb34a702b048d7eef566465cee0b0d50ffdab4268ca071fb64c"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ACQ",
+        "ACV",
+        "RCQ",
+        "RCV"
+      ],
+      "key": "ACQ-ACV-RCQ-RCV",
+      "image": "assets/share/letters/male/ACQ-ACV-RCQ-RCV-872021062e11.jpg",
+      "image_sha256": "872021062e11276532421f3457c0a17760adc37936396ca38b5c9a2a1124d5dc",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "fresh_soft",
+          "code": "ACQ",
+          "label": "隣で笑っていてほしい、癒やし顔",
+          "classification_label": "フレッシュソフト"
+        },
+        {
+          "id": "fresh_hard",
+          "code": "ACV",
+          "label": "さらっとかっこいい、青春の主役顔",
+          "classification_label": "フレッシュハード"
+        },
+        {
+          "id": "cool_soft",
+          "code": "RCQ",
+          "label": "静かな横顔まで、沼になる顔",
+          "classification_label": "クールソフト"
+        },
+        {
+          "id": "cool_hard",
+          "code": "RCV",
+          "label": "その眼差しに、心を持っていかれる顔",
+          "classification_label": "クールハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_fresh_soft",
+          "sha256": "b43f427c2f92772a5c00c5c990d2eb2fd1a883dcf345c0ff19fa031f9bfe355f"
+        },
+        {
+          "id": "male_fresh_hard",
+          "sha256": "4c1fa213da4f960138dc2e1af7aa6b99d529bb653c0e0061c22667f3d414bcd0"
+        },
+        {
+          "id": "male_cool_soft",
+          "sha256": "e0d140754be14adb1aa94ffab98bd59e716eb538bc7bf77bbf0601324ba1e73e"
+        },
+        {
+          "id": "male_cool_hard",
+          "sha256": "326708f9105a5cb34a702b048d7eef566465cee0b0d50ffdab4268ca071fb64c"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ASQ",
+        "ACQ",
+        "RSQ",
+        "RCQ"
+      ],
+      "key": "ASQ-ACQ-RSQ-RCQ",
+      "image": "assets/share/letters/male/ASQ-ACQ-RSQ-RCQ-f811bcf44df1.jpg",
+      "image_sha256": "f811bcf44df1fa52cd41b9d8927e1738b1f938675e42fa781c651c3cbf37f3de",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "charming_soft",
+          "code": "ASQ",
+          "label": "甘い笑顔に、つい甘やかしたくなる顔",
+          "classification_label": "チャーミングソフト"
+        },
+        {
+          "id": "fresh_soft",
+          "code": "ACQ",
+          "label": "隣で笑っていてほしい、癒やし顔",
+          "classification_label": "フレッシュソフト"
+        },
+        {
+          "id": "elegant_soft",
+          "code": "RSQ",
+          "label": "やさしい色気で、距離を縮める顔",
+          "classification_label": "エレガントソフト"
+        },
+        {
+          "id": "cool_soft",
+          "code": "RCQ",
+          "label": "静かな横顔まで、沼になる顔",
+          "classification_label": "クールソフト"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_charming_soft",
+          "sha256": "5fbc2b5e7be80a77cf10ff6eee0e025ef1eb9e2d9d390aaa48ee6ee7b30da6f5"
+        },
+        {
+          "id": "male_fresh_soft",
+          "sha256": "b43f427c2f92772a5c00c5c990d2eb2fd1a883dcf345c0ff19fa031f9bfe355f"
+        },
+        {
+          "id": "male_elegant_soft",
+          "sha256": "9a8c88a29d2e4aedf4956515fd8da5a84ab99dc4889ed9de528dbbcd5405e90d"
+        },
+        {
+          "id": "male_cool_soft",
+          "sha256": "e0d140754be14adb1aa94ffab98bd59e716eb538bc7bf77bbf0601324ba1e73e"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ASV",
+        "ACV",
+        "RSV",
+        "RCV"
+      ],
+      "key": "ASV-ACV-RSV-RCV",
+      "image": "assets/share/letters/male/ASV-ACV-RSV-RCV-bb60f6cfa3e8.jpg",
+      "image_sha256": "bb60f6cfa3e80d9ab165c64b335f0bb1b53bfbbf896da7526c3baecc82d1604e",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "charming_hard",
+          "code": "ASV",
+          "label": "目が合うだけで、恋が始まる顔",
+          "classification_label": "チャーミングハード"
+        },
+        {
+          "id": "fresh_hard",
+          "code": "ACV",
+          "label": "さらっとかっこいい、青春の主役顔",
+          "classification_label": "フレッシュハード"
+        },
+        {
+          "id": "elegant_hard",
+          "code": "RSV",
+          "label": "登場した瞬間、空気が変わる顔",
+          "classification_label": "エレガントハード"
+        },
+        {
+          "id": "cool_hard",
+          "code": "RCV",
+          "label": "その眼差しに、心を持っていかれる顔",
+          "classification_label": "クールハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_charming_hard",
+          "sha256": "e1cfdefdb3ae72786991dc2109eb8cb6cf5a38271cb6bcdd87f773a6f5bc6154"
+        },
+        {
+          "id": "male_fresh_hard",
+          "sha256": "4c1fa213da4f960138dc2e1af7aa6b99d529bb653c0e0061c22667f3d414bcd0"
+        },
+        {
+          "id": "male_elegant_hard",
+          "sha256": "3d89a63a81d43aeb638fa0762befb1582d44d59e68426e1a0db663a95d5ff5e0"
+        },
+        {
+          "id": "male_cool_hard",
+          "sha256": "326708f9105a5cb34a702b048d7eef566465cee0b0d50ffdab4268ca071fb64c"
+        }
+      ]
+    },
+    {
+      "gender": "male",
+      "codes": [
+        "ASQ",
+        "ASV",
+        "ACQ",
+        "ACV",
+        "RSQ",
+        "RSV",
+        "RCQ",
+        "RCV"
+      ],
+      "key": "ASQ-ASV-ACQ-ACV-RSQ-RSV-RCQ-RCV",
+      "image": "assets/share/letters/male/ASQ-ASV-ACQ-ACV-RSQ-RSV-RCQ-RCV-5d186d1b648b.jpg",
+      "image_sha256": "5d186d1b648b29aac0e5237f426ebe6b5d056c370b0e18fa4b6b9b78c3136eaa",
+      "width": 1200,
+      "height": 600,
+      "types": [
+        {
+          "id": "charming_soft",
+          "code": "ASQ",
+          "label": "甘い笑顔に、つい甘やかしたくなる顔",
+          "classification_label": "チャーミングソフト"
+        },
+        {
+          "id": "charming_hard",
+          "code": "ASV",
+          "label": "目が合うだけで、恋が始まる顔",
+          "classification_label": "チャーミングハード"
+        },
+        {
+          "id": "fresh_soft",
+          "code": "ACQ",
+          "label": "隣で笑っていてほしい、癒やし顔",
+          "classification_label": "フレッシュソフト"
+        },
+        {
+          "id": "fresh_hard",
+          "code": "ACV",
+          "label": "さらっとかっこいい、青春の主役顔",
+          "classification_label": "フレッシュハード"
+        },
+        {
+          "id": "elegant_soft",
+          "code": "RSQ",
+          "label": "やさしい色気で、距離を縮める顔",
+          "classification_label": "エレガントソフト"
+        },
+        {
+          "id": "elegant_hard",
+          "code": "RSV",
+          "label": "登場した瞬間、空気が変わる顔",
+          "classification_label": "エレガントハード"
+        },
+        {
+          "id": "cool_soft",
+          "code": "RCQ",
+          "label": "静かな横顔まで、沼になる顔",
+          "classification_label": "クールソフト"
+        },
+        {
+          "id": "cool_hard",
+          "code": "RCV",
+          "label": "その眼差しに、心を持っていかれる顔",
+          "classification_label": "クールハード"
+        }
+      ],
+      "characters": [
+        {
+          "id": "male_charming_soft",
+          "sha256": "5fbc2b5e7be80a77cf10ff6eee0e025ef1eb9e2d9d390aaa48ee6ee7b30da6f5"
+        },
+        {
+          "id": "male_charming_hard",
+          "sha256": "e1cfdefdb3ae72786991dc2109eb8cb6cf5a38271cb6bcdd87f773a6f5bc6154"
+        },
+        {
+          "id": "male_fresh_soft",
+          "sha256": "b43f427c2f92772a5c00c5c990d2eb2fd1a883dcf345c0ff19fa031f9bfe355f"
+        },
+        {
+          "id": "male_fresh_hard",
+          "sha256": "4c1fa213da4f960138dc2e1af7aa6b99d529bb653c0e0061c22667f3d414bcd0"
+        },
+        {
+          "id": "male_elegant_soft",
+          "sha256": "9a8c88a29d2e4aedf4956515fd8da5a84ab99dc4889ed9de528dbbcd5405e90d"
+        },
+        {
+          "id": "male_elegant_hard",
+          "sha256": "3d89a63a81d43aeb638fa0762befb1582d44d59e68426e1a0db663a95d5ff5e0"
+        },
+        {
+          "id": "male_cool_soft",
+          "sha256": "e0d140754be14adb1aa94ffab98bd59e716eb538bc7bf77bbf0601324ba1e73e"
+        },
+        {
+          "id": "male_cool_hard",
+          "sha256": "326708f9105a5cb34a702b048d7eef566465cee0b0d50ffdab4268ca071fb64c"
+        }
+      ]
+    }
+  ]
+}

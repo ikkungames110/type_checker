@@ -33,6 +33,7 @@ def build_share_pages(destination):
             relative = f'share/{face["asset_version"]}/{face["id"]}/{result_type["id"]}/'
             values = {
                 "title": result_type["label"],
+                "code": result_type["code"],
                 "classification_label": result_type["classification_label"],
                 "description": f'好みの{gender_label}の顔は「{result_type["label"]}」。あなたも20問の2択で、惹かれる顔を見つけてみませんか？',
                 "page_url": site_url + relative,

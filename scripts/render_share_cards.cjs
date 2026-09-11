@@ -48,6 +48,7 @@ async function main() {
           image.src = characterImage;
           document.getElementById('target').textContent = `私が惹かれる${gender === 'female' ? '女性' : '男性'}の顔のタイプ`;
           document.getElementById('type-title').textContent = type.label;
+          document.getElementById('type-code').textContent = type.code;
           document.getElementById('classification').textContent = `(${type.classification_label}タイプ)`;
           await image.decode();
         }, { characterImage: `data:image/png;base64,${artwork.toString('base64')}`, gender, type });
@@ -59,7 +60,7 @@ async function main() {
           id: face.id, gender, asset_version: face.asset_version, image,
           source_image: face.image, source_sha256: sourceHash,
           character_id: character.id, character_sha256: character.sha256,
-          type_id: type.id, type_label: type.label, classification_label: type.classification_label,
+          type_id: type.id, type_code: type.code, type_label: type.label, classification_label: type.classification_label,
           image_sha256: imageHash, width: 1200, height: 600
         });
       }

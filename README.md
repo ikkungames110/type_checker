@@ -1,18 +1,18 @@
 # 好みの顔タイプ診断
 
-全員25歳の設定で個別生成した、男女各40枚（8タイプ×5人）の顔写真を使う静的Webアプリです。結果はタイプを表すキャラクターと、同タイプの顔5枚で表示します。[本番サイト](https://type-checker.shianstudio.com/top/) / [キャラクター16体と顔の例](https://type-checker.shianstudio.com/docs/characters.html) / [80枚の比較ページ](docs/face-types-v8.html)
+全員25歳の設定で個別生成した、男女各40枚（8タイプ×5人）の顔写真を使う静的Webアプリです。結果は3文字コード・キャラクター・同タイプの顔5枚・各文字の割合で表示します。[本番サイト](https://type-checker.shianstudio.com/top/) / [キャラクター16体と顔の例](https://type-checker.shianstudio.com/docs/characters.html) / [80枚の比較ページ](docs/face-types-v8.html)
 
 ## 出題と採点
 
-- 二択は必ず異なるタイプ同士。最初の20組で、対象の40枚を重複なくすべて表示します。
-- 好きな顔を選ぶと、その顔の `type` に1点。20回選ぶと結果を表示します。特徴量やタグの加算はありません。
-- 「どっちもタイプじゃない」は選択回数・得点を増やさず、両方の所属タイプを記録して次の二択へ進みます。
-- 21組目以降は、その診断中に一度でも「タイプじゃない」としたタイプを除外します。最初の20組の出題には影響しません。
-- 除外が7タイプ以上になった時点で制限を解除し、以降は全8タイプから出題します。
-- 追加出題でも、対象タイプの未表示画像を優先します。対象が奇数枚の場合は最後の1枚を優先し、相手を次の一巡から補充するため、同じタイプ同士にはなりません。
-- 最多得票のタイプが結果。同率1位の場合は、そのタイプの中から等確率でランダムに選び、結果を保存します。再読み込みで再抽選はしません。共有URLの顔IDは従来どおり選択済みの代表画像から決めますが、画面にはタイプのキャラクターと、そのタイプの5人を表示します。
+- 二択は異なるタイプ同士。最初の20組で40人全員が一度ずつ登場します。
+- 20回、好みに近い顔を選びます。ASQの画像なら、A・S・Qへ1票ずつ加算します。
+- A/R・S/C・Q/Vを独立に集計し、各軸で多い文字を組み合わせて結果にします。タイプ自体の最多得票では判定しません。
+- 同点の軸は両方を残します。S/Cだけ同点なら `ASQ / ACQ`、2軸同点なら4タイプ、3軸同点なら8タイプを表示します。抽選はしません。
+- 結果には大きなコード、該当キャラ、タイプごとに顔5枚、各文字の割合と票数を表示。各軸の合計は20票・100%です。
+- 「どっちもタイプじゃない」は加点せず、両方のタイプを除外候補にします。除外は21組目以降に適用。7タイプ以上が除外されたら、その診断中は全8タイプを使う状態へ戻します。
+- 回答・表示中の二択・一巡の残り・除外情報を保存し、再読み込み後も継続します。古い保存済み回答も3文字方式で再計算します。
 
-出題は [face_deck.js](js/face_deck.js)、採点は [face_scoring.js](js/face_scoring.js)、男女8種類ずつの結果名・説明は [result_types.js](data/result_types.js) にあります。クイズの二択カードには画像だけを表示します。結果には選択回数を出さず、キャッチコピーの右下に「(キュートタイプ)」などの分類名を添えます。女性の結果名は「顔」で統一しています。
+出題は [face_deck.js](js/face_deck.js)、採点は [face_scoring.js](js/face_scoring.js)、男女8タイプのコード・結果名は [result_types.js](data/result_types.js)、3軸の定義は [type_axes.js](data/type_axes.js)。選択カードには画像のみを表示します。分類名は結果タイトルの右下に添え、女性の結果名は「顔」で統一しています。
 
 ## 画像
 
@@ -20,12 +20,13 @@
 
 トップ画面は `female_fresh`・`male_fresh_soft` のデフォルメキャラクター。サイトカードには男女8体を並べています。結果のキャラ16体は `assets/characters/v1/`、顔の例との対応は [type_presentation.js](js/type_presentation.js) にあります。[キャラクター制作・再生成手順](docs/characters-v1.md) / [サイトカードの制作記録](data/promotion_card.json)。写真自体の記録は [v8制作記録](docs/顔タイプ生成_ver8.md) を参照してください。
 
-結果共有URLは `share/v8/<顔ID>/<タイプID>/`。既存80ページを維持し、所属タイプのキャラクター・名前・5枚の顔の例を表示します。OGPはキャラクターとタイプ名です。共有用80枚のJPEGと宣材PNGはGitに保存し、通常の公開ビルドでは画像を生成しません。共有画像の再作成は次のコマンドです。
+新しい結果共有URLは `share/letters/<gender>/<コードをハイフンで連結>/`。各軸のA・S・Q票数を `?a=20&s=10&q=20` のように付け、共有先でも同じ割合を表示します。単独・同点を含む男女27通りずつ、54ページと54枚のOGPを生成。既存の `share/v8/<顔ID>/<タイプID>/` 80ページも維持し、3文字を追加しています。画像はGitに保存し、通常ビルドでは再生成しません。
 
 ```bash
 npm ci
 npx playwright install --with-deps chromium
 npm run render:share-cards
+node scripts/render_letter_share_cards.cjs
 node scripts/render_promotion_card.cjs
 ```
 
@@ -44,11 +45,18 @@ npm run test:navigation
 
 ## サイトカードの比較案
 
-[キャラ＋3文字のOGP 20案](https://type-checker.shianstudio.com/docs/character-ogp)。既存キャラを1〜4体ずつ使用し、余白・謎めく・会話・図鑑の4方向で5案ずつ用意。PNG保存、一覧シート、ZIP、拡大、候補の保存、SNS幅での比較ができます。3文字は前回の仮対応を引き継いだ検討用表示で、診断本体への導入や本番OGPの差し替えは行っていません。[制作・再生成手順](docs/character-ogp-assets/README.md)。
+[キャラ＋3文字のOGP 20案](https://type-checker.shianstudio.com/docs/character-ogp)。既存キャラを1〜4体ずつ使用し、余白・謎めく・会話・図鑑の4方向で5案ずつ用意。PNG保存、一覧シート、ZIP、拡大、候補の保存、SNS幅での比較ができます。3文字の対応は診断本体にも導入しました。[制作・再生成手順](docs/character-ogp-assets/README.md)。
 
-[初回の10案×写真あり・なしの比較ページ](https://type-checker.shianstudio.com/docs/card-lab.html)。短い問いかけと静かな雰囲気の20枚、投稿文、3文字で表す8タイプの提案、5つの診断サービスのOGP調査を保存しています。現在はキャラクター版を採用。3文字コードは引き続き検討案です。
+[初回の10案×写真あり・なしの比較ページ](https://type-checker.shianstudio.com/docs/card-lab.html)。短い問いかけと静かな雰囲気の20枚、投稿文、3文字で表す8タイプの提案、5つの診断サービスのOGP調査を保存しています。現在はキャラクター版と3文字コードを採用しています。初回の提案として保存した資料です。
 
 ローカルでは `docs/card-lab.html` を開きます。[調査・分類の注意点と再生成手順](docs/card-lab-assets/research.md)を参照してください。
+
+## OGPを切り替える入口
+
+- [03の画像で共有するURL](https://type-checker.shianstudio.com/top/03/) — 好きの小さな本棚。
+- [05の画像で共有するURL](https://type-checker.shianstudio.com/top/05/) — ふたつの空気。
+
+どちらも静的HTMLに別々のOGPを持ち、人が開くとJavaScriptで通常のトップへ移動します。通常の `/top/` のOGPは維持しています。初期HTMLとブラウザ遷移を別々に検証します。[3文字の採点・共有・OGP入口の仕様](docs/letters-v1.md)。
 
 ## 宣伝PV
 

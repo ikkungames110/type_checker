@@ -29,7 +29,7 @@ const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
    console.log(c.id+' '+c.name+' / '+sources.map(s=>s.code).join(', '));
   }
   if(errors.length)throw new Error(errors.join('\n'));
-  const manifest={source:'docs/character-ogp.html',method:'Playwright HTML/CSS render using existing character PNGs',code_status:'proposal',render_sources:{}};
+  const manifest={source:'docs/character-ogp.html',method:'Playwright HTML/CSS render using existing character PNGs',code_status:'active',render_sources:{}};
   for(const name of ['docs/character-ogp.html','docs/character-ogp-assets/cards.css','docs/character-ogp-assets/gallery.css','docs/character-ogp-assets/concepts.js','docs/character-ogp-assets/app.js'])manifest.render_sources[name]=hash(await fs.readFile(path.join(root,name)));
   manifest.cards=cards;await fs.writeFile(path.join(output,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
   await page.setViewportSize({width:1440,height:1240});

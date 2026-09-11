@@ -55,6 +55,10 @@ async function main() {
       };
       const pair = () => page.locator('#duel img').evaluateAll(images => images.map(image => image.getAttribute('src')));
 
+      for(const variant of ['03','05']){
+        await page.goto(routeUrl(`top/${variant}`));
+        await ready('top');
+      }
       await page.goto(site.href);
       const topDocument = await ready('top');
       assert.equal(await page.locator('#sampleA img').getAttribute('src'), 'assets/characters/v1/female_fresh.png');
@@ -109,84 +113,80 @@ async function main() {
       await page.evaluate(() => { Storage.prototype.setItem = window.__originalSetItem; });
       await page.locator('#rightCard').click();
       assert.notEqual(await ready('result'), resumedDocument);
-      const title = await page.locator('#resultTitle').innerText();
-      const characterSrc = await page.locator('#resultCharacter').getAttribute('src');
-      assert.ok(title);
       const resultData = await page.evaluate(key => {
         const saved = JSON.parse(sessionStorage.getItem(key));
         const records = saved.gender === 'female' ? window.FEMALE_FACE_ASSETS : window.MALE_FACE_ASSETS;
+        const types = window.FACE_RESULT_TYPES[saved.gender];
         const byId = new Map(records.map(face => [face.id, face]));
-        const scores = {};
-        for (const id of saved.chosenIds) scores[byId.get(id).type] = (scores[byId.get(id).type] || 0) + 1;
-        const shareLink = new URL(document.querySelector('#xShareButton').href);
-        const portraitId = new URL(shareLink.searchParams.get('url')).pathname.split('/')[3];
-        const winner = byId.get(portraitId).type;
-        return { chosen: saved.chosenIds.includes(portraitId), total: Object.values(scores).reduce((a,b) => a+b,0),
-          max: Math.max(...Object.values(scores)), winnerCount: scores[winner], winner,
-          savedWinner: saved.winnerId, portraitId,
-          expectedExamples: records.filter(face => face.type === winner).map(face => face.id).sort(),
-          character: window.FACE_CHARACTERS.find(item => item.gender === saved.gender && item.type === winner),
-          classification: window.FACE_RESULT_TYPES[saved.gender].find(type => type.id === winner).classification_label,
-          label: window.FACE_RESULT_TYPES[saved.gender].find(type => type.id === winner).label };
-      }, sessionKey);
-      assert.equal(resultData.total, 20);
-      assert.equal(resultData.chosen, true);
-      assert.equal(resultData.max, resultData.winnerCount);
-      assert.equal(title, resultData.label);
-      assert.equal(resultData.savedWinner, resultData.winner);
-      assert.equal(await page.locator('#resultClassification').innerText(), `(${resultData.classification}タイプ)`);
-      assert.equal(await page.locator('#resultBars').count(), 0);
-      await page.locator('#resultCharacter').evaluate(img => img.decode());
-      assert.deepEqual(await page.locator('#resultExamples img').evaluateAll(images => images.map(img => img.dataset.faceId).sort()), resultData.expectedExamples);
-      assert.equal(await page.locator('#resultExamples img').count(), 5);
-      assert.equal(await page.locator('#resultCharacter').evaluate(img => Math.abs(img.clientWidth / img.clientHeight - 1) < 0.01), true);
-      assert.ok(characterSrc.startsWith(resultData.character.image));
-      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
-      await page.screenshot({ path: `/tmp/type-checker-v8-result-${gender}-${width}.png`, fullPage: true });
-      assert.ok(characterSrc.startsWith('assets/characters/v1/'));
-      const share = new URL(await page.locator('#xShareButton').getAttribute('href'));
-      const shareUrl = new URL(share.searchParams.get('url'));
-      assert.match(shareUrl.pathname, new RegExp(`^/share/v8/${gender}_\\d{3}/[a-z_]+/$`));
-      assert.equal(resultData.portraitId, shareUrl.pathname.split('/')[3]);
-      const sharedPage = await context.newPage();
-      await sharedPage.goto(new URL(shareUrl.pathname, site).href);
-      assert.equal(await sharedPage.locator('.result-classification').innerText(), `(${resultData.classification}タイプ)`);
-      assert.equal(new URL(await sharedPage.locator('.cta').getAttribute('href'), sharedPage.url()).href, routeUrl('top'));
-      assert.equal(await sharedPage.locator('.examples-grid img').count(), 5);
-      assert.equal(await sharedPage.locator('.character').getAttribute('src'), '../../../../' + resultData.character.image + '?v=' + resultData.character.sha256.slice(0, 12));
+        const counts = {A:0,R:0,S:0,C:0,Q:0,V:0};
+        saved.chosenIds.forEach(id => {const code=types.find(type=>type.id===byId.get(id).type).code;for(const letter of code)counts[letter]++;});
+        const winners=[['A','R'],['S','C'],['Q','V']].map(pair=>pair.filter(letter=>counts[letter]===Math.max(...pair.map(l=>counts[l]))));
+        const codes=winners.reduce((prefixes,letters)=>prefixes.flatMap(prefix=>letters.map(letter=>prefix+letter)),['']);
+        return {codes,counts,total:saved.chosenIds.length,types:codes.map(code=>{
+          const type=types.find(type=>type.code===code);
+          return {...type,character:window.FACE_CHARACTERS.find(c=>c.gender===saved.gender&&c.type===type.id),examples:records.filter(face=>face.type===type.id).map(face=>face.id).sort()};
+        })};
+      },sessionKey);
+      assert.equal(resultData.total,20);
+      assert.deepEqual(await page.locator('#resultCodes [data-code]').evaluateAll(nodes=>nodes.map(n=>n.dataset.code)),resultData.codes);
+      assert.equal(await page.locator('#resultTypes .letter-type').count(),resultData.codes.length);
+      for(const type of resultData.types){
+        const card=page.locator(`#resultTypes [data-code="${type.code}"]`);
+        assert.equal(await card.locator('h2').innerText(),type.label);
+        assert.equal(await card.locator('.result-classification').innerText(),`(${type.classification_label}タイプ)`);
+        assert.ok((await card.locator('img').getAttribute('src')).startsWith(type.character.image+'?v='));
+        await card.locator('img').evaluate(img=>img.decode());
+        assert.deepEqual(await page.locator(`#resultExamples [data-code="${type.code}"] img`).evaluateAll(nodes=>nodes.map(n=>n.dataset.faceId).sort()),type.examples);
+      }
+      for(const [letter,count] of Object.entries(resultData.counts)){
+        const option=page.locator(`#resultBreakdown [data-letter="${letter}"]`);
+        assert.equal(await option.getAttribute('data-count'),String(count));
+        assert.equal(await option.locator('strong').innerText(),`${count*5}%`);
+      }
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+      const codeText=await page.locator('#resultCodes').innerText();
+      const originalShare=await page.locator('#xShareButton').getAttribute('href');
+      const share=new URL(originalShare);
+      assert.equal(share.hostname,'x.com');
+      assert.ok(share.searchParams.get('text').includes(resultData.codes.join(' / ')));
+      const shareUrl=new URL(share.searchParams.get('url'));
+      assert.equal(shareUrl.pathname,`/share/letters/${gender}/${resultData.codes.join('-')}/`);
+      const sharedPage=await context.newPage();
+      sharedPage.on('pageerror',error=>errors.push(error.message));
+      await sharedPage.goto(new URL(shareUrl.pathname+shareUrl.search,site).href);
+      assert.deepEqual(await sharedPage.locator('#shared-codes [data-code]').evaluateAll(nodes=>nodes.map(n=>n.dataset.code)),resultData.codes);
+      assert.equal(await sharedPage.locator('#shared-types .letter-type').count(),resultData.codes.length);
+      for(const [letter,count] of Object.entries(resultData.counts))assert.equal(await sharedPage.locator(`#shared-breakdown [data-letter="${letter}"]`).getAttribute('data-count'),String(count));
+      assert.equal(await sharedPage.locator('.example-grid img').count(),resultData.codes.length*5);
       await sharedPage.close();
-      await page.reload();
-      await ready('result');
-      assert.equal(await page.locator('#resultTitle').innerText(), title);
-      assert.equal(await page.locator('#resultCharacter').getAttribute('src'), characterSrc);
+      await page.screenshot({path:`/tmp/type-checker-letters-result-${gender}-${width}.png`,fullPage:true});
+      await page.reload();await ready('result');
+      assert.equal(await page.locator('#resultCodes').innerText(),codeText);
+      assert.equal(await page.locator('#xShareButton').getAttribute('href'),originalShare);
+      await page.goBack();await ready('top');await page.goForward();await ready('result');
+      assert.equal(await page.locator('#resultCodes').innerText(),codeText);
 
-      // 完了後に戻っても20問目を再回答させず、進む操作で同じ結果を開ける。
-      await page.goBack();
-      await ready('top');
-      await page.goForward();
-      await ready('result');
-      assert.equal(await page.locator('#resultTitle').innerText(), title);
-
-      // 保存済みの旧形式が同率1位でも、一度抽選した結果と共有URLを保持する。
-      const tiedTypes = await page.evaluate(key => {
-        const saved = JSON.parse(sessionStorage.getItem(key));
-        const faces = saved.gender === 'female' ? window.FEMALE_FACE_ASSETS : window.MALE_FACE_ASSETS;
-        const first = faces[0];
-        const second = faces.find(face => face.type !== first.type);
-        saved.chosenIds = [...Array(10).fill(first.id), ...Array(10).fill(second.id)];
-        delete saved.winnerId;
-        sessionStorage.setItem(key, JSON.stringify(saved));
-        return [first.type, second.type];
-      }, sessionKey);
-      await page.reload();
-      await ready('result');
-      const tiedWinner = await page.evaluate(key => JSON.parse(sessionStorage.getItem(key)).winnerId, sessionKey);
-      const tiedShare = await page.locator('#xShareButton').getAttribute('href');
-      assert.ok(tiedTypes.includes(tiedWinner));
-      await page.reload();
-      await ready('result');
-      assert.equal(await page.evaluate(key => JSON.parse(sessionStorage.getItem(key)).winnerId, sessionKey), tiedWinner);
-      assert.equal(await page.locator('#xShareButton').getAttribute('href'), tiedShare);
+      // 旧winnerIdを無視して再計算。1軸・2軸・3軸の同点を全部表示する。
+      for(const [second,expected] of [['ACQ',['ASQ','ACQ']],['RCQ',['ASQ','ACQ','RSQ','RCQ']],['RCV',['ASQ','ASV','ACQ','ACV','RSQ','RSV','RCQ','RCV']]]){
+        await page.evaluate(({key,second})=>{
+          const saved=JSON.parse(sessionStorage.getItem(key));
+          const faces=saved.gender==='female'?FEMALE_FACE_ASSETS:MALE_FACE_ASSETS;
+          const types=FACE_RESULT_TYPES[saved.gender];
+          const faceFor=code=>faces.find(face=>face.type===types.find(type=>type.code===code).id).id;
+          saved.chosenIds=[...Array(10).fill(faceFor('ASQ')),...Array(10).fill(faceFor(second))];
+          saved.winnerId='old-random-winner';delete saved.scoringVersion;
+          sessionStorage.setItem(key,JSON.stringify(saved));
+        },{key:sessionKey,second});
+        await page.reload();await ready('result');
+        assert.deepEqual(await page.locator('#resultCodes [data-code]').evaluateAll(nodes=>nodes.map(n=>n.dataset.code)),expected);
+        assert.equal(await page.locator('#resultTypes .letter-type').count(),expected.length);
+        assert.equal(await page.locator('#resultExamples img').count(),expected.length*5);
+        const tieShare=await page.locator('#xShareButton').getAttribute('href');
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+        if(second==='ACQ')await page.screenshot({path:`/tmp/type-checker-letters-tie-${gender}-${width}.png`,fullPage:true});
+        await page.reload();await ready('result');
+        assert.equal(await page.locator('#xShareButton').getAttribute('href'),tieShare);
+      }
       await page.locator('#restartButton').click();
       await ready('top');
       assert.equal(await page.evaluate(key => sessionStorage.getItem(key), sessionKey), null);
@@ -205,7 +205,7 @@ async function main() {
       assert.equal(await page.locator('#sessionError').isVisible(), true);
       assert.deepEqual(errors, []);
       await context.close();
-      console.log(`${gender} / ${width}px: 3画面・40枚一巡・異タイプ二択・21組目除外・20票の採点・復元・共有・広告・保存エラー OK`);
+      console.log(`${gender} / ${width}px: 3画面・40枚一巡・異タイプ二択・21組目除外・文字別採点・2/4/8タイプ同点・割合・復元・共有・広告・保存エラー OK`);
     }
   } finally {
     await browser.close();

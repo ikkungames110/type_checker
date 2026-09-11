@@ -31,7 +31,8 @@
     .result { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); align-items: center; gap: 36px; margin-top: 28px; }
     .character { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; padding: 18px; background: #eceee3; border-radius: 20px; }
     .eyebrow { color: #666a70; font-size: 14px; }
-    h1 { margin: 12px 0 10px; color: #526851; font-size: clamp(28px, 5vw, 42px); line-height: 1.35; }
+    .shared-code { font: 110px/1.2 Georgia, serif; color: #526851; letter-spacing: .06em; margin: 12px 0; }
+    h1 { margin: 12px 0 10px; color: #526851; font-size: clamp(25px, 4vw, 34px); line-height: 1.35; }
     .result-classification { margin: 0 0 20px; color: #666a70; font-size: 14px; text-align: right; }
     .cta { display: block; margin-top: 28px; padding: 16px; background: #526851; border-radius: 8px; color: #fff; text-align: center; text-decoration: none; font-size: 18px; font-weight: 800; }
     .cta:hover { background: #3e533e; }
@@ -54,6 +55,7 @@
       <img class="character" src="../../../../${character_path}" width="1024" height="1024" alt="${image_alt}">
       <div class="summary">
         <p class="eyebrow">シェアされた診断結果 · ${gender_label}の顔</p>
+        <div class="shared-code">${code}</div>
         <h1>${title}</h1>
         <p class="result-classification">(${classification_label}タイプ)</p>
         <p>${result_copy}</p>

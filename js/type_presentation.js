@@ -1,5 +1,5 @@
 // 結果タイプに対応するキャラクターと、同じタイプの顔5枚を取得する。
-// 採点・同点抽選・選択履歴には関与しない。
+// 採点・選択履歴には関与しない。
 (function (root, factory) {
   const api = factory();
   if (typeof module === "object" && module.exports) module.exports = api;

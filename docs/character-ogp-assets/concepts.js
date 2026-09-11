@@ -1,4 +1,4 @@
-/* OGP検討用。前回の3文字案を表示上の仮対応として引き継ぐ。 */
+/* OGP検討用。3文字は本番のresult_types.jsと同じ対応。 */
 window.CHARACTER_OGP = {
   types: [
     {code:'ASQ',name:'木漏れ日の顔',female:'cute',male:'charming_soft'},
