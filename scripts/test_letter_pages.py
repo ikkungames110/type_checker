@@ -63,10 +63,12 @@ class LetterPagesTest(unittest.TestCase):
                     expected.update(destination/f['image'] for f in faces if f['type'] in {t['id'] for t in winners})
                     self.assertEqual(actual,expected)
                     self.assertNotIn('${',html)
+                    self.assertIn('location.replace("/top/")',html)
+                    self.assertNotIn('http-equiv="refresh"',html)
                     self.assertIn('id="shared-breakdown" aria-label="結果の文字の意味" hidden',html)
                     self.assertNotIn('50%',html)  # 回答を含まないURLで架空の比率を示さない。
                     self.assertEqual(html.count('class="type-code"'),len(codes))
-                    self.assertTrue(all((ROOT/urlsplit(s['src']).path.removeprefix('../../../../')).is_file() for s in parsed.scripts))
+                    self.assertTrue(all((ROOT/urlsplit(s['src']).path.removeprefix('../../../../')).is_file() for s in parsed.scripts if 'src' in s))
 
 
 if __name__=='__main__':

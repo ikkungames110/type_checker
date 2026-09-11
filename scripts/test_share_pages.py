@@ -50,7 +50,9 @@ class SharePagesTest(unittest.TestCase):
                 page = destination / relative / "index.html"
                 html = page.read_text()
                 parsed = PageMetadata(html)
-                self.assertEqual(parsed.scripts, [])
+                self.assertEqual(parsed.scripts, [{}])
+                self.assertIn('location.replace("/top/")', html)
+                self.assertNotIn('http-equiv="refresh"', html)
                 self.assertNotIn("${", html)
                 self.assertEqual(parsed.canonical, site + relative)
                 self.assertEqual(parsed.metadata["og:url"], parsed.canonical)

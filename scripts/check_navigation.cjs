@@ -158,12 +158,11 @@ async function main() {
       const sharedPage=await context.newPage();
       sharedPage.on('pageerror',error=>errors.push(error.message));
       await sharedPage.goto(new URL(shareUrl.pathname+shareUrl.search,site).href);
-      assert.deepEqual(await sharedPage.locator('#shared-codes [data-code]').evaluateAll(nodes=>nodes.map(n=>n.dataset.code)),resultData.codes);
-      assert.equal(await sharedPage.locator('#shared-types .letter-type').count(),resultData.codes.length);
-      assert.equal(await sharedPage.locator('#shared-breakdown').innerText(),await page.locator('#resultBreakdown').innerText());
-      assert.equal(await sharedPage.locator('.example-grid img').count(),resultData.codes.length*5);
+      await sharedPage.waitForURL(new URL('top/',site).href);
+      assert.equal(await sharedPage.locator('#startScreen').isVisible(),true);
       await sharedPage.goto(new URL(shareUrl.pathname+'?a=0&s=20&q=10',site).href);
-      assert.equal(await sharedPage.locator('#shared-breakdown').innerText(),await page.locator('#resultBreakdown').innerText());
+      await sharedPage.waitForURL(new URL('top/',site).href);
+      assert.equal(await sharedPage.locator('#startScreen').isVisible(),true);
       await sharedPage.close();
       await page.screenshot({path:`/tmp/type-checker-letters-result-${gender}-${width}.png`,fullPage:true});
       await page.reload();await ready('result');
