@@ -25,7 +25,7 @@ const AxisBreakdown = {
           meaning.append(label, description);
           if (selected) {
             const badge = document.createElement('span'); badge.className = 'letter-selected-label';
-            badge.textContent = 'あなたのタイプ'; term.append(badge);
+            badge.textContent = 'あなたの好み'; term.append(badge);
           }
           item.append(term, meaning); list.append(item);
         });
