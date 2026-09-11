@@ -18,7 +18,7 @@
 
 本番画像は `assets/female/`・`assets/male/` に各40枚。対応するタイプ・年齢・全プロンプト・生成記録は [女性データ](data/female_faces.js) と [男性データ](data/male_faces.js) に保存しています。採用したv8以外の顔画像・旧試作・旧共有画像は削除しました。以前の制作資料はGit履歴から確認できます。
 
-トップ画面は `female_fresh`・`male_fresh_soft` のデフォルメキャラクター。サイトカードには男女8体を並べています。結果のキャラ16体は `assets/characters/v1/`、顔の例との対応は [type_presentation.js](js/type_presentation.js) にあります。[キャラクター制作・再生成手順](docs/characters-v1.md) / [サイトカードの制作記録](data/promotion_card.json)。写真自体の記録は [v8制作記録](docs/顔タイプ生成_ver8.md) を参照してください。
+トップ画面は `female_011`・`male_011` の顔写真。サイトカードには男女8体を並べています。結果のキャラ16体は `assets/characters/v1/`、顔の例との対応は [type_presentation.js](js/type_presentation.js) にあります。[キャラクター制作・再生成手順](docs/characters-v1.md) / [サイトカードの制作記録](data/promotion_card.json)。写真自体の記録は [v8制作記録](docs/顔タイプ生成_ver8.md) を参照してください。
 
 新しい結果共有URLは `share/letters/<gender>/<コードをハイフンで連結>/`。共有先でも結果コードの文字の意味を表示します。得点クエリは付けず、旧URLのクエリも無視します。男女255通りずつ、510ページを生成し、旧54ページも維持します。既存の54枚のOGPを使用し、追加の同票組み合わせにはトップのキャラクター集合カードを使用します。既存の `share/v8/<顔ID>/<タイプID>/` 80ページも維持し、3文字を追加しています。画像はGitに保存し、通常ビルドでは再生成しません。
 

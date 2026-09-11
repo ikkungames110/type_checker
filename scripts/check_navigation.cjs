@@ -61,8 +61,8 @@ async function main() {
       }
       await page.goto(site.href);
       const topDocument = await ready('top');
-      assert.equal(await page.locator('#sampleA img').getAttribute('src'), 'assets/characters/v1/female_fresh.png');
-      assert.equal(await page.locator('#sampleB img').getAttribute('src'), 'assets/characters/v1/male_fresh_soft.png');
+      assert.equal(await page.locator('#sampleA img').getAttribute('src'), 'assets/female/female_011.png');
+      assert.equal(await page.locator('#sampleB img').getAttribute('src'), 'assets/male/male_011.png');
       await page.locator('#sampleA img').evaluate(img => img.decode());
       await page.screenshot({ path: `/tmp/type-checker-v8-top-${width}.png` });
       await page.locator(`.gender-btn[data-gender="${gender}"]`).click();

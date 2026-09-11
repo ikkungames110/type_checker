@@ -267,8 +267,8 @@ def main():
     check(images == referenced and len(images) == 232, "旧画像または対応データのない画像が残っています")
     check(not (ROOT / "assets/previews").exists(), "旧試作画像が残っています")
     html = (ROOT / "index.html").read_text()
-    for character_id in ("female_fresh", "male_fresh_soft"):
-        check(f'assets/characters/v1/{character_id}.png' in html, f"トップ画像: {character_id}が使われていない")
+    for gender in ("female", "male"):
+        check(f'assets/{gender}/{gender}_011.png' in html, f"トップ画像: {gender}_011が使われていない")
     domain = (ROOT / "CNAME").read_text().strip()
     check(f'<link rel="canonical" href="https://{domain}/top/">' in html, "トップのcanonicalが不一致")
     def local_path(source, target):
