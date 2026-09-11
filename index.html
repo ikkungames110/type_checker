@@ -610,7 +610,7 @@
       .bar-row { grid-template-columns: minmax(0, 1fr) 2.5em; }
     }
   </style>
-  <link rel="stylesheet" href="js/result_letters.css?v=type-votes-1">
+  <link rel="stylesheet" href="js/result_letters.css?v=type-votes-2">
 </head>
 <body data-page="top">
   <main class="app">
@@ -737,7 +737,7 @@
     <section class="content-notes" aria-labelledby="about-diagnosis-title">
       <h2 id="about-diagnosis-title">この診断について</h2>
       <p>
-        好みの顔タイプ診断は、表示された2つの顔から直感で好きな方を選び、選んだ顔を8タイプ別に集計するブラウザ診断です。最も多く選んだタイプを結果に表示し、最多が同点の場合は該当するタイプをすべて表示します。
+        好みの顔タイプ診断は、表示された2つの顔から直感で好きな方を選び、選んだ顔を8タイプ別に集計するブラウザ診断です。あなたが惹かれる顔のタイプを、3文字とキャラクターで紹介します。
       </p>
       <div class="content-grid">
         <section class="content-card">
@@ -769,12 +769,12 @@
   <script src="data/male_faces.js?v=8"></script>
   <script src="data/result_types.js?v=letters-1"></script>
   <script src="data/type_characters.js?v=1"></script>
-  <script src="data/type_axes.js?v=1"></script>
-  <script src="js/axis_breakdown.js?v=type-votes-1"></script>
-  <script src="js/result_view.js?v=type-votes-1"></script>
+  <script src="data/type_axes.js?v=2"></script>
+  <script src="js/axis_breakdown.js?v=type-votes-2"></script>
+  <script src="js/result_view.js?v=type-votes-2"></script>
   <script src="js/type_presentation.js?v=1"></script>
   <script src="js/face_deck.js?v=8"></script>
-  <script src="js/face_scoring.js?v=type-votes-1"></script>
+  <script src="js/face_scoring.js?v=type-votes-2"></script>
   <script>
     const TARGET_SELECTIONS = 20;
     const DATASETS = {
@@ -789,6 +789,7 @@
       faces: [],
       deck: null,
       chosenIds: [],
+      selectedCode: null,
       lastResult: "",
       shareUrl: ""
     };
@@ -825,7 +826,8 @@
           gender: state.gender,
           selectedCount: state.selectedCount,
           chosenIds: state.chosenIds,
-          scoringVersion: "type-votes-v1",
+          scoringVersion: "type-votes-v2",
+          selectedCode: state.selectedCode,
           deck: state.deck.snapshot()
         });
         sessionStorage.setItem(SESSION_KEY, saved);
@@ -856,7 +858,7 @@
         if (!Array.isArray(saved.chosenIds) || saved.chosenIds.length !== saved.selectedCount ||
             !saved.chosenIds.every(id => faces.some(face => face.id === id))) return false;
         const deck = FaceDeck.restore(faces, saved.deck, TARGET_SELECTIONS);
-        Object.assign(state, { gender: saved.gender, dataset, faces, deck, selectedCount: saved.selectedCount, chosenIds: saved.chosenIds });
+        Object.assign(state, { gender: saved.gender, dataset, faces, deck, selectedCount: saved.selectedCount, chosenIds: saved.chosenIds, selectedCode: saved.scoringVersion === "type-votes-v2" ? saved.selectedCode : null });
         lastSavedSession = JSON.stringify(saved);
         return true;
       } catch {
@@ -945,7 +947,11 @@
 
     function renderResult() {
       // 保存済みの選択履歴も、新しい3文字方式で再計算する。
-      const result = FaceScoring.rank(state.faces, state.chosenIds, window.FACE_RESULT_TYPES[state.gender], window.FACE_TYPE_AXES);
+      const ranked = FaceScoring.rank(state.faces, state.chosenIds, window.FACE_RESULT_TYPES[state.gender], window.FACE_TYPE_AXES);
+      const result = FaceScoring.select(ranked, state.selectedCode);
+      state.selectedCode = result.codes[0];
+      if (!saveSession()) return;
+
       ResultView.render(result, state.gender, state.faces, window.FACE_CHARACTERS);
       const codes = result.codes.join(" / ");
       state.lastResult = `好みの顔タイプ診断（${state.dataset.label}の顔）\n${codes}\n${result.winners.length === 1 ? result.winners[0].label : `${result.winners.length}つのタイプに惹かれました。`}`;

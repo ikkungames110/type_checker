@@ -1,4 +1,4 @@
-/* 選んだ顔のタイプに1票。最多同票のタイプをすべて表示する。 */
+/* 選んだ顔のタイプに1票。最多タイプを集計し、表示する1タイプを選ぶ。 */
 const FaceScoring = {
   validate(types, axes) {
     if (!Array.isArray(axes) || axes.length !== 3 || axes.some(axis => !Array.isArray(axis.options) || axis.options.length !== 2)) throw new Error('3軸・各2文字が必要です');
@@ -21,6 +21,11 @@ const FaceScoring = {
     const codeOrder = axes.reduce((prefixes, axis) => prefixes.flatMap(prefix => axis.options.map(option => prefix + option.letter)), ['']);
     const winners = types.filter(type => counts[type.id] === highest).sort((a, b) => codeOrder.indexOf(a.code) - codeOrder.indexOf(b.code));
     return { total: chosenIds.length, counts, codes: winners.map(type => type.code), winners };
+  },
+  select(result, savedCode, random = Math.random) {
+    const winner = result.winners.find(type => type.code === savedCode)
+      || result.winners[Math.floor(random() * result.winners.length)];
+    return { ...result, winners: [winner], codes: [winner.code] };
   },
   sharePath(gender, result) {
     if (!['female','male'].includes(gender)) throw new Error('診断対象が不正です');

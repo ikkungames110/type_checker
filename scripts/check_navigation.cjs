@@ -120,7 +120,9 @@ async function main() {
         const byId = new Map(records.map(face => [face.id, face]));
         const counts = Object.fromEntries(types.map(type=>[type.code,0]));
         saved.chosenIds.forEach(id=>{counts[types.find(type=>type.id===byId.get(id).type).code]++;});
-        const codes=['ASQ','ASV','ACQ','ACV','RSQ','RSV','RCQ','RCV'].filter(code=>counts[code]===Math.max(...Object.values(counts)));
+        const candidates=['ASQ','ASV','ACQ','ACV','RSQ','RSV','RCQ','RCV'].filter(code=>counts[code]===Math.max(...Object.values(counts)));
+        const codes=[saved.selectedCode];
+        if (!candidates.includes(saved.selectedCode)) throw new Error('結果が最多タイプに含まれません');
         return {codes,counts,total:saved.chosenIds.length,types:codes.map(code=>{
           const type=types.find(type=>type.code===code);
           return {...type,character:window.FACE_CHARACTERS.find(c=>c.gender===saved.gender&&c.type===type.id),examples:records.filter(face=>face.type===type.id).map(face=>face.id).sort()};
@@ -138,14 +140,23 @@ async function main() {
         assert.deepEqual(await page.locator(`#resultExamples [data-code="${type.code}"] img`).evaluateAll(nodes=>nodes.map(n=>n.dataset.faceId).sort()),type.examples);
       }
       for(const code of resultData.codes){
-        assert.deepEqual(await page.locator(`#resultBreakdown [data-code="${code}"] [data-letter]`).evaluateAll(nodes=>nodes.map(n=>n.dataset.letter)),[...code]);
+        assert.deepEqual(await page.locator(`#resultBreakdown [data-code="${code}"] .selected[data-letter]`).evaluateAll(nodes=>nodes.map(n=>n.dataset.letter)),[...code]);
       }
-      assert.equal(await page.locator('#resultBreakdown [data-letter]').count(),resultData.codes.length*3);
+      assert.equal(await page.locator('#resultBreakdown [data-letter]').count(),resultData.codes.length*6);
       const meanings={A:'軽やか',R:'落ち着き',S:'柔らか',C:'凛と',Q:'さりげなさ',V:'華やか'};
       for(const code of resultData.codes) for(const letter of code){
-        assert.equal(await page.locator(`#resultBreakdown [data-code="${code}"] [data-letter="${letter}"] dd`).innerText(),meanings[letter]);
+        assert.equal(await page.locator(`#resultBreakdown [data-code="${code}"] [data-letter="${letter}"] dd strong`).innerText(),meanings[letter]);
       }
       assert.doesNotMatch(await page.locator('#resultBreakdown').innerText(), /%|回|票/);
+      assert.doesNotMatch(await page.locator('#resultScreen').innerText(), /ランダム|抽選|同率|同点/);
+      const axisPairs=await page.locator('#resultBreakdown dl').evaluateAll(lists=>lists.map(list=>[...list.children].map(item=>({letter:item.dataset.letter,description:item.querySelector('dd p').textContent,selected:item.classList.contains('selected'),x:item.getBoundingClientRect().x,y:item.getBoundingClientRect().y}))));
+      assert.deepEqual(axisPairs.map(pair=>pair.map(item=>item.letter)),[['A','R'],['S','C'],['Q','V']]);
+      for(const pair of axisPairs){
+        assert.equal(pair.filter(item=>item.selected).length,1);
+        assert.ok(pair.every(item=>item.description.length>30));
+        assert.equal(pair[0].y,pair[1].y);
+        assert.ok(pair[0].x<pair[1].x);
+      }
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
       const codeText=await page.locator('#resultCodes').innerText();
       const originalShare=await page.locator('#xShareButton').getAttribute('href');
@@ -183,9 +194,11 @@ async function main() {
           sessionStorage.setItem(key,JSON.stringify(saved));
         },{key:sessionKey,second});
         await page.reload();await ready('result');
-        assert.deepEqual(await page.locator('#resultCodes [data-code]').evaluateAll(nodes=>nodes.map(n=>n.dataset.code)),expected);
-        assert.equal(await page.locator('#resultTypes .letter-type').count(),expected.length);
-        assert.equal(await page.locator('#resultExamples img').count(),expected.length*5);
+        const displayed=await page.locator('#resultCodes [data-code]').evaluateAll(nodes=>nodes.map(n=>n.dataset.code));
+        assert.equal(displayed.length,1);
+        assert.ok(expected.includes(displayed[0]));
+        assert.equal(await page.locator('#resultTypes .letter-type').count(),1);
+        assert.equal(await page.locator('#resultExamples img').count(),5);
         const tieShare=await page.locator('#xShareButton').getAttribute('href');
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
         if(second==='ACQ')await page.screenshot({path:`/tmp/type-checker-letters-tie-${gender}-${width}.png`,fullPage:true});

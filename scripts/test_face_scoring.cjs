@@ -53,3 +53,20 @@ test('共有URLは最多タイプだけを含む', () => {
  assert.equal(FaceScoring.sharePath('female',rank([['ASQ',10],['RCV',10]])),'share/letters/female/ASQ-RCV/');
  assert.throws(()=>FaceScoring.sharePath('unknown',rank([['ASQ',20]])),/不正/);
 });
+
+test('同率の各候補を等幅の乱数区間で選び、最多以外は選ばない', () => {
+ const ranked=rank([['ASQ',6],['ACV',6],['RSQ',6],['RCV',2]]);
+ for(let i=0;i<300;i++) {
+  const result=FaceScoring.select(ranked,null,()=>i/300);
+  assert.deepEqual(result.codes,[ranked.codes[Math.floor(i/100)]]);
+  assert.equal(result.winners.length,1);
+  assert.equal(result.winners[0].code,result.codes[0]);
+  assert.equal(FaceScoring.sharePath('female',result),`share/letters/female/${result.codes[0]}/`);
+ }
+});
+test('保存した最多コードを維持し、無効なコードや最多以外は選び直す', () => {
+ const ranked=rank([['ASQ',10],['RCV',10]]);
+ assert.deepEqual(FaceScoring.select(ranked,'RCV',()=>{throw Error('再抽選');}).codes,['RCV']);
+ for(const invalid of ['ACQ','old-random-winner',null]) assert.deepEqual(FaceScoring.select(ranked,invalid,()=>0).codes,['ASQ']);
+ assert.deepEqual(FaceScoring.select(rank([['ASQ',11],['RCV',9]]),'RCV',()=>0.99).codes,['ASQ']);
+});
