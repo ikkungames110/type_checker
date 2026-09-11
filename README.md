@@ -44,6 +44,8 @@ npm run test:navigation
 
 ## サイトカードの比較案
 
+[キャラ＋3文字のOGP 20案](https://type-checker.shianstudio.com/docs/character-ogp)。既存キャラを1〜4体ずつ使用し、余白・謎めく・会話・図鑑の4方向で5案ずつ用意。PNG保存、一覧シート、ZIP、拡大、候補の保存、SNS幅での比較ができます。3文字は前回の仮対応を引き継いだ検討用表示で、診断本体への導入や本番OGPの差し替えは行っていません。[制作・再生成手順](docs/character-ogp-assets/README.md)。
+
 [初回の10案×写真あり・なしの比較ページ](https://type-checker.shianstudio.com/docs/card-lab.html)。短い問いかけと静かな雰囲気の20枚、投稿文、3文字で表す8タイプの提案、5つの診断サービスのOGP調査を保存しています。現在はキャラクター版を採用。3文字コードは引き続き検討案です。
 
 ローカルでは `docs/card-lab.html` を開きます。[調査・分類の注意点と再生成手順](docs/card-lab-assets/research.md)を参照してください。

@@ -1,0 +1,576 @@
+{
+  "source": "docs/character-ogp.html",
+  "method": "Playwright HTML/CSS render using existing character PNGs",
+  "code_status": "proposal",
+  "render_sources": {
+    "docs/character-ogp.html": "b69bd0926a227eb684191d6a76c979d7a61bd18dadb6722ec569af5795798413",
+    "docs/character-ogp-assets/cards.css": "c58e975c754e09b88b687ac59be75c0027d5c12797997bc11b9a19488294a564",
+    "docs/character-ogp-assets/gallery.css": "8653370a020ab313e72ca9c4bd5761bb01123b3a5b86edc62418cdef00c60b24",
+    "docs/character-ogp-assets/concepts.js": "89c1d9f7e6b2bbd08f07a5bc7207c5090e712d3b521802038126db3dc6e1dc9b",
+    "docs/character-ogp-assets/app.js": "935272d735be48bfe483698f8da8f768fd156de7d344205055b65f3d637b1377"
+  },
+  "cards": [
+    {
+      "id": "01",
+      "name": "好きの標本",
+      "theme": "sage",
+      "group": "quiet",
+      "title": [
+        "その「好き」に、",
+        "名前を。"
+      ],
+      "sub": "気になる顔を選んで、好みの3文字へ。",
+      "file": "cards/01-sage.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "c5c62fd3f99b794dd2fb7f18bbdd94e6ecd14ab3a65fdef3ae8bffa4ec006717",
+      "characters": [
+        {
+          "id": "female_soft_elegant",
+          "code": "RSQ",
+          "image": "assets/characters/v1/female_soft_elegant.png",
+          "sha256": "d222f2a9ed2a0ae59493bf208ca45c18cfa153a11e9b7dedb1831a53fa5065cf"
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "name": "月明かりの暗号",
+      "theme": "midnight",
+      "group": "mystery",
+      "title": [
+        "なぜか、",
+        "気になる。"
+      ],
+      "sub": "あなたが惹かれる顔は、どんなタイプ？",
+      "file": "cards/02-midnight.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "38a02a157c80d92bf323ead63457ffebf4844afc2c394e0834f00030b2d255fb",
+      "characters": [
+        {
+          "id": "female_cool",
+          "code": "RCQ",
+          "image": "assets/characters/v1/female_cool.png",
+          "sha256": "efee898c2e34b26848421ea81b0943146fc3e5cb6a3b29a229538a68a369c1ae"
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "name": "好きの小さな本棚",
+      "theme": "shelf",
+      "group": "collection",
+      "title": [
+        "あなたの「好き」は、どの3文字？"
+      ],
+      "sub": "好みの顔タイプ診断",
+      "file": "cards/03-shelf.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "7f5f164b2dd455244b3c87dfaba0e3b9bf13000a04ec47dba5dd36c2a2280483",
+      "characters": [
+        {
+          "id": "female_cute",
+          "code": "ASQ",
+          "image": "assets/characters/v1/female_cute.png",
+          "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+        },
+        {
+          "id": "female_fresh",
+          "code": "ACQ",
+          "image": "assets/characters/v1/female_fresh.png",
+          "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+        },
+        {
+          "id": "female_feminine",
+          "code": "RSV",
+          "image": "assets/characters/v1/female_feminine.png",
+          "sha256": "75c7f439f12b28514b1f5f65d103a93e385c75d7ec600b398bbc5f3254b81b75"
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "name": "三文字を、主役に",
+      "theme": "letterform",
+      "group": "quiet",
+      "title": [
+        "好きって、こんな輪郭。"
+      ],
+      "sub": "顔を選んで、あなたのタイプを見つける。",
+      "file": "cards/04-letterform.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "755081ffbdb0991b8b0474e58f033830e39aaf4edc1fafdecada90f9c83c0fc6",
+      "characters": [
+        {
+          "id": "female_cute",
+          "code": "ASQ",
+          "image": "assets/characters/v1/female_cute.png",
+          "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+        }
+      ]
+    },
+    {
+      "id": "05",
+      "name": "ふたつの空気",
+      "theme": "duet",
+      "group": "talk",
+      "title": [
+        "惹かれるのは、どっちの空気？"
+      ],
+      "sub": "気になる顔を、直感で20回。",
+      "file": "cards/05-duet.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "be3d42ea9636b3314e2eda41ce4501d61733bc80f801714411c64f1f3a13df08",
+      "characters": [
+        {
+          "id": "female_active_cute",
+          "code": "ASV",
+          "image": "assets/characters/v1/female_active_cute.png",
+          "sha256": "bfc781b12726dd2003773398e830228ee74c2d731b764b039d005cadc3a23e85"
+        },
+        {
+          "id": "female_cool_casual",
+          "code": "ACV",
+          "image": "assets/characters/v1/female_cool_casual.png",
+          "sha256": "d97c4f4081270c7b2ad49dcb3d9d51bbaadf887a97f05a797776e955ee9d5478"
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "name": "好きへのポストカード",
+      "theme": "postcard",
+      "group": "quiet",
+      "title": [
+        "「どんな顔が好き？」",
+        "と聞かれたら。"
+      ],
+      "sub": "言葉にする前に、選んでみる。",
+      "file": "cards/06-postcard.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "b783ccc0992844a0e8e1c4a4e69d58f7c791755aa9bdbda59d9ab7853ebfad13",
+      "characters": [
+        {
+          "id": "female_fresh",
+          "code": "ACQ",
+          "image": "assets/characters/v1/female_fresh.png",
+          "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+        }
+      ]
+    },
+    {
+      "id": "07",
+      "name": "夜のギャラリー",
+      "theme": "nightgallery",
+      "group": "mystery",
+      "title": [
+        "目が合う前に、気になっていた。"
+      ],
+      "sub": "惹かれる顔の印象を、3文字に。",
+      "file": "cards/07-nightgallery.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "f447b5d154fa955dbbc3d8445e55affbf18f74f02811a6e515afbc86b29e6aa1",
+      "characters": [
+        {
+          "id": "male_elegant_soft",
+          "code": "RSQ",
+          "image": "assets/characters/v1/male_elegant_soft.png",
+          "sha256": "9a8c88a29d2e4aedf4956515fd8da5a84ab99dc4889ed9de528dbbcd5405e90d"
+        },
+        {
+          "id": "male_cool_soft",
+          "code": "RCQ",
+          "image": "assets/characters/v1/male_cool_soft.png",
+          "sha256": "e0d140754be14adb1aa94ffab98bd59e716eb538bc7bf77bbf0601324ba1e73e"
+        },
+        {
+          "id": "male_cool_hard",
+          "code": "RCV",
+          "image": "assets/characters/v1/male_cool_hard.png",
+          "sha256": "326708f9105a5cb34a702b048d7eef566465cee0b0d50ffdab4268ca071fb64c"
+        }
+      ]
+    },
+    {
+      "id": "08",
+      "name": "好みの観察ノート",
+      "theme": "fieldnote",
+      "group": "collection",
+      "title": [
+        "好みって、",
+        "案外知らない。"
+      ],
+      "sub": "20回選んで、好きの輪郭をたどる。",
+      "file": "cards/08-fieldnote.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "c36413ae5a4d1b483b6eb2faf612bb6a166fe678b93920bfbf12edd2f3a7e805",
+      "characters": [
+        {
+          "id": "male_fresh_soft",
+          "code": "ACQ",
+          "image": "assets/characters/v1/male_fresh_soft.png",
+          "sha256": "b43f427c2f92772a5c00c5c990d2eb2fd1a883dcf345c0ff19fa031f9bfe355f"
+        }
+      ]
+    },
+    {
+      "id": "09",
+      "name": "余韻の軌道",
+      "theme": "orbit",
+      "group": "mystery",
+      "title": [
+        "言葉にできない、",
+        "あの感じ。"
+      ],
+      "sub": "その「好き」を、3文字で。",
+      "file": "cards/09-orbit.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "ea4e74d58dd43de1c38882c594b2c8015f0b0c3e8f71f3e79757b1dc7d682534",
+      "characters": [
+        {
+          "id": "female_soft_elegant",
+          "code": "RSQ",
+          "image": "assets/characters/v1/female_soft_elegant.png",
+          "sha256": "d222f2a9ed2a0ae59493bf208ca45c18cfa153a11e9b7dedb1831a53fa5065cf"
+        },
+        {
+          "id": "male_elegant_soft",
+          "code": "RSQ",
+          "image": "assets/characters/v1/male_elegant_soft.png",
+          "sha256": "9a8c88a29d2e4aedf4956515fd8da5a84ab99dc4889ed9de528dbbcd5405e90d"
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "name": "好きのカードを並べる",
+      "theme": "floating",
+      "group": "collection",
+      "title": [
+        "まだ知らない",
+        "「好き」がある。"
+      ],
+      "sub": "顔を選んで、8つのタイプへ。",
+      "file": "cards/10-floating.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "a8e171b44e06d7b5e8f21a79cd0c53523d448dcecfd6d88eeb8c42878e79cb76",
+      "characters": [
+        {
+          "id": "female_cute",
+          "code": "ASQ",
+          "image": "assets/characters/v1/female_cute.png",
+          "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+        },
+        {
+          "id": "female_active_cute",
+          "code": "ASV",
+          "image": "assets/characters/v1/female_active_cute.png",
+          "sha256": "bfc781b12726dd2003773398e830228ee74c2d731b764b039d005cadc3a23e85"
+        },
+        {
+          "id": "female_fresh",
+          "code": "ACQ",
+          "image": "assets/characters/v1/female_fresh.png",
+          "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "name": "一目の余韻",
+      "theme": "burgundy",
+      "group": "mystery",
+      "title": [
+        "一目で、",
+        "心に残る。"
+      ],
+      "sub": "あなたが惹かれるのは、どんな顔？",
+      "file": "cards/11-burgundy.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "32593a4dd2526d1e413829b124f136c03be76f4d5ac4367410b86b8e432ca8f0",
+      "characters": [
+        {
+          "id": "female_elegant",
+          "code": "RCV",
+          "image": "assets/characters/v1/female_elegant.png",
+          "sha256": "f1ab47baa73756d727efff8c0640f683479e14fad68dc8aba5fadc792a6618d2"
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "name": "静かな大文字",
+      "theme": "white",
+      "group": "quiet",
+      "title": [
+        "好きに、",
+        "理由はいらない。"
+      ],
+      "sub": "20回の選択から、好みの3文字へ。",
+      "file": "cards/12-white.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "41f29c1593cb838d43b72c1a4d79f5345481603d594449ebb07612b523c68cc0",
+      "characters": [
+        {
+          "id": "male_cool_hard",
+          "code": "RCV",
+          "image": "assets/characters/v1/male_cool_hard.png",
+          "sha256": "326708f9105a5cb34a702b048d7eef566465cee0b0d50ffdab4268ca071fb64c"
+        }
+      ]
+    },
+    {
+      "id": "13",
+      "name": "四つの窓",
+      "theme": "windows",
+      "group": "collection",
+      "title": [
+        "まだ知らない",
+        "「好き」に会う。"
+      ],
+      "sub": "あなたは、どんな顔に惹かれる？",
+      "file": "cards/13-windows.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "80012eea349a5a7c73920f13053b9494fd4bdf9a4d921d04b3405357c2fa1130",
+      "characters": [
+        {
+          "id": "female_active_cute",
+          "code": "ASV",
+          "image": "assets/characters/v1/female_active_cute.png",
+          "sha256": "bfc781b12726dd2003773398e830228ee74c2d731b764b039d005cadc3a23e85"
+        },
+        {
+          "id": "male_charming_soft",
+          "code": "ASQ",
+          "image": "assets/characters/v1/male_charming_soft.png",
+          "sha256": "5fbc2b5e7be80a77cf10ff6eee0e025ef1eb9e2d9d390aaa48ee6ee7b30da6f5"
+        },
+        {
+          "id": "female_cool",
+          "code": "RCQ",
+          "image": "assets/characters/v1/female_cool.png",
+          "sha256": "efee898c2e34b26848421ea81b0943146fc3e5cb6a3b29a229538a68a369c1ae"
+        },
+        {
+          "id": "male_elegant_hard",
+          "code": "RSV",
+          "image": "assets/characters/v1/male_elegant_hard.png",
+          "sha256": "3d89a63a81d43aeb638fa0762befb1582d44d59e68426e1a0db663a95d5ff5e0"
+        }
+      ]
+    },
+    {
+      "id": "14",
+      "name": "隣にある好き",
+      "theme": "breeze",
+      "group": "talk",
+      "title": [
+        "気づけば、同じ雰囲気に惹かれる。"
+      ],
+      "sub": "「なんとなく」を、3文字に。",
+      "file": "cards/14-breeze.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "4c92dbbdd28b432eb662acfec0f09b09be7d8a5a927809c3fe45c19053f30b7b",
+      "characters": [
+        {
+          "id": "female_fresh",
+          "code": "ACQ",
+          "image": "assets/characters/v1/female_fresh.png",
+          "sha256": "45f3b7d558491008ffd639c0f11810b0153dd13f0506639738768c021f98df7f"
+        },
+        {
+          "id": "male_fresh_soft",
+          "code": "ACQ",
+          "image": "assets/characters/v1/male_fresh_soft.png",
+          "sha256": "b43f427c2f92772a5c00c5c990d2eb2fd1a883dcf345c0ff19fa031f9bfe355f"
+        }
+      ]
+    },
+    {
+      "id": "15",
+      "name": "好きの正体",
+      "theme": "petal",
+      "group": "mystery",
+      "title": [
+        "好きの正体は、",
+        "3文字かもしれない。"
+      ],
+      "sub": "気になる顔から、自分のタイプへ。",
+      "file": "cards/15-petal.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "adc5e86bb097c6067a9e2cee36caf8eb8fb09efc534b2f5a41d3181d5cfa228d",
+      "characters": [
+        {
+          "id": "female_feminine",
+          "code": "RSV",
+          "image": "assets/characters/v1/female_feminine.png",
+          "sha256": "75c7f439f12b28514b1f5f65d103a93e385c75d7ec600b398bbc5f3254b81b75"
+        }
+      ]
+    },
+    {
+      "id": "16",
+      "name": "好きの交換ノート",
+      "theme": "exchange",
+      "group": "talk",
+      "title": [
+        "友だちの「好き」と、",
+        "比べてみたい。"
+      ],
+      "sub": "顔の好みを、3文字で話そう。",
+      "file": "cards/16-exchange.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "4a56cc61c3e61f2e05f91f127182f27e5f53af0efc2e34f127785afde3714c29",
+      "characters": [
+        {
+          "id": "female_cool_casual",
+          "code": "ACV",
+          "image": "assets/characters/v1/female_cool_casual.png",
+          "sha256": "d97c4f4081270c7b2ad49dcb3d9d51bbaadf887a97f05a797776e955ee9d5478"
+        },
+        {
+          "id": "male_charming_hard",
+          "code": "ASV",
+          "image": "assets/characters/v1/male_charming_hard.png",
+          "sha256": "e1cfdefdb3ae72786991dc2109eb8cb6cf5a38271cb6bcdd87f773a6f5bc6154"
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "name": "好きが並ぶ午後",
+      "theme": "lineup",
+      "group": "talk",
+      "title": [
+        "どんな顔が好き？"
+      ],
+      "sub": "その答えに、3文字の名前を。",
+      "file": "cards/17-lineup.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "d2dac55012a1d78923c2c15ab260f11baa36d2a14ddfd993ea4c7c182eeadd90",
+      "characters": [
+        {
+          "id": "female_cute",
+          "code": "ASQ",
+          "image": "assets/characters/v1/female_cute.png",
+          "sha256": "e5ef9929878ac9fc6337984d12b5c32f40523f27b3c5a82e38ce65b91c58e50e"
+        },
+        {
+          "id": "male_fresh_soft",
+          "code": "ACQ",
+          "image": "assets/characters/v1/male_fresh_soft.png",
+          "sha256": "b43f427c2f92772a5c00c5c990d2eb2fd1a883dcf345c0ff19fa031f9bfe355f"
+        },
+        {
+          "id": "female_feminine",
+          "code": "RSV",
+          "image": "assets/characters/v1/female_feminine.png",
+          "sha256": "75c7f439f12b28514b1f5f65d103a93e385c75d7ec600b398bbc5f3254b81b75"
+        }
+      ]
+    },
+    {
+      "id": "18",
+      "name": "小さな名札",
+      "theme": "ticket",
+      "group": "quiet",
+      "title": [
+        "私の「好き」の、",
+        "小さな名札。"
+      ],
+      "sub": "気になる顔を20回選んで、タイプを見つける。",
+      "file": "cards/18-ticket.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "b9d7878b69046416e2bc4a0c90d3dfb84f804966d5790e27d995384fe1832837",
+      "characters": [
+        {
+          "id": "male_charming_soft",
+          "code": "ASQ",
+          "image": "assets/characters/v1/male_charming_soft.png",
+          "sha256": "5fbc2b5e7be80a77cf10ff6eee0e025ef1eb9e2d9d390aaa48ee6ee7b30da6f5"
+        }
+      ]
+    },
+    {
+      "id": "19",
+      "name": "好きの索引",
+      "theme": "index",
+      "group": "collection",
+      "title": [
+        "あなたの「好き」は、",
+        "何ていう名前？"
+      ],
+      "sub": "20回の選択から、3文字の顔タイプへ。",
+      "file": "cards/19-index.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "705ce3cad3b1c9b5c36d327e8ce5f828f89306381a6e5bb4453b36b069863a0b",
+      "characters": [
+        {
+          "id": "male_charming_soft",
+          "code": "ASQ",
+          "image": "assets/characters/v1/male_charming_soft.png",
+          "sha256": "5fbc2b5e7be80a77cf10ff6eee0e025ef1eb9e2d9d390aaa48ee6ee7b30da6f5"
+        },
+        {
+          "id": "male_elegant_soft",
+          "code": "RSQ",
+          "image": "assets/characters/v1/male_elegant_soft.png",
+          "sha256": "9a8c88a29d2e4aedf4956515fd8da5a84ab99dc4889ed9de528dbbcd5405e90d"
+        },
+        {
+          "id": "male_cool_soft",
+          "code": "RCQ",
+          "image": "assets/characters/v1/male_cool_soft.png",
+          "sha256": "e0d140754be14adb1aa94ffab98bd59e716eb538bc7bf77bbf0601324ba1e73e"
+        }
+      ]
+    },
+    {
+      "id": "20",
+      "name": "なんとなく、の合言葉",
+      "theme": "whisper",
+      "group": "talk",
+      "title": [
+        "「なんとなく好き」を、",
+        "3文字に。"
+      ],
+      "sub": "好みの顔タイプ診断",
+      "file": "cards/20-whisper.png",
+      "width": 1200,
+      "height": 630,
+      "sha256": "3af6109bc5c7e8efef585eb61b82bfac0aa7f7a4710e94b65e560bab80c14872",
+      "characters": [
+        {
+          "id": "female_soft_elegant",
+          "code": "RSQ",
+          "image": "assets/characters/v1/female_soft_elegant.png",
+          "sha256": "d222f2a9ed2a0ae59493bf208ca45c18cfa153a11e9b7dedb1831a53fa5065cf"
+        },
+        {
+          "id": "male_cool_soft",
+          "code": "RCQ",
+          "image": "assets/characters/v1/male_cool_soft.png",
+          "sha256": "e0d140754be14adb1aa94ffab98bd59e716eb538bc7bf77bbf0601324ba1e73e"
+        }
+      ]
+    }
+  ]
+}
