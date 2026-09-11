@@ -41,6 +41,12 @@ npm run test:navigation
 
 画面は `/top/`・`/quiz/`・`/result/` の3つ。通常のページ遷移で広告を初期化します。回答・表示中の二択・除外タイプ・一巡の残りは `sessionStorage` の `face-diagnosis:v8` に保存し、再読み込み後も復元します。旧データの診断状態は引き継ぎません。
 
+## サイトカードの比較案
+
+[10案×写真あり・なしの比較ページ](https://type-checker.shianstudio.com/docs/card-lab.html)。短い問いかけと静かな雰囲気の20枚、投稿文、3文字で表す8タイプの提案、5つの診断サービスのOGP調査をまとめています。写真は既存の `female_011` を共通で使い、1200×630のPNGとZIPを保存できます。現行OGP・診断の採点・結果表示は変更していません。
+
+ローカルでは `docs/card-lab.html` を開きます。[調査・分類の注意点と再生成手順](docs/card-lab-assets/research.md)を参照してください。
+
 ## 宣伝PV
 
 [30秒版・15秒版の視聴とダウンロード](https://type-checker.shianstudio.com/docs/promo.html)。YouTube Shorts / TikTok向けの縦1080×1920動画です。実際の操作映像、日本語ナレーション、オリジナルBGMを使用。完成MP4、字幕、サムネイル、投稿文は `assets/promo/`、収録素材と再生成方法は [PV制作記録](marketing/pv/README.md) にあります。

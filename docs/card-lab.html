@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>好きの輪郭 — サイトカード10案 | SHIAN STUDIO</title>
+  <meta name="description" content="好みの顔タイプ診断のサイトカード10案。女性写真あり・なしの20枚、投稿文、診断サイトの調査、3文字の8タイプ案を比較。">
+  <link rel="stylesheet" href="card-lab-assets/styles.css">
+  <script defer src="card-lab-assets/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#concepts">候補一覧へ</a>
+  <header class="site-header"><a class="wordmark" href="#">SHIAN STUDIO <span>／ CREATIVE NOTES</span></a><nav aria-label="ページ内"><a href="#concepts">10の候補</a><a href="#types">8つのタイプ</a><a href="#research">リサーチ</a></nav><span class="edition">SEPT. 2026</span></header>
+  <main>
+    <section class="intro">
+      <div class="intro-copy"><p class="eyebrow">好みの顔タイプ診断 ／ サイトカード提案</p><h1>その「好き」に、<br>少しだけ、<em>謎を。</em></h1><p class="lead">なんとなく惹かれる。その理由を、少し知りたくなる。<br>静かな好奇心から始まる、10の入り口。</p><div class="intro-links"><a class="primary-link" href="#concepts">候補を見くらべる <span>↓</span></a><span>10 concepts × 写真あり・なし</span></div></div>
+      <div class="hero-art" aria-hidden="true"><span class="art-index">STUDY 01 / THE SHAPE OF ATTRACTION</span><div class="hero-orbit"></div><div class="hero-orbit second"></div><span class="hero-star">✧</span><div class="hero-word">好きの<br><i>輪郭。</i></div><span class="art-caption">まだ、言葉になっていないもの。</span></div>
+    </section>
+    <aside class="editor-note"><span>今回の考え方</span><p>大きな煽り文句を、余白のある問いかけへ。<br class="mobile-only">謎は残しつつ、「顔を選ぶ診断」であることは伝える。</p><a href="#research">調査の根拠 ↗</a></aside>
+    <section id="concepts" class="section">
+      <div class="section-heading"><div><p class="eyebrow">01 / CONCEPT GALLERY</p><h2>10通りの、気になる。</h2></div><p>まずは 01・03・08 がおすすめ。<br>同じ女性写真で、見せ方だけを比較できます。</p></div>
+      <div class="toolbar"><div class="segmented" role="group" aria-label="写真の表示"><button data-view="both" aria-pressed="true">並べて比較</button><button data-view="none" aria-pressed="false">写真なし</button><button data-view="photo" aria-pressed="false">女性写真あり</button></div><div class="filter-wrap"><label for="mood-filter">雰囲気</label><select id="mood-filter"><option value="all">すべて</option><option value="mystery">謎めいた</option><option value="quiet">自然・静か</option><option value="type">タイプ・収集</option><option value="saved">お気に入り</option></select><button id="feed-toggle" aria-pressed="false">投稿内で見る</button></div></div>
+      <p class="gallery-caption"><span id="count">10案 / 20枚</span><span>画像をクリックで拡大・PNG保存</span></p>
+      <div id="gallery"></div><p id="empty" hidden>お気に入りはまだありません。各案の「保存」で、あとから絞り込めます。</p>
+      <div class="gallery-bottom"><p>写真は診断に使っている架空の成人女性の生成画像（female_011）。<br>全カードに同じ素材を使用。顔写真は診断素材の例です。</p><a class="text-link" href="card-lab-assets/cards.zip" download>20枚をまとめて保存（ZIP） ↓</a></div>
+      <details class="current-card"><summary>現在のサイトカードと比べる</summary><img src="../assets/promo/home-v8-bfe7983685ba.png" alt="現在のカード。ピンクの装飾、大きく太い見出し、右側に女性写真。" loading="lazy"><p>今回の見立て：強い太字、ピンクの装飾、ボタン風の帯、正面の顔写真が同時に目立ち、広告を連想しやすい構成。新案では、文字の強弱と余白で視線を整理します。</p></details>
+    </section>
+    <section id="types" class="section types-section">
+      <div class="section-heading"><div><p class="eyebrow">02 / A THREE-LETTER IDEA</p><h2>「私は、RSQが好き。」</h2></div><span class="draft-label">分類・名称の提案 / 本番未実装</span></div>
+      <p class="section-intro">3つの軸 × それぞれ2通り = 8タイプ。<br>覚えやすい3文字と、言いたくなる名前をセットに。表すのは<strong>「惹かれる顔の印象」</strong>です。</p>
+      <div class="type-playground"><div class="axis-controls"><p class="eyebrow">軸を選ぶと、結果例が変わります</p><div id="axes"></div><p class="small-note">これは組み合わせのプレビューです。性格や相性を測る診断ではなく、顔の好みを伝える独自の呼び名の案です。MBTIとは別のものです。</p></div><div class="type-result" aria-live="polite"><p>私が惹かれるのは</p><div id="result-code">RSQ</div><h3 id="result-name">余韻のある顔</h3><p id="result-copy"></p><div id="result-tags"></div><span>好みの顔タイプ診断 / 結果表示案</span></div></div>
+      <div id="type-grid" class="type-grid"></div>
+      <details class="implementation-note"><summary>現在の8タイプとの対応と、採用時の考え方</summary><p>既存の女性8分類は、もともと3つの二択で作った分類ではありません。以下は表示上の仮対応で、顔立ちとして正しい対応が確認できたわけではありません。特に女性のフレッシュ、クールカジュアル、エレガントと新しい軸の整合性は、男女各40枚を見直して確かめる必要があります。</p><div class="table-scroll"><table><thead><tr><th>提案コード</th><th>女性の現分類（仮対応）</th><th>男性の現分類（仮対応）</th></tr></thead><tbody id="mapping"></tbody></table></div><p>採用するなら、まず写真と3軸の対応を見直し、確定したタイプIDに表示コードを持たせます。採点は現在どおり「選んだ顔のタイプに1票」。3軸を別々に多数決すると現在と違う結果が出るため、表示コードの追加と採点変更は別の判断です。同点の抽選・結果保存も維持できます。年齢は全員25歳のまま、印象の差に年齢差を使いません。</p><p>07・08・10 のカードと投稿文は、3文字コードを導入した場合の先行案です。現在の診断で3文字コードは表示されません。</p></details>
+    </section>
+    <section id="research" class="section research-section">
+      <div class="section-heading"><div><p class="eyebrow">03 / RESEARCH NOTES</p><h2>話題の診断は、何を見せている？</h2></div><span class="draft-label">確認日 2026.09.11</span></div>
+      <p class="section-intro">実際のトップページのOGP画像を確認した5事例。<br>「人気の根拠」「観察できたこと」「今回に活かす解釈」を分けて記録しました。</p>
+      <div class="research-takeaways"><div><b>01</b><h3>言葉にできる結果</h3><p>文字コード、愛称、ハッシュタグ。<br>「自分はこれ」と伝えられる単位を作る。</p></div><div><b>02</b><h3>見せたくなる一枚</h3><p>キャラクター、免許証、一覧。<br>結果を持ち帰れる形が参考になる。</p></div><div><b>03</b><h3>入口と結果を分ける</h3><p>入口では気になる問い。<br>結果ではコードと名前をはっきり見せる。</p></div></div>
+      <p class="small-note">上の3点は事例からの制作上の解釈です。カード別のクリック率・拡散率は確認できていません。謎めいた表現や写真の有無による効果を保証するものではありません。</p>
+      <div id="research-list"></div>
+      <div class="research-footnote"><h3>今回の候補にどう反映したか</h3><p>01・02・05・09 は余白と象徴で好奇心を作る案。03・04・06 は日常の言葉で自然に誘う案。07・08・10 は結果のコードや一覧を、会話のきっかけにする案です。写真なしでも「顔タイプ診断」を読み取れるようにし、写真ありでは写真と問いのどちらを主役にするかを変えています。</p><p>現在のOGPを確認した調査であり、流行当時と同じ画像だったかは未確認です。掲載数値は各サービスや調査主体の発表で、OGP自体の効果を示す数字ではありません。参照画像は各公式サイトから読み込むため、オフラインや先方の変更時には表示されない場合があります。</p><a class="text-link" href="card-lab-assets/research.md">調査メモと出典を読む ↗</a></div>
+    </section>
+    <footer><a class="wordmark" href="#">SHIAN STUDIO</a><p>好きの輪郭 ／ サイトカード検討室<br>比較用の提案ページです。現行サイトのOGP・診断結果は変更していません。</p><a href="https://type-checker.shianstudio.com/top/">現在の診断を見る ↗</a></footer>
+  </main>
+  <dialog id="card-dialog" aria-labelledby="dialog-title"><div class="dialog-head"><h2 id="dialog-title">サイトカード</h2><button id="dialog-close" aria-label="閉じる">×</button></div><div id="dialog-card"></div><div class="dialog-footer"><span>1200 × 630 px</span><a id="download-card" class="primary-link" download>PNGを保存 ↓</a></div></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <noscript><p>比較表示にはJavaScriptを有効にしてください。<a href="card-lab-assets/cards.zip">20枚のPNGをダウンロード</a>して確認することもできます。</p></noscript>
+</body>
+</html>

@@ -1,0 +1,146 @@
+{
+  "date": "2026-09-11",
+  "source": "docs/card-lab.html",
+  "cards": [
+    {
+      "id": "01",
+      "variant": "none",
+      "file": "cards/01-none.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "01",
+      "variant": "photo",
+      "file": "cards/01-photo.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "02",
+      "variant": "none",
+      "file": "cards/02-none.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "02",
+      "variant": "photo",
+      "file": "cards/02-photo.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "03",
+      "variant": "none",
+      "file": "cards/03-none.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "03",
+      "variant": "photo",
+      "file": "cards/03-photo.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "04",
+      "variant": "none",
+      "file": "cards/04-none.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "04",
+      "variant": "photo",
+      "file": "cards/04-photo.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "05",
+      "variant": "none",
+      "file": "cards/05-none.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "05",
+      "variant": "photo",
+      "file": "cards/05-photo.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "06",
+      "variant": "none",
+      "file": "cards/06-none.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "06",
+      "variant": "photo",
+      "file": "cards/06-photo.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "07",
+      "variant": "none",
+      "file": "cards/07-none.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "07",
+      "variant": "photo",
+      "file": "cards/07-photo.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "08",
+      "variant": "none",
+      "file": "cards/08-none.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "08",
+      "variant": "photo",
+      "file": "cards/08-photo.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "09",
+      "variant": "none",
+      "file": "cards/09-none.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "09",
+      "variant": "photo",
+      "file": "cards/09-photo.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "10",
+      "variant": "none",
+      "file": "cards/10-none.png",
+      "width": 1200,
+      "height": 630
+    },
+    {
+      "id": "10",
+      "variant": "photo",
+      "file": "cards/10-photo.png",
+      "width": 1200,
+      "height": 630
+    }
+  ]
+}
