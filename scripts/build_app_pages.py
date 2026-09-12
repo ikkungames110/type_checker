@@ -43,4 +43,7 @@ def build_app_pages(destination):
 </html>
 '''
     (destination / "index.html").write_text(redirect, encoding="utf-8")
+    ad_page = destination / "ad" / "index.html"
+    ad_page.parent.mkdir(parents=True, exist_ok=True)
+    ad_page.write_text((ROOT / "scripts/templates/ad.html").read_text(encoding="utf-8"), encoding="utf-8")
     print("診断画面: /top/・/quiz/・/result/、ドメイン直下はトップへリダイレクト")

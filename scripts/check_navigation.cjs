@@ -229,6 +229,14 @@ async function main() {
         assert.equal(await page.locator('#xShareButton').getAttribute('href'),tieShare);
       }
       await page.locator('#restartButton').click();
+      await page.waitForURL(routeUrl('ad'));
+      await page.waitForFunction(() => window.__adLoads === 1);
+      assert.equal(await page.locator('#seconds').innerText(), '10');
+      assert.equal(await page.evaluate(() => window.adsbyimobile[0].asid), 1944298);
+      assert.equal(await page.locator('.screen').count(), 0);
+      await page.waitForFunction(() => document.querySelector('#seconds')?.textContent === '5');
+      assert.equal(page.url(), routeUrl('ad'));
+      await page.screenshot({path:`/tmp/type-checker-ad-${width}.png`,fullPage:true});
       await ready('top');
       assert.equal(await page.evaluate(key => sessionStorage.getItem(key), sessionKey), null);
       for (const name of ['quiz', 'result']) {
