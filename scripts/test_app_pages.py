@@ -29,6 +29,9 @@ class AppPagesTest(unittest.TestCase):
                 self.assertEqual(parsed.metadata.get("robots"), None if name == "top" else "noindex, follow")
                 base = urljoin((destination / name / "index.html").as_uri(), "../")
                 for asset in parsed.images + [script['src'] for script in parsed.scripts if 'src' in script]:
+                    if asset.startswith("https://"):
+                        self.assertEqual(asset, "https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104")
+                        continue
                     self.assertTrue(urljoin(base, asset).startswith(destination.as_uri() + '/'))
                     self.assertTrue((ROOT / asset.split('?', 1)[0]).is_file())
             redirect = (destination / "index.html").read_text()

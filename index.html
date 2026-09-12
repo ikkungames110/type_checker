@@ -503,6 +503,18 @@
       display: none;
     }
 
+    @media (max-width: 799px) {
+      body[data-page="top"],
+      body[data-page="result"] {
+        padding-bottom: var(--fixed-ad-height, 50px);
+      }
+
+      body[data-page="top"] .ad-placement,
+      body[data-page="result"] .ad-placement {
+        display: none;
+      }
+    }
+
     @media (min-width: 800px) {
       .ad-slot {
         min-height: 90px;
@@ -706,6 +718,14 @@
         <div id="im-0188de672a6d45f9866ae278a4d4ef39" hidden></div>
         <div id="im-f9eb908dad6a4cf49b5ea04a2cd2e6f5" hidden></div>
         <p class="ad-status" role="status">広告配信待ち</p>
+        <template id="mobile-fixed-ad-template">
+<div style="position:fixed; bottom:0;left:0;right:0;width:100%;background: rgba(0, 0, 0, 0.7); z-index:99998;text-align:center;transform:translate3d(0, 0, 0);"><div style="margin:auto;z-index:99999;" >
+<div id="im-7313d3409a394418ac40b004be47b9e3">
+  <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
+  <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85394,mid:596132,asid:1944283,type:"banner",display:"inline",elementid:"im-7313d3409a394418ac40b004be47b9e3"})</script>
+</div>
+</div></div>
+        </template>
         <script>
           (() => {
             const desktopMedia = window.matchMedia("(min-width: 800px)");
@@ -714,8 +734,25 @@
               {pid:85394,mid:596134,asid:1943673,type:"banner",display:"inline",elementid:"im-f9eb908dad6a4cf49b5ea04a2cd2e6f5"}
             ];
             const loadedBanners = new Set();
+            const useFixedMobileAd = ["top", "result"].includes(document.body.dataset.page);
+            let fixedAd;
+
+            function showFixedAd() {
+              if (fixedAd) return;
+              // 支給タグをそのまま保持し、対象画面・幅で初めて表示する時だけ実行する。
+              const fragment = document.getElementById("mobile-fixed-ad-template").content.cloneNode(true);
+              fixedAd = fragment.firstElementChild;
+              document.body.appendChild(fragment);
+              new ResizeObserver(() => {
+                document.body.style.setProperty("--fixed-ad-height", `${fixedAd.getBoundingClientRect().height}px`);
+              }).observe(fixedAd);
+            }
 
             function showBanner() {
+              const fixed = useFixedMobileAd && !desktopMedia.matches;
+              if (fixed) showFixedAd();
+              if (fixedAd) fixedAd.hidden = !fixed;
+              if (fixed) return;
               const activeBanner = banners[desktopMedia.matches ? 1 : 0];
               for (const banner of banners) {
                 document.getElementById(banner.elementid).hidden = banner !== activeBanner;

@@ -32,7 +32,30 @@ async function main() {
         assert.equal(await page.locator('.screen.active').count(), 1);
         assert.equal(await page.locator('body').getAttribute('data-page'), name);
         const ad = await page.evaluate(() => window.adsbyimobile[0]);
-        assert.equal(ad.asid, width >= 800 ? 1943673 : 1943443);
+        assert.equal(ad.asid, width >= 800 ? 1943673 : name === 'quiz' ? 1943443 : 1944283);
+        if (width < 800 && name !== 'quiz') {
+          const banner = page.locator('#im-7313d3409a394418ac40b004be47b9e3');
+          // 配信サイズを再現して、ページ先頭・途中・末尾で固定位置と余白を確認する。
+          await banner.evaluate(node => { node.style.height = '50px'; });
+          await page.waitForFunction(() => getComputedStyle(document.body).paddingBottom === '50px');
+          for (const position of [0, 0.5, 1]) {
+            const geometry = await banner.evaluate((node, position) => {
+              window.scrollTo(0, (document.documentElement.scrollHeight - innerHeight) * position);
+              const fixed = node.parentElement.parentElement;
+              const box = fixed.getBoundingClientRect();
+              return { bottom: box.bottom, left: box.left, width: box.width, viewportWidth: innerWidth,
+                viewportHeight: innerHeight, position: getComputedStyle(fixed).position };
+            }, position);
+            assert.equal(geometry.position, 'fixed');
+            assert.equal(geometry.bottom, geometry.viewportHeight);
+            assert.equal(geometry.left, 0);
+            assert.equal(geometry.width, geometry.viewportWidth);
+          }
+          await page.evaluate(() => window.scrollTo(0, 0));
+          assert.equal(await page.locator('.ad-placement').isVisible(), false);
+        } else {
+          assert.equal(await page.locator('#im-7313d3409a394418ac40b004be47b9e3').count(), 0);
+        }
         return page.evaluate(() => window.__documentId);
       };
       const shownFirstCycle = new Set();
