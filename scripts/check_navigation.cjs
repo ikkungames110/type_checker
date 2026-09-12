@@ -230,9 +230,21 @@ async function main() {
       }
       await page.locator('#restartButton').click();
       await page.waitForURL(routeUrl('ad'));
-      await page.waitForFunction(() => window.__adLoads === 1);
       assert.equal(await page.locator('#seconds').innerText(), '10');
-      assert.equal(await page.evaluate(() => window.adsbyimobile[0].asid), 1944298);
+      if (width >= 800) {
+        assert.equal(await page.locator('#adSlots iframe').count(), 2);
+        for (const frameElement of await page.locator('#adSlots iframe').elementHandles()) {
+          const frame = await frameElement.contentFrame();
+          await frame.waitForFunction(() => window.__adLoads === 1);
+          assert.equal(await frame.evaluate(() => window.adsbyimobile.length), 1);
+          assert.equal(await frame.evaluate(() => window.adsbyimobile[0].asid), 1944299);
+        }
+        assert.equal(await page.evaluate(() => window.adsbyimobile), undefined);
+      } else {
+        await page.waitForFunction(() => window.__adLoads === 1);
+        assert.equal(await page.locator('#adSlots iframe').count(), 0);
+        assert.equal(await page.evaluate(() => window.adsbyimobile[0].asid), 1944298);
+      }
       assert.equal(await page.locator('.screen').count(), 0);
       await page.waitForFunction(() => document.querySelector('#seconds')?.textContent === '5');
       assert.equal(page.url(), routeUrl('ad'));
