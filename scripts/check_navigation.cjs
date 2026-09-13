@@ -28,12 +28,13 @@ async function main() {
       });
       const ready = async name => {
         await page.waitForURL(routeUrl(name));
-        await page.waitForFunction(() => window.__adLoads === 1);
+        const expectedAdLoads = width < 800 && name === 'result' ? 2 : 1;
+        await page.waitForFunction(expected => window.__adLoads === expected, expectedAdLoads);
         assert.equal(await page.locator('.screen.active').count(), 1);
         assert.equal(await page.locator('body').getAttribute('data-page'), name);
         const ad = await page.evaluate(() => window.adsbyimobile[0]);
-        assert.equal(ad.asid, width >= 800 ? 1943673 : name === 'quiz' ? 1943443 : 1944283);
-        if (width < 800 && name !== 'quiz') {
+        assert.equal(ad.asid, width >= 800 ? 1943673 : 1944283);
+        if (width < 800) {
           const banner = page.locator('#im-7313d3409a394418ac40b004be47b9e3');
           // 配信サイズを再現して、ページ先頭・途中・末尾で固定位置と余白を確認する。
           await banner.evaluate(node => { node.style.height = '50px'; });
@@ -53,8 +54,15 @@ async function main() {
           }
           await page.evaluate(() => window.scrollTo(0, 0));
           assert.equal(await page.locator('.ad-placement').isVisible(), false);
+          if (name === 'result') {
+            assert.equal(await page.locator('#resultRectangleAd').isVisible(), true);
+            assert.equal(await page.evaluate(() => window.adsbyimobile[1].asid), 1944298);
+          } else {
+            assert.equal(await page.locator('#resultRectangleAd').isVisible(), false);
+          }
         } else {
           assert.equal(await page.locator('#im-7313d3409a394418ac40b004be47b9e3').count(), 0);
+          assert.equal(await page.locator('#resultRectangleAd').isVisible(), false);
         }
         return page.evaluate(() => window.__documentId);
       };
@@ -225,6 +233,19 @@ async function main() {
       await page.reload();await ready('result');
       assert.equal(await page.locator('#resultCodes').innerText(),codeText);
       assert.equal(await page.locator('#xShareButton').getAttribute('href'),originalShare);
+      assert.equal(await page.evaluate(() => {
+        const share = document.querySelector('#xShareButton');
+        const details = document.querySelector('.result-share .result-details');
+        return !!details && Boolean(share.compareDocumentPosition(details) & Node.DOCUMENT_POSITION_FOLLOWING);
+      }), true);
+      await page.evaluate(() => {
+        Object.defineProperty(navigator, 'clipboard', {
+          configurable: true,
+          value: { writeText: text => { window.__copiedResult = text; return Promise.resolve(); } }
+        });
+      });
+      await page.locator('#shareButton').click();
+      assert.match(await page.evaluate(() => window.__copiedResult), /\n#好みの顔タイプ診断$/);
       await page.goBack();await ready('top');await page.goForward();await ready('result');
       assert.equal(await page.locator('#resultCodes').innerText(),codeText);
 
@@ -252,25 +273,7 @@ async function main() {
         assert.equal(await page.locator('#xShareButton').getAttribute('href'),tieShare);
       }
       await page.locator('#restartButton').click();
-      await page.waitForURL(routeUrl('ad'));
-      assert.equal(await page.locator('#seconds').innerText(), '10');
-      if (width >= 800) {
-        assert.equal(await page.locator('#adSlots iframe').count(), 2);
-        for (const frameElement of await page.locator('#adSlots iframe').elementHandles()) {
-          const frame = await frameElement.contentFrame();
-          await frame.waitForFunction(() => window.__adLoads === 1);
-          assert.equal(await frame.evaluate(() => window.adsbyimobile.length), 1);
-          assert.equal(await frame.evaluate(() => window.adsbyimobile[0].asid), 1944299);
-        }
-        assert.equal(await page.evaluate(() => window.adsbyimobile), undefined);
-      } else {
-        await page.waitForFunction(() => window.__adLoads === 1);
-        assert.equal(await page.locator('#adSlots iframe').count(), 0);
-        assert.equal(await page.evaluate(() => window.adsbyimobile[0].asid), 1944298);
-      }
-      assert.equal(await page.locator('.screen').count(), 0);
-      await page.waitForFunction(() => document.querySelector('#seconds')?.textContent === '5');
-      assert.equal(page.url(), routeUrl('ad'));
+      await ready('top');
       await page.screenshot({path:`/tmp/type-checker-ad-${width}.png`,fullPage:true});
       await ready('top');
       assert.equal(await page.evaluate(key => sessionStorage.getItem(key), sessionKey), null);

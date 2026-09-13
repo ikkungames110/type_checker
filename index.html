@@ -376,9 +376,20 @@
     }
 
     .result-details {
-      grid-area: details;
       display: grid;
       gap: 18px;
+    }
+
+    .result-rectangle-ad {
+      display: flex;
+      justify-content: center;
+      min-height: 250px;
+      margin: 2px auto 0;
+    }
+
+    .result-rectangle-ad > div {
+      min-width: 300px;
+      min-height: 250px;
     }
 
     .result-title {
@@ -505,11 +516,13 @@
 
     @media (max-width: 799px) {
       body[data-page="top"],
+      body[data-page="quiz"],
       body[data-page="result"] {
         padding-bottom: var(--fixed-ad-height, 50px);
       }
 
       body[data-page="top"] .ad-placement,
+      body[data-page="quiz"] .ad-placement,
       body[data-page="result"] .ad-placement {
         display: none;
       }
@@ -693,7 +706,21 @@
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.835L0 1.154h7.594l5.243 6.932zm-1.29 19.49h2.039L6.487 3.24H4.3z"/></svg>
             <span>Xで結果をシェア</span>
           </a>
+          <div class="result-details">
+            <div class="actions">
+              <button class="ghost-btn" id="shareButton">結果をコピー</button>
+              <button class="ghost-btn restart-btn" id="restartButton">もう一回診断する</button>
+            </div>
+            <div class="toast" id="toast" role="status" aria-live="polite"></div>
+          </div>
         </div>
+        <aside class="result-rectangle-ad" id="resultRectangleAd" aria-label="広告" hidden></aside>
+        <template id="result-rectangle-ad-template">
+          <div id="im-379147c83640400880bdda3d09b72a26">
+            <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
+            <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85394,mid:596132,asid:1944298,type:"banner",display:"inline",elementid:"im-379147c83640400880bdda3d09b72a26"})</script>
+          </div>
+        </template>
         <section class="result-examples" aria-labelledby="examplesTitle">
           <h2 id="examplesTitle">例えば、こんな顔</h2>
           <p>結果のタイプごとに、5枚の顔を並べました。</p>
@@ -701,13 +728,6 @@
           <p class="example-note">写真は診断用に生成した、架空の成人の顔です。</p>
         </section>
         <section class="axis-breakdown" id="resultBreakdown" aria-label="結果の文字の意味"></section>
-        <div class="result-details">
-          <div class="actions">
-            <button class="ghost-btn" id="shareButton">結果をコピー</button>
-            <button class="ghost-btn restart-btn" id="restartButton">もう一回診断する</button>
-          </div>
-          <div class="toast" id="toast" role="status" aria-live="polite"></div>
-        </div>
         <section class="character-catalog" aria-labelledby="catalogTitle">
           <h2 id="catalogTitle">すべてのタイプのキャラクター</h2>
           <p>ほかのタイプのキャラクターも見てみよう。</p>
@@ -739,8 +759,9 @@
               {pid:85394,mid:596134,asid:1943673,type:"banner",display:"inline",elementid:"im-f9eb908dad6a4cf49b5ea04a2cd2e6f5"}
             ];
             const loadedBanners = new Set();
-            const useFixedMobileAd = ["top", "result"].includes(document.body.dataset.page);
+            const useFixedMobileAd = ["top", "quiz", "result"].includes(document.body.dataset.page);
             let fixedAd;
+            let resultRectangleAd;
 
             function showFixedAd() {
               if (fixedAd) return;
@@ -753,9 +774,23 @@
               }).observe(fixedAd);
             }
 
+            function showResultRectangleAd() {
+              if (resultRectangleAd) {
+                resultRectangleAd.hidden = desktopMedia.matches;
+                return;
+              }
+              if (document.body.dataset.page !== "result" || desktopMedia.matches) return;
+              const target = document.getElementById("resultRectangleAd");
+              const fragment = document.getElementById("result-rectangle-ad-template").content.cloneNode(true);
+              target.appendChild(fragment);
+              target.hidden = false;
+              resultRectangleAd = target;
+            }
+
             function showBanner() {
               const fixed = useFixedMobileAd && !desktopMedia.matches;
               if (fixed) showFixedAd();
+              showResultRectangleAd();
               if (fixedAd) fixedAd.hidden = !fixed;
               if (fixed) return;
               const activeBanner = banners[desktopMedia.matches ? 1 : 0];
@@ -1012,15 +1047,16 @@
 
     function reset() {
       try { sessionStorage.removeItem(SESSION_KEY); } catch { /* 保存不可でもトップへ戻れる。 */ }
-      navigate("ad");
+      navigate("top");
     }
 
     async function copyResult() {
+      const copiedText = `${state.lastResult}\n${state.shareUrl}\n#好みの顔タイプ診断`;
       try {
-        await navigator.clipboard.writeText(`${state.lastResult}\n${state.shareUrl}`);
+        await navigator.clipboard.writeText(copiedText);
         toast.textContent = "共有テキストをコピーしました";
       } catch {
-        toast.textContent = `${state.lastResult}\n${state.shareUrl}`;
+        toast.textContent = copiedText;
       }
     }
 

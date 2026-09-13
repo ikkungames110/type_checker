@@ -43,7 +43,8 @@ def build_app_pages(destination):
 </html>
 '''
     (destination / "index.html").write_text(redirect, encoding="utf-8")
+    # 旧広告待機ページへの直リンクはトップへ戻す。広告タグは置かない。
     ad_page = destination / "ad" / "index.html"
     ad_page.parent.mkdir(parents=True, exist_ok=True)
-    ad_page.write_text((ROOT / "scripts/templates/ad.html").read_text(encoding="utf-8"), encoding="utf-8")
+    ad_page.write_text(redirect.replace('url=top/', 'url=../top/').replace('new URL("top/", location.href)', 'new URL("../top/", location.href)').replace('href="top/"', 'href="../top/"'), encoding="utf-8")
     print("診断画面: /top/・/quiz/・/result/、ドメイン直下はトップへリダイレクト")
