@@ -9,3 +9,16 @@
 .letter-meanings dd strong{font-size:17px;font-weight:600}
 .letter-meanings dd p{font-size:14px;line-height:1.9;color:#64705c;margin:8px 0 0}
 @media(max-width:480px){.letter-meanings dl{gap:8px}.letter-meanings dl>.letter-option{padding:14px 12px}.letter-meanings dl>.letter-option.selected{padding:13px 11px}.letter-meanings dt{font-size:36px}.letter-meanings dd p{font-size:13px}.letter-selected-label{font-size:10px}}
+
+.character-catalog{border-top:1px solid #dce2d4;padding-top:28px;min-width:0}
+.character-catalog>h2{font-size:clamp(22px,4vw,30px);max-width:none;margin:0 0 10px}
+.character-catalog>p{font-size:14px;color:#718067;line-height:1.8}
+.catalog-group{margin-top:24px}
+.catalog-group>h3,.catalog-group>summary{font-size:18px;color:#526851;margin:0 0 16px}
+.catalog-group>summary{cursor:pointer;padding:14px 0}
+.character-catalog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.character-catalog-grid .letter-type{grid-template-columns:minmax(0,1fr);gap:12px;padding:20px}
+.character-catalog-grid .letter-type img{max-width:300px;justify-self:center}
+.character-catalog-grid .result-title{font-size:22px;line-height:1.6;margin:10px 0}
+.character-catalog-grid .type-code{font-size:32px}
+@media(max-width:600px){.character-catalog-grid{grid-template-columns:minmax(0,1fr);gap:16px}.character-catalog-grid .letter-type{padding:18px}}

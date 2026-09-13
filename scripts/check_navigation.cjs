@@ -181,6 +181,29 @@ async function main() {
         assert.ok(pair[0].x<pair[1].x);
       }
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+      const catalog = page.locator('#resultCatalog');
+      assert.equal(await catalog.locator('.letter-type').count(),16);
+      assert.equal(await catalog.locator('.catalog-group').first().getAttribute('data-gender'),gender);
+      for (const target of ['female','male']) {
+        const group = catalog.locator(`[data-gender="${target}"]`);
+        if (target !== gender) await group.locator('summary').click();
+        const expected = await page.evaluate(target => FACE_RESULT_TYPES[target].map(type => ({
+          ...type, image: FACE_CHARACTERS.find(c => c.gender === target && c.type === type.id).image
+        })), target);
+        assert.equal(await group.locator('.letter-type').count(),8);
+        for (const type of expected) {
+          const card = group.locator(`[data-code="${type.code}"]`);
+          assert.equal(await card.isVisible(),true);
+          assert.equal(await card.locator('h4').innerText(),type.label);
+          assert.equal(await card.locator('.result-classification').innerText(),`(${type.classification_label}タイプ)`);
+          assert.ok((await card.locator('img').getAttribute('src')).startsWith(type.image+'?v='));
+          await card.scrollIntoViewIfNeeded();
+          await card.locator('img').evaluate(img => img.decode());
+        }
+        if (target !== gender) await group.locator('summary').click();
+      }
+      await page.locator('.character-catalog').screenshot({path:`/tmp/type-checker-catalog-${gender}-${width}.png`});
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
       const codeText=await page.locator('#resultCodes').innerText();
       const originalShare=await page.locator('#xShareButton').getAttribute('href');
       const share=new URL(originalShare);

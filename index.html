@@ -626,7 +626,7 @@
       .bar-row { grid-template-columns: minmax(0, 1fr) 2.5em; }
     }
   </style>
-  <link rel="stylesheet" href="js/result_letters.css?v=type-votes-2">
+  <link rel="stylesheet" href="js/result_letters.css?v=character-catalog-1">
 </head>
 <body data-page="top">
   <main class="app">
@@ -708,6 +708,11 @@
           </div>
           <div class="toast" id="toast" role="status" aria-live="polite"></div>
         </div>
+        <section class="character-catalog" aria-labelledby="catalogTitle">
+          <h2 id="catalogTitle">すべてのタイプのキャラクター</h2>
+          <p>ほかのタイプのキャラクターも見てみよう。</p>
+          <div id="resultCatalog"></div>
+        </section>
       </div>
     </section>
 
@@ -812,7 +817,7 @@
   <script src="data/type_characters.js?v=1"></script>
   <script src="data/type_axes.js?v=2"></script>
   <script src="js/axis_breakdown.js?v=preference-label-1"></script>
-  <script src="js/result_view.js?v=type-votes-2"></script>
+  <script src="js/result_view.js?v=character-catalog-1"></script>
   <script src="js/type_presentation.js?v=1"></script>
   <script src="js/face_deck.js?v=8"></script>
   <script src="js/face_scoring.js?v=type-votes-2"></script>

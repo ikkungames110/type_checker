@@ -1,5 +1,36 @@
-// すべての同点タイプのキャラクターと、タイプごとに5枚の顔を表示する。
+// 診断結果と顔の例、全タイプのキャラクター一覧を表示する。
 const ResultView = {
+  createCard(type, character, heading = 'h2', lazy = false) {
+    const card = document.createElement('article');card.className = 'letter-type';card.dataset.code = type.code;
+    const image = document.createElement('img');image.className = 'result-character';
+    image.src = `${character.image}?v=${character.sha256.slice(0,12)}`;
+    if (lazy) image.loading = 'lazy';
+    image.width = 1254;image.height = 1254;image.alt = `${type.code}・${type.classification_label}タイプのキャラクター`;
+    const summary = document.createElement('div');
+    const code = document.createElement('div');code.className = 'type-code';code.textContent = type.code;
+    const title = document.createElement(heading);title.className = 'result-title';title.textContent = type.label;
+    const classification = document.createElement('p');classification.className = 'result-classification';classification.textContent = `(${type.classification_label}タイプ)`;
+    const copy = document.createElement('p');copy.className = 'result-copy';copy.textContent = type.copy;
+    summary.append(code,title,classification,copy);card.append(image,summary);return card;
+  },
+  renderCatalog(gender, characters) {
+    const catalog = document.querySelector('#resultCatalog');
+    catalog.replaceChildren();
+    const otherGender = gender === 'female' ? 'male' : 'female';
+    [gender,otherGender].forEach((target,index) => {
+      const group = document.createElement(index ? 'details' : 'section');
+      group.className = 'catalog-group';group.dataset.gender = target;
+      const heading = document.createElement(index ? 'summary' : 'h3');
+      const label = target === 'female' ? '女性' : '男性';
+      heading.textContent = index ? `${label}の8タイプも見る` : `${label}の8タイプ`;
+      const grid = document.createElement('div');grid.className = 'character-catalog-grid';
+      window.FACE_RESULT_TYPES[target].forEach(type => {
+        const character = characters.find(item => item.gender === target && item.type === type.id);
+        grid.append(this.createCard(type,character,'h4',true));
+      });
+      group.append(heading,grid);catalog.append(group);
+    });
+  },
   render(result, gender, faces, characters) {
     const codes = document.querySelector('#resultCodes');
     codes.replaceChildren(...result.codes.flatMap((code, index) => {
@@ -18,16 +49,7 @@ const ResultView = {
     types.replaceChildren(); examples.replaceChildren();
     result.winners.forEach((type,typeIndex) => {
       const presentation = TypePresentation.resolve(gender,type.id,faces,characters);
-      const card = document.createElement('article');card.className = 'letter-type';card.dataset.code = type.code;
-      const image = document.createElement('img');image.className = 'result-character';
-      image.src = `${presentation.character.image}?v=${presentation.character.sha256.slice(0,12)}`;
-      image.width = 1254;image.height = 1254;image.alt = `${type.code}・${type.classification_label}タイプのキャラクター`;
-      const summary = document.createElement('div');
-      const code = document.createElement('div');code.className = 'type-code';code.textContent = type.code;
-      const title = document.createElement('h2');title.className = 'result-title';title.textContent = type.label;
-      const classification = document.createElement('p');classification.className = 'result-classification';classification.textContent = `(${type.classification_label}タイプ)`;
-      const copy = document.createElement('p');copy.className = 'result-copy';copy.textContent = type.copy;
-      summary.append(code,title,classification,copy);card.append(image,summary);types.append(card);
+      types.append(this.createCard(type,presentation.character));
       const group = document.createElement(result.codes.length > 1 ? 'details' : 'div');group.className = 'example-group';group.dataset.code = type.code;
       if (result.codes.length > 1) {
         group.open = typeIndex === 0;
@@ -42,5 +64,6 @@ const ResultView = {
       group.append(grid);examples.append(group);
     });
     AxisBreakdown.render(document.querySelector('#resultBreakdown'),result);
+    this.renderCatalog(gender,characters);
   }
 };
