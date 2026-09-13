@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="好みの顔タイプ診断の広告収益改善案。問い合わせの回答を待たずに試す変更と、効果の判断方法。">
+  <title>広告収益を改善する、次の一手 | 好みの顔タイプ診断</title>
+  <style>
+    :root { --paper:#f5f3eb; --ink:#20382f; --muted:#626e65; --line:#d9dfd3; --green:#245c42; --lime:#d8ed97; --white:#fffef9; --orange:#b2582c; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:24px; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif; line-height:1.85; }
+    a { color:var(--green); text-underline-offset:4px; }
+    button,input { font:inherit; }
+    button,a,input { -webkit-tap-highlight-color:transparent; }
+    :focus-visible { outline:3px solid var(--orange); outline-offset:4px; }
+    button { cursor:pointer; }
+    .wrap { max-width:1160px; margin:auto; padding:0 28px; }
+    header { border-bottom:1px solid var(--line); }
+    .header-inner { display:flex; justify-content:space-between; gap:20px; align-items:center; min-height:80px; }
+    .brand { font-size:13px; font-weight:750; letter-spacing:.06em; }
+    .stamp { font-size:12px; color:var(--muted); }
+    .hero { padding:68px 0 48px; display:grid; grid-template-columns:1.5fr 1fr; gap:48px; align-items:end; }
+    .eyebrow { margin:0 0 20px; font-size:12px; font-weight:750; letter-spacing:.12em; color:var(--green); }
+    h1 { margin:0; font-size:clamp(34px,5vw,60px); line-height:1.35; letter-spacing:-.055em; font-weight:800; }
+    .lead { margin:24px 0 0; font-size:16px; max-width:620px; }
+    .decision { background:var(--green); color:var(--white); padding:28px; border-radius:4px 4px 36px 4px; }
+    .decision small { color:var(--lime); font-weight:700; }
+    .decision p { font-size:22px; font-weight:700; line-height:1.6; margin:14px 0; }
+    .decision span { display:block; font-size:13px; opacity:.85; }
+    .nav { display:flex; flex-wrap:wrap; gap:10px 26px; padding:22px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .nav a { font-size:13px; text-decoration:none; font-weight:700; }
+    .nav b { color:var(--muted); margin-right:8px; font-weight:450; }
+    section { padding:50px 0; border-bottom:1px solid var(--line); }
+    .section-top { display:flex; gap:22px; align-items:baseline; margin-bottom:26px; }
+    .section-no { font-size:13px; font-weight:650; color:var(--green); font-variant-numeric:tabular-nums; }
+    h2 { font-size:clamp(24px,3vw,32px); line-height:1.5; margin:0; letter-spacing:-.035em; }
+    h3 { font-size:20px; line-height:1.55; margin:0 0 12px; }
+    p { margin:12px 0; }
+    .sub { color:var(--muted); font-size:14px; }
+    .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .card { padding:26px; background:var(--white); border:1px solid var(--line); border-radius:14px; }
+    .tag { display:inline-block; font-size:11px; font-weight:750; padding:3px 10px; border-radius:30px; background:#eaf0e0; margin-bottom:20px; }
+    .card:first-child { border-top:4px solid var(--green); }
+    .card p { font-size:14px; }
+    .action { border-top:1px solid var(--line); padding-top:16px; margin-top:18px; font-size:13px; }
+    .action strong { display:block; margin-bottom:4px; }
+    .note { padding:16px 20px; background:#e9edde; border-radius:8px; font-size:13px; margin-top:20px; }
+    .layout { display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:start; }
+    .preview { padding:26px; background:#e8ecdf; border-radius:20px; }
+    .switch { display:flex; gap:4px; padding:4px; background:#d7dece; border-radius:10px; margin:0 auto 22px; max-width:340px; }
+    .switch button { flex:1; border:0; color:var(--ink); background:transparent; padding:9px 12px; border-radius:7px; font-size:13px; font-weight:700; }
+    .switch button[aria-pressed="true"] { background:var(--white); box-shadow:0 2px 4px #20382f12; }
+    .phone { max-width:300px; background:var(--white); border:6px solid #344a3b; border-radius:30px; margin:auto; padding:18px 14px 0; overflow:hidden; }
+    .phone-top { display:flex; justify-content:space-between; font-size:9px; color:var(--muted); border-bottom:1px solid var(--line); padding-bottom:9px; }
+    .mock-result { text-align:center; margin-top:18px; font-size:11px; }
+    .mock-result strong { display:block; font-size:34px; line-height:1.4; letter-spacing:.12em; }
+    .mock-character { width:74px; height:86px; margin:9px auto; background:#e8ecde; border-radius:36px 36px 12px 12px; display:grid; place-items:center; font-size:10px; }
+    .mock-share { background:#26392f; color:white; text-align:center; border-radius:6px; font-size:10px; padding:7px; margin:14px 0; }
+    .mock-ad { border:1px dashed #6c8446; background:#e4efc9; color:#3d582d; text-align:center; display:grid; align-content:center; margin:12px 0; border-radius:4px; font-size:11px; }
+    .mock-ad strong { display:block; font-size:24px; }
+    .rectangle { aspect-ratio:300 / 250; }
+    .mock-copy { font-size:11px; padding:10px 0; border-bottom:1px solid var(--line); }
+    .mock-faces { display:flex; gap:6px; margin:10px 0; }
+    .mock-faces i { width:20%; aspect-ratio:3 / 4; background:#e6e8df; border-radius:4px; }
+    .mock-retry { font-size:10px; text-align:center; border:1px solid var(--line); border-radius:6px; margin:12px 0; padding:7px; }
+    .mock-fixed { background:#354a3c; color:white; padding:9px 0; font-size:10px; text-align:center; margin:14px -14px 0; }
+    .wait { background:#f5e4d7; color:#844723; border:1px dashed #ca9e7b; font-size:11px; padding:14px; border-radius:7px; margin:14px 0; }
+    [hidden] { display:none !important; }
+    .preview-caption { font-size:12px; color:var(--muted); text-align:center; margin-top:18px; }
+    .steps { padding-left:24px; margin:0; }
+    .steps li { padding:0 0 22px 8px; }
+    .steps li::marker { color:var(--green); font-weight:800; }
+    .steps strong { display:block; font-size:16px; }
+    .steps p { font-size:14px; margin:7px 0 0; }
+    .table-wrap { overflow:auto; border:1px solid var(--line); border-radius:10px; background:var(--white); }
+    table { border-collapse:collapse; width:100%; min-width:540px; font-size:14px; }
+    th,td { padding:14px 18px; border-bottom:1px solid var(--line); text-align:right; font-variant-numeric:tabular-nums; }
+    th { background:#e9edde; font-size:12px; }
+    th:first-child,td:first-child { text-align:left; }
+    tr:last-child td { border:0; }
+    .insight { display:grid; grid-template-columns:120px 1fr; align-items:center; gap:24px; margin-top:24px; }
+    .big { font-size:48px; line-height:1.1; letter-spacing:-.05em; font-weight:800; }
+    .big small { font-size:18px; }
+    .insight p { font-size:14px; }
+    .timeline { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .time { border-top:3px solid var(--green); padding-top:16px; }
+    .time small { font-weight:750; color:var(--green); }
+    .time h3 { margin-top:9px; font-size:18px; }
+    .time p { font-size:14px; }
+    .formula { padding:20px; background:var(--ink); color:var(--white); border-radius:10px; margin:24px 0; }
+    .formula strong { font-size:18px; display:block; }
+    .formula p { margin:6px 0 0; font-size:13px; color:#dce5d5; }
+    details { background:var(--white); border:1px solid var(--line); padding:16px 20px; border-radius:10px; margin-top:12px; }
+    summary { font-size:14px; font-weight:750; cursor:pointer; }
+    details p,details li { font-size:13px; }
+    .checklist { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .checklist label { display:flex; gap:12px; align-items:flex-start; background:var(--white); padding:17px; border:1px solid var(--line); border-radius:8px; font-size:14px; cursor:pointer; }
+    .checklist input { width:18px; height:18px; flex:0 0 18px; margin-top:5px; accent-color:var(--green); }
+    .checklist label:has(input:checked) { background:#e9efdc; }
+    .checklist label:has(input:checked) span { text-decoration:line-through; color:var(--muted); }
+    .check-top { display:flex; justify-content:space-between; align-items:center; gap:20px; margin-bottom:16px; }
+    .check-top p { font-size:13px; color:var(--muted); }
+    .print { background:transparent; border:1px solid var(--ink); border-radius:6px; padding:6px 12px; font-size:12px; }
+    footer { padding:32px 0 50px; font-size:12px; color:var(--muted); }
+    footer p { margin:8px 0; }
+    @media (max-width:800px) { .hero { grid-template-columns:1fr; gap:28px; padding-top:40px; } .decision { max-width:600px; } .cards,.timeline { grid-template-columns:1fr; } .layout { grid-template-columns:1fr; gap:28px; } .card { padding:24px; } .tag { margin-bottom:12px; } }
+    @media (max-width:480px) { .wrap { padding:0 20px; } .header-inner { gap:12px; min-height:68px; } .brand { font-size:11px; } .stamp { font-size:10px; } section { padding:36px 0; } .nav { gap:10px 18px; } .nav a { font-size:12px; } .section-top { gap:12px; } .preview { padding:20px 12px; } .checklist { grid-template-columns:1fr; } .insight { grid-template-columns:85px 1fr; gap:16px; } .big { font-size:40px; } }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+    @media print { body { background:white; font-size:11px; } .wrap { max-width:none; padding:0; } header,.nav,.switch,.print { display:none; } .hero { padding:15px 0; gap:20px; } h1 { font-size:32px; } section { padding:22px 0; } .cards,.timeline { grid-template-columns:repeat(3,1fr); } .layout { grid-template-columns:1fr 1fr; } .card,.time,.phone { break-inside:avoid; } .checklist { grid-template-columns:1fr 1fr; } .decision,.formula { color:var(--ink); background:#e9edde; } .decision small,.formula p { color:var(--ink); } .table-wrap { overflow:visible; } table { min-width:0; } a { color:inherit; } }
+  </style>
+</head>
+<body>
+  <header><div class="wrap header-inner"><span class="brand">好みの顔タイプ診断 / 運営メモ</span><span class="stamp">2026.09.14 · 改善提案</span></div></header>
+  <main class="wrap">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">問い合わせの返事を待つ間にできること</p>
+        <h1>広告を、結果を<br>読んでいる場所へ。</h1>
+        <p class="lead">最初に試すのは、結果ページへの<strong>300×250広告の設置</strong>と、再診断前の<strong>10秒待機の撤去</strong>。広告を見てもらう場所を変え、訪問あたりの収益で効果を判断します。</p>
+      </div>
+      <aside class="decision" aria-label="おすすめの進め方"><small>次の一手</small><p>配置を1回試す。<br>改善しなければ、<br>広告会社を比較する。</p><span>このページは提案資料です。広告配置の変更・広告サービスへの申込みは未実施。CPM上昇を保証するものではありません。</span></aside>
+    </div>
+    <nav class="nav" aria-label="資料の目次"><a href="#actions"><b>01</b>まずやること</a><a href="#placement"><b>02</b>置き場所の見本</a><a href="#evidence"><b>03</b>数字の読み方</a><a href="#measure"><b>04</b>効果の確かめ方</a><a href="#check"><b>05</b>実行リスト</a></nav>
+
+    <section id="actions">
+      <div class="section-top"><span class="section-no">01</span><h2>問い合わせとは別に、この3つを進める。</h2></div>
+      <div class="cards">
+        <article class="card"><span class="tag">最初の変更</span><h3>大きい広告を<br>結果ページに置く</h3><p>結果のコード・キャラクター・シェア操作の後に、300×250を1枠。顔の例や説明を読む流れの中に入れます。</p><div class="action"><strong>狙い</strong>再診断した人にしか届かない大きい広告を、結果を読む人にも届ける。これは収益改善の仮説です。</div></article>
+        <article class="card"><span class="tag">同じ変更で</span><h3>再診断前の<br>10秒待機を外す</h3><p>「もう一回診断する」から、すぐトップに戻れるようにします。広告専用ページの300×250は読み込まない構成にします。</p><div class="action"><strong>狙い</strong>再診断の手間を減らす。通常バナーを10秒見せても、時間に応じた報酬が保証されるわけではありません。</div></article>
+        <article class="card"><span class="tag">並行して準備</span><h3>別の広告会社も<br>試せる状態にする</h3><p>AdSense未導入なら、申込みを検討。承認済みなら、結果ページの同じ場所でi-mobileとの比較を準備します。</p><div class="action"><strong>狙い</strong>配置を変えても低単価なら、広告の供給元を変えて検証する。審査日数・通過・単価上昇は未確定です。</div></article>
+      </div>
+      <p class="note">①と②は「広告の置き場所を移す」一組の試験です。初回は現在の320×50固定広告と診断中のバナーを維持し、サイズ変更・フィルタ変更・他社への切替を同時に重ねない方が、結果を読み取りやすくなります。</p>
+    </section>
+
+    <section id="placement">
+      <div class="section-top"><span class="section-no">02</span><h2>こう置く。結果を先に、広告はその後。</h2></div>
+      <div class="layout">
+        <div class="preview">
+          <div class="switch" role="group" aria-label="広告配置の見本を切り替え"><button type="button" data-view="before" aria-pressed="false">現在の構成</button><button type="button" data-view="after" aria-pressed="true">提案する構成</button></div>
+          <div class="phone" aria-label="結果ページの配置イメージ">
+            <div class="phone-top"><span>好みの顔タイプ診断</span><span>結果</span></div>
+            <div class="mock-result">あなたが好きなタイプ<strong>ASQ</strong><div class="mock-character">キャラクター</div></div>
+            <div class="mock-share">Xで結果をシェア</div>
+            <div class="mock-ad rectangle" id="resultAd">広告・結果本文の新しい枠<strong>300 × 250</strong><span>ここで自然に目に入るかを試す</span></div>
+            <div class="mock-copy">例えば、こんな顔<div class="mock-faces" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>文字の意味・タイプの説明</div>
+            <div class="mock-retry">もう一回診断する</div>
+            <div class="wait" id="waitPage" hidden>ここから別の広告専用ページへ<br><strong>300×250広告 → 10秒待機 → トップ</strong></div>
+            <div class="mock-copy" id="directReturn">タップしたら、そのままトップへ</div>
+            <div class="mock-fixed">既存の下部固定広告 320 × 50</div>
+          </div>
+          <p class="preview-caption" id="previewCaption" aria-live="polite">提案：結果ページ内で広告を表示し、再診断はすぐ開始。</p>
+          <p class="preview-caption">配置を説明する模式図です。実広告・実際の診断結果ではありません。</p>
+        </div>
+        <div>
+          <ol class="steps">
+            <li><strong>i-mobileで結果ページ専用の枠を作る</strong><p>画像にあった「ミディアムレクタングル（300×250 / 600×500）」と「インライン」を選び、名前を「結果_本文_300x250」などにします。既存の「でかいやつ」と分けると、新しい配置の成績を追えます。</p></li>
+            <li><strong>発行されたタグを、結果本文に設置する</strong><p>コード・キャラクター・シェア操作の後が候補です。実際の画面順序を確認して挿入し、タップするボタンと十分に離します。タグ自体を改変して広告を拡大しません。</p></li>
+            <li><strong>再診断を、トップへ直接戻す</strong><p>10秒待機ページを経由しない導線にします。以前のページに直接アクセスされた場合も、旧広告が二重に稼働しないよう整理します。</p></li>
+            <li><strong>スマホで「読める・押せる・崩れない」を確認する</strong><p>幅320〜430pxで横にはみ出さないか、固定広告と重ならないか、広告読み込み時にボタンがずれないかを確認。実広告の動作確認では広告をクリックしません。</p></li>
+          </ol>
+          <div class="note"><strong>先に320×100へ大型化しない理由</strong><br>現在は固定広告も通常バナーもCPMが1.1円。高さを倍にするだけで単価が上がる根拠はありません。まず結果の本文で300×250を試し、変更点を絞ります。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="evidence">
+      <div class="section-top"><span class="section-no">03</span><h2>分かっているのは、「主力2枠とも安い」。</h2></div>
+      <p class="sub">提供された枠別レポートの数値。集計期間・確定状況は不明です。</p>
+      <div class="table-wrap" role="region" aria-label="枠別広告レポート。狭い画面では横にスクロールできます" tabindex="0"><table><thead><tr><th scope="col">広告枠</th><th scope="col">表示回数</th><th scope="col">view課金数</th><th scope="col">クリック</th><th scope="col">CTR</th><th scope="col">CPM</th></tr></thead><tbody><tr><td>オーバーレイ</td><td>899</td><td>283</td><td>6</td><td>0.67%</td><td><strong>¥1.1</strong></td></tr><tr><td>バナー広告</td><td>422</td><td>166</td><td>2</td><td>0.47%</td><td><strong>¥1.1</strong></td></tr><tr><td>でかいやつ</td><td>44</td><td>5</td><td>0</td><td>0.00%</td><td>¥0.2</td></tr></tbody></table></div>
+      <div class="insight"><div class="big">97<small>%</small></div><p>表示の約97%は、オーバーレイと通常バナー。44表示の「でかいやつ」だけを止めても、全体の低CPMはほぼ解決しません。<strong>大きい枠を適切な場所で試し、それでも低ければ広告会社の比較へ進む</strong>のが今回の方針です。</p></div>
+      <details><summary>原因を断定できない理由と、誤解しやすい数字</summary><p>「view課金数 ÷ 広告表示回数」を視認率として扱う根拠は確認できていません。クリック課金以外の広告が含まれる場合、クリック数と収益が比例するとは限りません。課金内訳は問い合わせの回答で補います。</p><p>バナーの収益表示0円も、完全な無収益とは限りません。表示CPMからの概算は422 × 1.1 ÷ 1,000 ≒ 0.46円です。少額表示には端数処理が影響し、CPM自体にも丸めがあります。</p><p>診断中の広告は、ローカルのダミー表示ではスマホ3サイズで画面内に収まりました。本番の実広告は取得制限で未確認です。配信速度・実際の視認状況・広告案件の単価は、このレポートだけでは分かりません。</p></details>
+    </section>
+
+    <section id="measure">
+      <div class="section-top"><span class="section-no">04</span><h2>「良くなった」を、同じ物差しで確かめる。</h2></div>
+      <div class="timeline">
+        <article class="time"><small>変更前</small><h3>比較用の数字を残す</h3><p>当日を除く直近7日程度の、各枠の表示・CPM・収益をCSV保存。アクセス解析で同期間の訪問数・診断開始数・完了数・再診断数も記録します。未計測の項目は計測を用意してから比較します。</p></article>
+        <article class="time"><small>変更後</small><h3>まず1週間を目安に見る</h3><p>結果本文への設置と待機撤去を実施した日を記録。同じ曜日を含む期間で比べます。1週間は見直すタイミングで、効果が確定する期限ではありません。表示や収益が少なければ期間を延ばします。</p></article>
+        <article class="time"><small>その後</small><h3>続けるか、次を試すか決める</h3><p>訪問あたりの収益が増え、完了率や再診断率が悪化しなければ継続候補。十分なデータでも低収益なら、同じ結果本文の枠で他社広告を比較します。</p></article>
+      </div>
+      <div class="formula"><strong>1,000訪問あたりの収益 ＝ 広告収益合計 ÷ 訪問数 × 1,000</strong><p>訪問数はアクセス解析のセッション数を同じ定義で使用。広告管理画面の「ページ表示回数」とは混ぜません。収益には各広告会社・全枠を含め、期間と税込／税抜の基準を揃えます。</p></div>
+      <p>枠のCPMだけが上がっても、再診断が減って総収益が落ちたら採用しません。<strong>診断完了率＝完了数÷開始数、再診断率＝再診断数÷完了数</strong>も同じ数え方で比較します。</p>
+      <details><summary>AdSenseと比較するときのやり方</summary><p>承認後、可能なら訪問者を無作為に二組へ分け、同じ結果本文の位置にi-mobileかAdSenseのどちらか1枠を表示します。訪問中は同じ組を維持し、他の配置は揃えます。同じ枠に2社を重ねません。</p><p>比較実装が難しければ週ごとの入替でも始められますが、曜日・流入元・端末・広告需要の変動が混ざります。その場合は結果を参考値として扱います。他社が必ず高単価とは限りません。</p></details>
+      <details><summary>管理画面で今すぐ見ておく設定</summary><p>サイトのフィルタで、意図しない除外や過度に強い設定がないか確認します。公式によると、フィルタを強くすると配信できる広告が減ります。サイトに合わない広告まで無条件で許可する必要はありません。変更する場合は配置試験と時期を分け、変更日を記録します。</p></details>
+    </section>
+
+    <section id="check">
+      <div class="section-top"><span class="section-no">05</span><h2>実行リスト</h2></div>
+      <div class="check-top"><p id="checkStatus" role="status">0 / 6 完了 · チェックはこの画面内のみ</p><button type="button" class="print" id="printButton">印刷 / PDF保存</button></div>
+      <div class="checklist">
+        <label><input type="checkbox"><span>変更前の枠別CSVと、同期間のアクセス数を残す</span></label>
+        <label><input type="checkbox"><span>結果本文専用の300×250タグを取得する</span></label>
+        <label><input type="checkbox"><span>結果本文へ設置し、再診断の10秒待機を外す</span></label>
+        <label><input type="checkbox"><span>スマホ表示・再診断・効果測定を確認する</span></label>
+        <label><input type="checkbox"><span>他社比較の準備としてAdSenseの申込み／承認状況を確認する</span></label>
+        <label><input type="checkbox"><span>変更後の収益と完了率・再診断率を比較する</span></label>
+      </div>
+      <noscript><p class="note">JavaScriptが無効でも資料は読めます。配置図は提案する構成を表示しています。印刷はブラウザのメニューを使用してください。</p></noscript>
+    </section>
+  </main>
+  <footer class="wrap">
+    <p><strong>根拠と前提</strong> · 2026年9月14日確認。レポート数値は提供画像、配置はリポジトリの実装に基づきます。配置変更の効果は未検証です。</p>
+    <p><a href="https://www.i-mobile.co.jp/help_partner_sp.html">i-mobile公式ヘルプ</a>：コンテンツのあるページへの設置、タグ改変不可、フィルタによる広告候補の制限、レポート反映時間。広告専用の待機ページを見直す判断の参考にしています。</p>
+    <p><a href="https://adpf-info.i-mobile.co.jp/">i-mobile公式サービス紹介</a>：広告形式・課金方式。<a href="https://support.google.com/adsense/answer/9728?hl=ja">Google公式：AdSenseと他の広告ネットワークの併用</a>：併用は可能ですが、導入には審査と各サービスの掲載条件の確認が必要です。</p>
+    <p>問い合わせの回答が届いたら、課金内訳・配信制限の情報をこの試験結果と合わせて判断します。</p>
+  </footer>
+  <script>
+    const viewButtons = [...document.querySelectorAll('[data-view]')];
+    viewButtons.forEach(button => button.addEventListener('click', () => {
+      const after = button.dataset.view === 'after';
+      viewButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      document.querySelector('#resultAd').hidden = !after;
+      document.querySelector('#directReturn').hidden = !after;
+      document.querySelector('#waitPage').hidden = after;
+      document.querySelector('#previewCaption').textContent = after
+        ? '提案：結果ページ内で広告を表示し、再診断はすぐ開始。'
+        : '現在：大きい広告は再診断を押した後の別ページで表示。';
+    }));
+    const checks = [...document.querySelectorAll('.checklist input')];
+    checks.forEach(check => check.addEventListener('change', () => {
+      document.querySelector('#checkStatus').textContent = `${checks.filter(item => item.checked).length} / ${checks.length} 完了 · チェックはこの画面内のみ`;
+    }));
+    document.querySelector('#printButton').addEventListener('click', () => window.print());
+  </script>
+</body>
+</html>
