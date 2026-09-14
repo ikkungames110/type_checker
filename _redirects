@@ -1,6 +1,9 @@
-/ /top/ 301
-/index.html /top/ 301
-/top /top/ 301
-/quiz /quiz/ 301
-/result /result/ 301
-/ad /ad/ 301
+/index.html / 301
+/top / 301
+/top/ / 301
+/quiz / 301
+/quiz/ / 301
+/result / 301
+/result/ / 301
+/ad / 301
+/ad/ / 301

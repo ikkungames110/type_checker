@@ -11,7 +11,7 @@ NAMESPACE = 'http://www.sitemaps.org/schemas/sitemap/0.9'
 def build_sitemap(destination):
     site = f'https://{(ROOT / "CNAME").read_text().strip()}/'
     types = read_browser_data(ROOT / 'data/result_types.js')
-    paths = ['top/'] + [
+    paths = [''] + [
         f'share/letters/{gender}/{item["code"]}/'
         for gender in ('female', 'male') for item in types[gender]
     ]

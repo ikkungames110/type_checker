@@ -1,50 +1,29 @@
-"""共通テンプレートから、通常のページ遷移で開く3画面を生成する。"""
+"""ルートに診断アプリを配置し、旧画面URLはルートへ転送する。"""
 
 from pathlib import Path
-import re
-
 
 ROOT = Path(__file__).resolve().parents[1]
-PAGES = {"top": "startScreen", "quiz": "quizScreen", "result": "resultScreen"}
+LEGACY_PAGES = ("top", "quiz", "result", "ad")
 
 
 def build_app_pages(destination):
     source = (ROOT / "index.html").read_text(encoding="utf-8")
-    site = f'https://{(ROOT / "CNAME").read_text().strip()}/'
-    for name, screen in PAGES.items():
-        html = source.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n  <base href="../">', 1)
-        html = html.replace('<body data-page="top">', f'<body data-page="{name}">', 1)
-        html = html.replace(f'href="{site}top/"', f'href="{site}{name}/"', 1)
-        html = html.replace(f'property="og:url" content="{site}top/"', f'property="og:url" content="{site}{name}/"', 1)
-        html = re.sub(
-            r'<section class="screen(?: active)?" id="([^"]+)">',
-            lambda match: f'<section class="screen{" active" if match[1] == screen else ""}" id="{match[1]}">',
-            html,
-        )
-        if name != "top":
-            title = "診断中" if name == "quiz" else "診断結果"
-            html = re.sub(r"<title>.*?</title>", f"<title>{title} | 好みの顔タイプ診断</title>", html, count=1)
-            html = html.replace('<meta name="author"', '<meta name="robots" content="noindex, follow">\n  <meta name="author"', 1)
+    (destination / "index.html").write_text(source, encoding="utf-8")
+    # 単純なローカルサーバーでも旧リンクを利用できるようにする。
+    redirect = '''<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<title>診断へ移動</title>
+<meta name="robots" content="noindex, follow">
+<script>
+const target = new URL("/", location.origin);
+target.search = location.search;
+target.hash = location.hash;
+location.replace(target.href);
+</script>
+</head><body><a href="/">好みの顔タイプ診断へ</a></body></html>
+'''
+    for name in LEGACY_PAGES:
         page = destination / name / "index.html"
         page.parent.mkdir(parents=True, exist_ok=True)
-        page.write_text(html, encoding="utf-8")
-
-    # Pagesでは_redirectsでHTTPリダイレクト。単純なローカルサーバーにも対応する。
-    head = source.split('  <style>', 1)[0]
-    redirect = head + '''  <script>
-    const topPage = new URL("top/", location.href);
-    topPage.search = location.search;
-    topPage.hash = location.hash;
-    location.replace(topPage.href);
-  </script>
-  <meta http-equiv="refresh" content="0;url=top/">
-</head>
-<body><p><a href="top/">トップ画面へ移動する</a></p></body>
-</html>
-'''
-    (destination / "index.html").write_text(redirect, encoding="utf-8")
-    # 旧広告待機ページへの直リンクはトップへ戻す。広告タグは置かない。
-    ad_page = destination / "ad" / "index.html"
-    ad_page.parent.mkdir(parents=True, exist_ok=True)
-    ad_page.write_text(redirect.replace('url=top/', 'url=../top/').replace('new URL("top/", location.href)', 'new URL("../top/", location.href)').replace('href="top/"', 'href="../top/"'), encoding="utf-8")
-    print("診断画面: /top/・/quiz/・/result/、ドメイン直下はトップへリダイレクト")
+        page.write_text(redirect, encoding="utf-8")
+    print("診断画面: ドメイン直下で切り替え、旧画面URLはルートへ転送")

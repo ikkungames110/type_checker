@@ -27,7 +27,7 @@ class SeoTest(unittest.TestCase):
                 metadata = PageMetadata(html)
                 self.assertEqual(metadata.canonical, url)
                 self.assertNotIn('noindex', metadata.metadata.get('robots', ''))
-                if path != '/top/':
+                if path != '/':
                     self.assertIn('の顔タイプ「', html.split('</title>')[0])
             self.assertIn('Sitemap: https://type-checker.shianstudio.com/sitemap.xml', (ROOT / 'robots.txt').read_text())
             for name in ('quiz', 'result'):

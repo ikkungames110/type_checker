@@ -27,22 +27,26 @@ async function main() {
         if (new URL(response.url()).origin === site.origin && response.status() >= 400) errors.push(`${response.status()} ${response.url()}`);
       });
       const ready = async name => {
-        await page.waitForURL(routeUrl(name));
-        const expectedAdLoads = width < 800 && name === 'result' ? 2 : 1;
-        await page.waitForFunction(expected => window.__adLoads === expected, expectedAdLoads);
+        await page.waitForURL(site.href);
+        await page.waitForFunction(expected => document.body.dataset.page === expected, name);
+        const expectedAdLoads = width < 800 ? 2 : 1;
+        await page.waitForFunction(expected => window.__adLoads === expected, expectedAdLoads, { polling: 100 }).catch(async error => {
+          console.error('広告の検証状態', await page.evaluate(() => ({ loads: window.__adLoads, ads: window.adsbyimobile, width: innerWidth, page: document.body.dataset.page })));
+          throw error;
+        });
         assert.equal(await page.locator('.screen.active').count(), 1);
         assert.equal(await page.locator('body').getAttribute('data-page'), name);
         const ad = await page.evaluate(() => window.adsbyimobile[0]);
-        assert.equal(ad.asid, width >= 800 ? 1943673 : 1944283);
+        assert.equal(ad.asid, width >= 800 ? 1943673 : 1943443);
         if (width < 800) {
           const banner = page.locator('#im-7313d3409a394418ac40b004be47b9e3');
           // 配信サイズを再現して、ページ先頭・途中・末尾で固定位置と余白を確認する。
           await banner.evaluate(node => { node.style.height = '50px'; });
-          await page.waitForFunction(() => getComputedStyle(document.body).paddingBottom === '50px');
+          await page.waitForFunction(() => getComputedStyle(document.body).paddingBottom === '100px');
           for (const position of [0, 0.5, 1]) {
             const geometry = await banner.evaluate((node, position) => {
               window.scrollTo(0, (document.documentElement.scrollHeight - innerHeight) * position);
-              const fixed = node.parentElement.parentElement;
+              const fixed = node.parentElement;
               const box = fixed.getBoundingClientRect();
               return { bottom: box.bottom, left: box.left, width: box.width, viewportWidth: innerWidth,
                 viewportHeight: innerHeight, position: getComputedStyle(fixed).position };
@@ -52,18 +56,21 @@ async function main() {
             assert.equal(geometry.left, 0);
             assert.equal(geometry.width, geometry.viewportWidth);
           }
+          assert.deepEqual(await page.evaluate(() => window.adsbyimobile.map(ad => ad.asid)), [1943443, 1944283]);
+          const upper = page.locator('#im-0188de672a6d45f9866ae278a4d4ef39');
+          await upper.evaluate(node => { node.style.height = '70px'; });
+          await page.waitForFunction(() => getComputedStyle(document.body).paddingBottom === '120px');
+          const upperBox = await upper.boundingBox();
+          const lowerBox = await banner.boundingBox();
+          assert.equal(upperBox.y + upperBox.height, lowerBox.y);
+          await upper.evaluate(node => { node.style.height = '50px'; });
+          await page.waitForFunction(() => getComputedStyle(document.body).paddingBottom === '100px');
           await page.evaluate(() => window.scrollTo(0, 0));
           assert.equal(await page.locator('.ad-placement').isVisible(), false);
-          if (name === 'result') {
-            assert.equal(await page.locator('#resultRectangleAd').isVisible(), true);
-            assert.equal(await page.evaluate(() => window.adsbyimobile[1].asid), 1944298);
-          } else {
-            assert.equal(await page.locator('#resultRectangleAd').isVisible(), false);
-          }
         } else {
-          assert.equal(await page.locator('#im-7313d3409a394418ac40b004be47b9e3').count(), 0);
-          assert.equal(await page.locator('#resultRectangleAd').isVisible(), false);
+          assert.equal(await page.locator('#fixedAds').isVisible(), false);
         }
+        assert.equal(await page.locator('#resultRectangleAd').count(), 0);
         return page.evaluate(() => window.__documentId);
       };
       const shownFirstCycle = new Set();
@@ -98,7 +105,7 @@ async function main() {
       await page.screenshot({ path: `/tmp/type-checker-v8-top-${width}.png` });
       await page.locator(`.gender-btn[data-gender="${gender}"]`).click();
       const quizDocument = await ready('quiz');
-      assert.notEqual(quizDocument, topDocument);
+      assert.equal(quizDocument, topDocument);
       assert.equal(await page.locator('#roundLabel').innerText(), '0 / 20');
       const firstPair = await pair();
       rejectedTypes = new Set((await inspectPair()).map(face => face.type));
@@ -108,7 +115,7 @@ async function main() {
       assert.equal(await page.locator('#roundLabel').innerText(), '0 / 20');
       for (let i = 0; i < 5; i += 1) { await page.locator(i % 2 ? '#rightCard' : '#leftCard').click(); await inspectPair(); }
       assert.equal(await page.evaluate(() => window.__documentId), quizDocument);
-      assert.equal(await page.evaluate(() => window.__adLoads), 1);
+      assert.equal(await page.evaluate(() => window.__adLoads), width < 800 ? 2 : 1);
       assert.equal((await page.locator('#leftCard').innerText()).trim(), '');
       assert.equal(await page.locator('#leftCard img').getAttribute('alt'), '');
       const savedPair = await pair();
@@ -120,7 +127,7 @@ async function main() {
       assert.equal(await page.evaluate(key => sessionStorage.getItem(key), sessionKey), saved);
       const beforeCacheRestore = await page.evaluate(() => window.__documentId);
       await page.evaluate(() => window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true })));
-      await page.waitForFunction(previous => window.__documentId !== previous, beforeCacheRestore);
+      assert.equal(await page.evaluate(() => window.__documentId), beforeCacheRestore);
       await ready('quiz');
       assert.equal(await page.locator('#roundLabel').innerText(), '5 / 20');
       assert.deepEqual(await pair(), savedPair);
@@ -137,13 +144,13 @@ async function main() {
         Storage.prototype.setItem = () => { throw new Error('Storage disabled'); };
       });
       await page.locator('#rightCard').click();
-      assert.equal(page.url(), routeUrl('quiz'));
+      assert.equal(page.url(), site.href);
       assert.equal(await page.locator('#roundLabel').innerText(), '19 / 20');
       assert.deepEqual(await pair(), finalPair);
       assert.equal(await page.locator('#sessionError').isVisible(), true);
       await page.evaluate(() => { Storage.prototype.setItem = window.__originalSetItem; });
       await page.locator('#rightCard').click();
-      assert.notEqual(await ready('result'), resumedDocument);
+      assert.equal(await ready('result'), resumedDocument);
       const resultData = await page.evaluate(key => {
         const saved = JSON.parse(sessionStorage.getItem(key));
         const records = saved.gender === 'female' ? window.FEMALE_FACE_ASSETS : window.MALE_FACE_ASSETS;
@@ -223,10 +230,10 @@ async function main() {
       const sharedPage=await context.newPage();
       sharedPage.on('pageerror',error=>errors.push(error.message));
       await sharedPage.goto(new URL(shareUrl.pathname+shareUrl.search,site).href);
-      await sharedPage.waitForURL(new URL('top/',site).href);
+      await sharedPage.waitForURL(site.href);
       assert.equal(await sharedPage.locator('#startScreen').isVisible(),true);
       await sharedPage.goto(new URL(shareUrl.pathname+'?a=0&s=20&q=10',site).href);
-      await sharedPage.waitForURL(new URL('top/',site).href);
+      await sharedPage.waitForURL(site.href);
       assert.equal(await sharedPage.locator('#startScreen').isVisible(),true);
       await sharedPage.close();
       await page.screenshot({path:`/tmp/type-checker-letters-result-${gender}-${width}.png`,fullPage:true});
@@ -246,7 +253,8 @@ async function main() {
       });
       await page.locator('#shareButton').click();
       assert.match(await page.evaluate(() => window.__copiedResult), /\n#好みの顔タイプ診断$/);
-      await page.goBack();await ready('top');await page.goForward();await ready('result');
+      await page.goto(new URL('404.html', site).href);
+      await page.goBack(); await ready('result');
       assert.equal(await page.locator('#resultCodes').innerText(),codeText);
 
       // 旧winnerIdを無視して再計算。最多同票のタイプだけを表示する。
@@ -272,8 +280,9 @@ async function main() {
         await page.reload();await ready('result');
         assert.equal(await page.locator('#xShareButton').getAttribute('href'),tieShare);
       }
+      const beforeRestart = await page.evaluate(() => window.__documentId);
       await page.locator('#restartButton').click();
-      await ready('top');
+      assert.equal(await ready('top'), beforeRestart);
       await page.screenshot({path:`/tmp/type-checker-ad-${width}.png`,fullPage:true});
       await ready('top');
       assert.equal(await page.evaluate(key => sessionStorage.getItem(key), sessionKey), null);
@@ -288,8 +297,15 @@ async function main() {
       // 保存が禁止されている場合は開始前に案内し、空の診断画面へ遷移しない。
       await page.evaluate(() => { Storage.prototype.setItem = () => { throw new Error('Storage disabled'); }; });
       await page.locator(`.gender-btn[data-gender="${gender}"]`).click();
-      assert.equal(page.url(), routeUrl('top'));
+      assert.equal(page.url(), site.href);
       assert.equal(await page.locator('#sessionError').isVisible(), true);
+      // 幅の変更でも同じ枠を二重に読み込まず、PCでは固定広告用の余白を外す。
+      await page.setViewportSize({ width: width < 800 ? 1280 : 390, height: 900 });
+      await page.waitForFunction(() => window.__adLoads === 3);
+      await page.setViewportSize({ width, height: 900 });
+      await page.waitForFunction(expected => document.querySelector('#fixedAds').hidden === expected, width >= 800);
+      assert.equal(await page.evaluate(() => window.__adLoads), 3);
+      assert.equal(await page.evaluate(() => new Set(window.adsbyimobile.map(ad => ad.elementid)).size), 3);
       assert.deepEqual(errors, []);
       await context.close();
       console.log(`${gender} / ${width}px: 3画面・40枚一巡・異タイプ二択・21組目除外・タイプ別採点・同点・文字の意味・復元・共有・広告・保存エラー OK`);

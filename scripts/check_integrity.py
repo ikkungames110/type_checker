@@ -147,7 +147,7 @@ def check_promotion_card(check, referenced):
 
     site = f'https://{(ROOT / "CNAME").read_text().strip()}/'
     meta = parser.metadata
-    check(meta.get("og:url") == site + "top/", "宣材画像: og:urlとトップ画面URLが不一致")
+    check(meta.get("og:url") == site, "宣材画像: og:urlとトップ画面URLが不一致")
     check(meta.get("twitter:card") == "summary_large_image", "宣材画像: Xの大きな画像カードが未設定")
     for key in ("og:image", "og:image:secure_url", "twitter:image"):
         check(meta.get(key) == site + card["image"], f"宣材画像: {key}のURLが不一致")
@@ -270,7 +270,7 @@ def main():
     for gender in ("female", "male"):
         check(f'assets/{gender}/{gender}_011.png' in html, f"トップ画像: {gender}_011が使われていない")
     domain = (ROOT / "CNAME").read_text().strip()
-    check(f'<link rel="canonical" href="https://{domain}/top/">' in html, "トップのcanonicalが不一致")
+    check(f'<link rel="canonical" href="https://{domain}/">' in html, "トップのcanonicalが不一致")
     def local_path(source, target):
         parsed = urlsplit(target)
         if parsed.scheme or parsed.netloc or not parsed.path:

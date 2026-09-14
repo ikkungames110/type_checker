@@ -1,6 +1,6 @@
 # 好みの顔タイプ診断
 
-全員25歳の設定で個別生成した、男女各40枚（8タイプ×5人）の顔写真を使う静的Webアプリです。結果は3文字コード・キャラクター・同タイプの顔5枚・結果の文字の意味で表示します。[本番サイト](https://type-checker.shianstudio.com/top/) / [キャラクター16体と顔の例](https://type-checker.shianstudio.com/docs/characters.html) / [80枚の比較ページ](docs/face-types-v8.html)
+全員25歳の設定で個別生成した、男女各40枚（8タイプ×5人）の顔写真を使う静的Webアプリです。結果は3文字コード・キャラクター・同タイプの顔5枚・結果の文字の意味で表示します。[本番サイト](https://type-checker.shianstudio.com/) / [キャラクター16体と顔の例](https://type-checker.shianstudio.com/docs/characters.html) / [80枚の比較ページ](docs/face-types-v8.html)
 
 ## 出題と採点
 
@@ -41,7 +41,7 @@ npm run test:navigation
 
 `http://localhost:8000/` を開きます。`test:navigation` はPC・スマホの診断、再読み込み、履歴、結果共有を確認し、広告通信はモックします。別環境では `SITE_URL` を指定できます。
 
-画面は `/top/`・`/quiz/`・`/result/` の3つ。通常のページ遷移で広告を初期化します。回答・表示中の二択・除外タイプ・一巡の残りは `sessionStorage` の `face-diagnosis:v8` に保存し、再読み込み後も復元します。旧データの診断状態は引き継ぎません。
+トップ・診断・結果は `/` の同じHTML内で切り替え、広告を維持します。スマホは別枠のバナー2つを下部に積み、PCは既存のバナー1枠を表示します。結果本文の大型広告は表示しません。回答・表示中の二択・除外タイプ・一巡の残りは `sessionStorage` の `face-diagnosis:v8` に保存し、再読み込み後も復元します。旧データの診断状態は引き継ぎません。
 
 ## サイトカードの比較案
 
@@ -56,7 +56,7 @@ npm run test:navigation
 - [03の画像で共有するURL](https://type-checker.shianstudio.com/top/03/) — 好きの小さな本棚。
 - [05の画像で共有するURL](https://type-checker.shianstudio.com/top/05/) — ふたつの空気。
 
-どちらも静的HTMLに別々のOGPを持ち、人が開くとJavaScriptで通常のトップへ移動します。通常の `/top/` のOGPは維持しています。初期HTMLとブラウザ遷移を別々に検証します。[3文字の採点・共有・OGP入口の仕様](docs/letters-v1.md)。
+どちらも静的HTMLに別々のOGPを持ち、人が開くとJavaScriptで通常のトップへ移動します。通常のトップのOGP画像は維持し、正規URLを `/` に統一しています。初期HTMLとブラウザ遷移を別々に検証します。[3文字の採点・共有・OGP入口の仕様](docs/letters-v1.md)。
 
 ## 宣伝PV
 
@@ -75,13 +75,13 @@ Cloudflare PagesはこのGitHubリポジトリに接続されています。`mai
 
 ## 検索向けの設定と公開後の確認
 
-トップの表示はSEO改善前の構成を維持しています。`scripts/build_sitemap.py` は `/top/` と現行の単一タイプ16ページを `dist/sitemap.xml` に出力し、`robots.txt` から案内します。診断途中・個人結果・OGP別入口・制作資料・旧形式や複数タイプの共有URLはサイトマップに含めません。既存の共有URLは維持します。ルートは `/top/` へ301転送し、正規URLを統一します。
+トップの表示はSEO改善前の構成を維持しています。`scripts/build_sitemap.py` は `/` と現行の単一タイプ16ページを `dist/sitemap.xml` に出力し、`robots.txt` から案内します。診断途中・個人結果・OGP別入口・制作資料・旧形式や複数タイプの共有URLはサイトマップに含めません。既存の共有URLは維持します。旧 `/top/`・`/quiz/`・`/result/` はルートへ301転送します。
 
 Google Search Consoleの所有者またはフルユーザーは、公開後に以下を確認してください。
 
 1. `https://type-checker.shianstudio.com/sitemap.xml` を「サイトマップ」から送信する。
-2. `https://type-checker.shianstudio.com/top/` をURL検査し、公開URLのテスト後にインデックス登録をリクエストする。
-3. 「ページのインデックス登録」で除外理由を確認し、Googleが選択した正規URLが `/top/` か確認する。登録されない場合は、この情報を元に追加調査する。
+2. `https://type-checker.shianstudio.com/` をURL検査し、公開URLのテスト後にインデックス登録をリクエストする。
+3. 「ページのインデックス登録」で除外理由を確認し、Googleが選択した正規URLが `/` か確認する。登録されない場合は、この情報を元に追加調査する。
 4. 検索パフォーマンスで「好みの顔タイプ診断」「好きな顔診断」「顔の好み 診断」「好きな顔の系統」「男性 顔 好み 診断」「女性 顔 好み 診断」の表示回数・クリック数・平均掲載順位を数週間単位で比較する。
 
 サイトマップやSEOの変更は上位表示・インデックス登録を保証しません。Search Consoleの送信や登録状況の確認は、このリポジトリのビルドでは行いません。

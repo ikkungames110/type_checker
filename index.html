@@ -6,13 +6,13 @@
   <title>好みの顔タイプ診断 | SHIAN STUDIO</title>
   <meta name="description" content="好みの顔タイプ診断は、2択で気になる顔を選びながら、惹かれやすい顔のタイプを見つけるブラウザ診断です。判定方法と注意事項も掲載しています。">
   <meta name="author" content="SHIAN STUDIO">
-  <link rel="canonical" href="https://type-checker.shianstudio.com/top/">
+  <link rel="canonical" href="https://type-checker.shianstudio.com/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="好みの顔タイプ診断">
   <meta property="og:locale" content="ja_JP">
   <meta property="og:title" content="その「好き」に、名前を。 | 好みの顔タイプ診断">
   <meta property="og:description" content="気になる顔を20回選んで、惹かれるタイプをキャラクターで発見。同じタイプの顔5枚も見られます。女性・男性を選んで診断できます。">
-  <meta property="og:url" content="https://type-checker.shianstudio.com/top/">
+  <meta property="og:url" content="https://type-checker.shianstudio.com/">
   <meta property="og:image" content="https://type-checker.shianstudio.com/assets/promo/home-characters-v1-da2cfdfb4c53.png">
   <meta property="og:image:secure_url" content="https://type-checker.shianstudio.com/assets/promo/home-characters-v1-da2cfdfb4c53.png">
   <meta property="og:image:type" content="image/png">
@@ -380,18 +380,6 @@
       gap: 18px;
     }
 
-    .result-rectangle-ad {
-      display: flex;
-      justify-content: center;
-      min-height: 250px;
-      margin: 2px auto 0;
-    }
-
-    .result-rectangle-ad > div {
-      min-width: 300px;
-      min-height: 250px;
-    }
-
     .result-title {
       color: var(--accent);
       font-size: clamp(27px, 4.5vw, 40px);
@@ -514,11 +502,24 @@
       display: none;
     }
 
+    .fixed-ads {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 99998;
+      background: rgba(0, 0, 0, 0.7);
+      text-align: center;
+    }
+
+    .fixed-ads[hidden] { display: none; }
+    .fixed-ads > div { min-height: 50px; }
+
     @media (max-width: 799px) {
       body[data-page="top"],
       body[data-page="quiz"],
       body[data-page="result"] {
-        padding-bottom: var(--fixed-ad-height, 50px);
+        padding-bottom: var(--fixed-ad-height, 100px);
       }
 
       body[data-page="top"] .ad-placement,
@@ -714,13 +715,6 @@
             <div class="toast" id="toast" role="status" aria-live="polite"></div>
           </div>
         </div>
-        <aside class="result-rectangle-ad" id="resultRectangleAd" aria-label="広告" hidden></aside>
-        <template id="result-rectangle-ad-template">
-          <div id="im-379147c83640400880bdda3d09b72a26">
-            <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
-            <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85394,mid:596132,asid:1944298,type:"banner",display:"inline",elementid:"im-379147c83640400880bdda3d09b72a26"})</script>
-          </div>
-        </template>
         <section class="result-examples" aria-labelledby="examplesTitle">
           <h2 id="examplesTitle">例えば、こんな顔</h2>
           <p>結果のタイプごとに、5枚の顔を並べました。</p>
@@ -736,84 +730,52 @@
       </div>
     </section>
 
-    <!-- 各ページで1枠を読み込む。診断中の回答・差し替えでは再実行しない。 -->
+    <!-- 広告は画面切り替え・回答・やり直しで再読込しない。 -->
     <aside class="ad-placement" aria-label="広告">
       <p class="ad-label" aria-hidden="true">広告</p>
       <div class="ad-slot">
-        <div id="im-0188de672a6d45f9866ae278a4d4ef39" hidden></div>
         <div id="im-f9eb908dad6a4cf49b5ea04a2cd2e6f5" hidden></div>
         <p class="ad-status" role="status">広告配信待ち</p>
-        <template id="mobile-fixed-ad-template">
-<div style="position:fixed; bottom:0;left:0;right:0;width:100%;background: rgba(0, 0, 0, 0.7); z-index:99998;text-align:center;transform:translate3d(0, 0, 0);"><div style="margin:auto;z-index:99999;" >
-<div id="im-7313d3409a394418ac40b004be47b9e3">
-  <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
-  <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85394,mid:596132,asid:1944283,type:"banner",display:"inline",elementid:"im-7313d3409a394418ac40b004be47b9e3"})</script>
-</div>
-</div></div>
-        </template>
-        <script>
-          (() => {
-            const desktopMedia = window.matchMedia("(min-width: 800px)");
-            const banners = [
-              {pid:85394,mid:596132,asid:1943443,type:"banner",display:"inline",elementid:"im-0188de672a6d45f9866ae278a4d4ef39"},
-              {pid:85394,mid:596134,asid:1943673,type:"banner",display:"inline",elementid:"im-f9eb908dad6a4cf49b5ea04a2cd2e6f5"}
-            ];
-            const loadedBanners = new Set();
-            const useFixedMobileAd = ["top", "quiz", "result"].includes(document.body.dataset.page);
-            let fixedAd;
-            let resultRectangleAd;
-
-            function showFixedAd() {
-              if (fixedAd) return;
-              // 支給タグをそのまま保持し、対象画面・幅で初めて表示する時だけ実行する。
-              const fragment = document.getElementById("mobile-fixed-ad-template").content.cloneNode(true);
-              fixedAd = fragment.firstElementChild;
-              document.body.appendChild(fragment);
-              new ResizeObserver(() => {
-                document.body.style.setProperty("--fixed-ad-height", `${fixedAd.getBoundingClientRect().height}px`);
-              }).observe(fixedAd);
-            }
-
-            function showResultRectangleAd() {
-              if (resultRectangleAd) {
-                resultRectangleAd.hidden = desktopMedia.matches;
-                return;
-              }
-              if (document.body.dataset.page !== "result" || desktopMedia.matches) return;
-              const target = document.getElementById("resultRectangleAd");
-              const fragment = document.getElementById("result-rectangle-ad-template").content.cloneNode(true);
-              target.appendChild(fragment);
-              target.hidden = false;
-              resultRectangleAd = target;
-            }
-
-            function showBanner() {
-              const fixed = useFixedMobileAd && !desktopMedia.matches;
-              if (fixed) showFixedAd();
-              showResultRectangleAd();
-              if (fixedAd) fixedAd.hidden = !fixed;
-              if (fixed) return;
-              const activeBanner = banners[desktopMedia.matches ? 1 : 0];
-              for (const banner of banners) {
-                document.getElementById(banner.elementid).hidden = banner !== activeBanner;
-              }
-              if (!loadedBanners.has(activeBanner.elementid)) {
-                (window.adsbyimobile = window.adsbyimobile || []).push(activeBanner);
-                loadedBanners.add(activeBanner.elementid);
-                // 配信スクリプトは実行時のキューだけを処理するため、新しい枠ごとに実行する。
-                const script = document.createElement("script");
-                script.async = true;
-                script.src = "https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104";
-                document.head.appendChild(script);
-              }
-            }
-
-            showBanner();
-            desktopMedia.addEventListener("change", showBanner);
-          })();
-        </script>
       </div>
     </aside>
+    <aside class="fixed-ads" id="fixedAds" aria-label="広告" hidden>
+      <div id="im-0188de672a6d45f9866ae278a4d4ef39"></div>
+      <div id="im-7313d3409a394418ac40b004be47b9e3"></div>
+    </aside>
+    <script>
+      (() => {
+        const desktopMedia = window.matchMedia("(min-width: 800px)");
+        const mobileBanners = [
+          {pid:85394,mid:596132,asid:1943443,type:"banner",display:"inline",elementid:"im-0188de672a6d45f9866ae278a4d4ef39"},
+          {pid:85394,mid:596132,asid:1944283,type:"banner",display:"inline",elementid:"im-7313d3409a394418ac40b004be47b9e3"}
+        ];
+        const desktopBanner = {pid:85394,mid:596134,asid:1943673,type:"banner",display:"inline",elementid:"im-f9eb908dad6a4cf49b5ea04a2cd2e6f5"};
+        const loadedBanners = new Set();
+        const fixedAds = document.getElementById("fixedAds");
+
+        function loadBanner(banner) {
+          if (loadedBanners.has(banner.elementid)) return;
+          (window.adsbyimobile = window.adsbyimobile || []).push(banner);
+          loadedBanners.add(banner.elementid);
+          const script = document.createElement("script");
+          script.async = true;
+          script.src = "https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104";
+          document.head.appendChild(script);
+        }
+
+        function showBanners() {
+          fixedAds.hidden = desktopMedia.matches;
+          document.getElementById(desktopBanner.elementid).hidden = !desktopMedia.matches;
+          (desktopMedia.matches ? [desktopBanner] : mobileBanners).forEach(loadBanner);
+        }
+
+        new ResizeObserver(() => {
+          document.body.style.setProperty("--fixed-ad-height", `${fixedAds.getBoundingClientRect().height}px`);
+        }).observe(fixedAds);
+        showBanners();
+        desktopMedia.addEventListener("change", showBanners);
+      })();
+    </script>
 
     <section class="content-notes" aria-labelledby="about-diagnosis-title">
       <h2 id="about-diagnosis-title">この診断について</h2>
@@ -890,14 +852,20 @@
     const toast = document.querySelector("#toast");
     const SESSION_KEY = "face-diagnosis:v8";
     const sessionError = document.querySelector("#sessionError");
-    let navigating = false;
     let lastSavedSession = null;
 
-    function navigate(page, replace = false) {
-      navigating = true;
-      const url = new URL(`${page}/`, document.baseURI);
-      if (replace) window.location.replace(url.href);
-      else window.location.assign(url.href);
+    function navigate(page) {
+      if (page === "quiz") {
+        topStatus.textContent = `${state.dataset.label}を診断中`;
+        show(quizScreen);
+        renderRound();
+      } else if (page === "result") {
+        renderResult();
+      } else {
+        topStatus.textContent = "20問診断";
+        show(startScreen);
+      }
+      window.scrollTo(0, 0);
     }
 
     function saveSession() {
@@ -948,19 +916,8 @@
     }
 
     function openPage() {
-      const page = document.body.dataset.page;
-      if (page === "top") return;
-      if (!restoreSession()) return navigate("top", true);
-      if (page === "quiz") {
-        // 完了後に「戻る」で診断画面へ来た場合は、トップへ戻して履歴のループを防ぐ。
-        if (state.selectedCount >= TARGET_SELECTIONS) return navigate("top", true);
-        topStatus.textContent = `${state.dataset.label}を診断中`;
-        show(quizScreen);
-        renderRound();
-      } else if (page === "result") {
-        if (state.selectedCount < TARGET_SELECTIONS) return navigate("quiz", true);
-        renderResult();
-      }
+      if (!restoreSession()) return navigate("top");
+      navigate(state.selectedCount >= TARGET_SELECTIONS ? "result" : "quiz");
     }
 
     function renderPortrait(face) {
@@ -974,6 +931,7 @@
     function show(screen) {
       [startScreen, quizScreen, resultScreen].forEach(el => el.classList.remove("active"));
       screen.classList.add("active");
+      document.body.dataset.page = screen === startScreen ? "top" : screen === quizScreen ? "quiz" : "result";
     }
 
     function currentPair() {
@@ -981,11 +939,12 @@
     }
 
     function start(gender) {
-      if (navigating) return;
+      if (!startScreen.classList.contains("active")) return;
       state.gender = gender;
       state.dataset = DATASETS[gender];
       state.selectedCount = 0;
       state.chosenIds = [];
+      state.selectedCode = null;
       state.faces = state.dataset.assets();
       state.deck = new FaceDeck(state.faces, TARGET_SELECTIONS);
       state.deck.next();
@@ -1001,7 +960,7 @@
     }
 
     function choose(index) {
-      if (navigating || !quizScreen.classList.contains("active") || !state.deck || state.selectedCount >= TARGET_SELECTIONS) return;
+      if (!quizScreen.classList.contains("active") || !state.deck || state.selectedCount >= TARGET_SELECTIONS) return;
       const selected = currentPair()[index];
       state.chosenIds.push(selected.id);
       state.selectedCount += 1;
@@ -1020,7 +979,7 @@
     }
 
     function skipRound() {
-      if (navigating || !quizScreen.classList.contains("active") || !state.deck || state.selectedCount >= TARGET_SELECTIONS) return;
+      if (!quizScreen.classList.contains("active") || !state.deck || state.selectedCount >= TARGET_SELECTIONS) return;
       state.deck.skip();
       saveSession();
       renderRound();
@@ -1047,6 +1006,7 @@
 
     function reset() {
       try { sessionStorage.removeItem(SESSION_KEY); } catch { /* 保存不可でもトップへ戻れる。 */ }
+      lastSavedSession = null;
       navigate("top");
     }
 
@@ -1139,9 +1099,9 @@
       if (event.key === "ArrowRight") choose(1);
     });
 
-    // 戻る・進むでブラウザのページキャッシュから復元された場合も、広告と状態を読み直す。
+    // ページキャッシュから戻った場合も、同じ広告を保ったまま診断を復元する。
     window.addEventListener("pageshow", event => {
-      if (event.persisted) window.location.reload();
+      if (event.persisted) openPage();
     });
     openPage();
 
