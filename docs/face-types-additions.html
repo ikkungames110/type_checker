@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f5f4ef">
+  <title>既存80人 ＋ 追加80人｜顔タイプ写真 比較一覧</title>
+  <style>
+    :root { color-scheme: light; --paper:#f5f4ef; --ink:#253c34; --muted:#67756d; --line:#d9ded5; --accent:#dce7b9; }
+    * { box-sizing:border-box; }
+    [hidden] { display:none!important; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif; }
+    button,select,input { font:inherit; color:inherit; }
+    button,a,input,select { -webkit-tap-highlight-color:transparent; }
+    button { cursor:pointer; }
+    a { color:inherit; text-underline-offset:4px; }
+    :focus-visible { outline:3px solid #76954b; outline-offset:4px; }
+    .wrap { max-width:1600px; margin:auto; padding:0 48px; }
+    .masthead { padding-top:28px; display:flex; justify-content:space-between; align-items:center; gap:16px; font-size:11px; letter-spacing:.1em; }
+    .edition { border:1px solid var(--line); border-radius:99px; padding:8px 12px; white-space:nowrap; }
+    header { padding:60px 0 32px; }
+    .eyebrow { font-size:11px; letter-spacing:.15em; margin:0 0 18px; }
+    h1 { font-size:clamp(30px,4.8vw,64px); letter-spacing:-.045em; font-weight:600; line-height:1.3; margin:0; }
+    h1 span { display:inline-block; }
+    .intro { font-size:14px; line-height:1.9; color:var(--muted); margin:20px 0 0; }
+    .preview-note { display:inline-block; padding:10px 14px; border-radius:6px; background:var(--accent); font-size:12px; line-height:1.7; margin-top:18px; }
+    .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:18px 24px; border-block:1px solid var(--line); padding:18px 0; }
+    .filters { display:flex; gap:5px; }
+    .filters button { border:0; background:transparent; border-radius:99px; padding:11px 18px; font-size:13px; min-height:44px; }
+    .filters button[aria-pressed="true"] { background:var(--ink); color:white; }
+    .filters small { margin-left:5px; opacity:.7; }
+    .options { display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px; font-size:12px; }
+    .options label { display:flex; align-items:center; gap:8px; min-height:40px; }
+    select { border:1px solid var(--line); background:var(--paper); border-radius:5px; max-width:270px; min-height:40px; padding:8px; }
+    input { accent-color:var(--ink); width:16px; height:16px; }
+    #visible-count { font-size:12px; color:var(--muted); margin:16px 0 0; }
+    h2 { display:flex; align-items:baseline; gap:16px; margin:42px 0 8px; font-size:24px; font-weight:600; }
+    h2 span { font-size:11px; color:var(--muted); font-weight:400; }
+    .type-group { padding:28px 0 36px; border-bottom:1px solid var(--line); }
+    .type-heading { display:flex; justify-content:space-between; align-items:end; gap:18px; margin-bottom:22px; }
+    .type-code { margin:0 0 7px; font-family:ui-monospace,monospace; letter-spacing:.12em; font-size:26px; }
+    h3 { margin:0; font-size:19px; line-height:1.5; font-weight:600; }
+    .classification { margin:5px 0 0; text-align:right; color:var(--muted); font-size:12px; }
+    .group-count { font-size:11px; color:var(--muted); white-space:nowrap; }
+    .cohort + .cohort { margin-top:24px; }
+    h4 { display:flex; align-items:center; gap:10px; margin:0 0 12px; font-size:11px; font-weight:400; color:var(--muted); }
+    .badge { padding:5px 10px; border-radius:99px; color:var(--ink); border:1px solid var(--line); font-weight:600; }
+    .badge.addition { background:var(--accent); border-color:var(--accent); }
+    .grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:20px; }
+    figure { margin:0; min-width:0; }
+    .portrait { display:block; aspect-ratio:3/4; background:#e8e7e2; overflow:hidden; border-radius:4px; }
+    .portrait img { display:block; width:100%; height:100%; object-fit:cover; }
+    .face-crop .portrait { aspect-ratio:1; }
+    .face-crop .portrait img { height:133.333%; transform:scale(1.55); transform-origin:50% 38.125%; }
+    figcaption { padding-top:9px; font-family:ui-monospace,monospace; color:var(--muted); font-size:11px; }
+    footer { display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; margin:35px 0; font-size:11px; line-height:1.9; color:var(--muted); }
+    footer p { margin:0; }
+    footer nav { display:flex; flex-wrap:wrap; gap:16px; }
+    dialog { width:min(650px,calc(100% - 24px)); max-height:calc(100dvh - 24px); border:0; border-radius:8px; background:var(--paper); color:var(--ink); padding:14px; }
+    dialog::backdrop { background:rgb(20 30 26 / .8); }
+    .dialog-top,.dialog-bottom { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .dialog-top { margin-bottom:10px; }
+    .dialog-top h2 { font-size:13px; margin:0; }
+    dialog button { border:1px solid var(--line); border-radius:99px; padding:10px 15px; background:transparent; min-height:44px; font-size:12px; flex-shrink:0; }
+    #detail-image { display:block; width:100%; max-height:calc(100dvh - 185px); object-fit:contain; background:#e8e7e2; }
+    .dialog-bottom { margin-top:12px; font-size:11px; }
+    .dialog-bottom nav { display:flex; gap:6px; }
+    @media (max-width:900px) { .wrap { padding:0 24px; } .grid { gap:12px; } .options { width:100%; } }
+    @media (max-width:600px) { .wrap { padding:0 16px; } .masthead { font-size:9px; letter-spacing:0; } header { padding:40px 0 24px; } .intro { font-size:12px; } .filters { width:100%; } .filters button { flex:1; padding:11px 12px; } .options { gap:10px; } .options label { width:100%; justify-content:space-between; } .options label:last-child { justify-content:start; } select { flex:1; min-width:0; max-width:260px; } .grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px 12px; } .type-heading { align-items:start; } h3 { font-size:16px; } .type-code { font-size:23px; } .group-count { display:none; } .classification { font-size:11px; } h2 { margin-top:30px; } }
+  </style>
+  <script src="../js/face_additions_gallery.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="masthead"><strong>SHIAN STUDIO / FACE STUDY</strong><span class="edition">追加候補 · REVIEW</span></div>
+    <header>
+      <p class="eyebrow">SAME TYPE, MORE INDIVIDUALITY</p>
+      <h1><span>既存80人。</span><span>新しい80人。</span></h1>
+      <p class="intro">男女それぞれ8タイプ。各タイプの既存5人と追加5人を並べました。<br>全員25歳の設定、同じ撮影条件。写真を選ぶと大きく表示できます。</p>
+      <p class="preview-note">追加80人は確認用の候補です。診断にはまだ組み込んでいません。</p>
+    </header>
+    <main>
+      <div class="toolbar" id="gallery-controls" hidden>
+        <div class="filters" role="group" aria-label="性別で絞る">
+          <button type="button" data-gender="all" aria-pressed="true">すべて<small>160</small></button>
+          <button type="button" data-gender="female" aria-pressed="false">女性<small>80</small></button>
+          <button type="button" data-gender="male" aria-pressed="false">男性<small>80</small></button>
+        </div>
+        <div class="options">
+          <label>タイプ<select id="type-filter"><option value="all">全タイプ</option><option value="female:cute" data-gender="female">女性 · キュート / ASQ</option>
+<option value="female:active_cute" data-gender="female">女性 · アクティブキュート / ASV</option>
+<option value="female:fresh" data-gender="female">女性 · フレッシュ / ACQ</option>
+<option value="female:cool_casual" data-gender="female">女性 · クールカジュアル / ACV</option>
+<option value="female:feminine" data-gender="female">女性 · フェミニン / RSV</option>
+<option value="female:soft_elegant" data-gender="female">女性 · ソフトエレガント / RSQ</option>
+<option value="female:elegant" data-gender="female">女性 · エレガント / RCV</option>
+<option value="female:cool" data-gender="female">女性 · クール / RCQ</option>
+<option value="male:charming_soft" data-gender="male">男性 · チャーミングソフト / ASQ</option>
+<option value="male:charming_hard" data-gender="male">男性 · チャーミングハード / ASV</option>
+<option value="male:fresh_soft" data-gender="male">男性 · フレッシュソフト / ACQ</option>
+<option value="male:fresh_hard" data-gender="male">男性 · フレッシュハード / ACV</option>
+<option value="male:elegant_soft" data-gender="male">男性 · エレガントソフト / RSQ</option>
+<option value="male:elegant_hard" data-gender="male">男性 · エレガントハード / RSV</option>
+<option value="male:cool_soft" data-gender="male">男性 · クールソフト / RCQ</option>
+<option value="male:cool_hard" data-gender="male">男性 · クールハード / RCV</option></select></label>
+          <label>写真<select id="source-filter"><option value="all">既存 ＋ 追加</option><option value="current">既存のみ</option><option value="addition">追加のみ</option></select></label>
+          <label><input type="checkbox" id="face-crop">顔を大きく比較</label>
+        </div>
+      </div>
+      <p id="visible-count" role="status" aria-live="polite">160枚を表示 · 既存80枚 / 追加80枚</p>
+      <section class="gender-section" data-gender="female" aria-labelledby="heading-female"><h2 id="heading-female">女性<span>8タイプ · 80人</span></h2><section class="type-group" data-gender="female" data-type="female:cute" aria-labelledby="female-cute">
+<div class="type-heading"><div><p class="type-code">ASQ</p><h3 id="female-cute">守りたくなる甘め顔</h3><p class="classification">（キュート）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="female_001">
+  <a class="portrait" href="../assets/female/female_001.png" data-title="キュート · 既存 · female_001" aria-label="キュート · 既存 · female_001を拡大">
+    <img src="../assets/female/female_001.png" alt="キュート · 既存 · female_001の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_001</figcaption>
+</figure><figure data-id="female_002">
+  <a class="portrait" href="../assets/female/female_002.png" data-title="キュート · 既存 · female_002" aria-label="キュート · 既存 · female_002を拡大">
+    <img src="../assets/female/female_002.png" alt="キュート · 既存 · female_002の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_002</figcaption>
+</figure><figure data-id="female_003">
+  <a class="portrait" href="../assets/female/female_003.png" data-title="キュート · 既存 · female_003" aria-label="キュート · 既存 · female_003を拡大">
+    <img src="../assets/female/female_003.png" alt="キュート · 既存 · female_003の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_003</figcaption>
+</figure><figure data-id="female_004">
+  <a class="portrait" href="../assets/female/female_004.png" data-title="キュート · 既存 · female_004" aria-label="キュート · 既存 · female_004を拡大">
+    <img src="../assets/female/female_004.png" alt="キュート · 既存 · female_004の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_004</figcaption>
+</figure><figure data-id="female_005">
+  <a class="portrait" href="../assets/female/female_005.png" data-title="キュート · 既存 · female_005" aria-label="キュート · 既存 · female_005を拡大">
+    <img src="../assets/female/female_005.png" alt="キュート · 既存 · female_005の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_005</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="female_041">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_041.png" data-title="キュート · 追加候補 · female_041" aria-label="キュート · 追加候補 · female_041を拡大">
+    <img src="../assets/previews/v8-additions/female/female_041.png" alt="キュート · 追加候補 · female_041の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_041</figcaption>
+</figure><figure data-id="female_042">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_042.png" data-title="キュート · 追加候補 · female_042" aria-label="キュート · 追加候補 · female_042を拡大">
+    <img src="../assets/previews/v8-additions/female/female_042.png" alt="キュート · 追加候補 · female_042の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_042</figcaption>
+</figure><figure data-id="female_043">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_043.png" data-title="キュート · 追加候補 · female_043" aria-label="キュート · 追加候補 · female_043を拡大">
+    <img src="../assets/previews/v8-additions/female/female_043.png" alt="キュート · 追加候補 · female_043の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_043</figcaption>
+</figure><figure data-id="female_044">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_044.png" data-title="キュート · 追加候補 · female_044" aria-label="キュート · 追加候補 · female_044を拡大">
+    <img src="../assets/previews/v8-additions/female/female_044.png" alt="キュート · 追加候補 · female_044の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_044</figcaption>
+</figure><figure data-id="female_045">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_045.png" data-title="キュート · 追加候補 · female_045" aria-label="キュート · 追加候補 · female_045を拡大">
+    <img src="../assets/previews/v8-additions/female/female_045.png" alt="キュート · 追加候補 · female_045の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_045</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="female" data-type="female:active_cute" aria-labelledby="female-active_cute">
+<div class="type-heading"><div><p class="type-code">ASV</p><h3 id="female-active_cute">笑った瞬間、恋が始まる顔</h3><p class="classification">（アクティブキュート）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="female_006">
+  <a class="portrait" href="../assets/female/female_006.png" data-title="アクティブキュート · 既存 · female_006" aria-label="アクティブキュート · 既存 · female_006を拡大">
+    <img src="../assets/female/female_006.png" alt="アクティブキュート · 既存 · female_006の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_006</figcaption>
+</figure><figure data-id="female_007">
+  <a class="portrait" href="../assets/female/female_007.png" data-title="アクティブキュート · 既存 · female_007" aria-label="アクティブキュート · 既存 · female_007を拡大">
+    <img src="../assets/female/female_007.png" alt="アクティブキュート · 既存 · female_007の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_007</figcaption>
+</figure><figure data-id="female_008">
+  <a class="portrait" href="../assets/female/female_008.png" data-title="アクティブキュート · 既存 · female_008" aria-label="アクティブキュート · 既存 · female_008を拡大">
+    <img src="../assets/female/female_008.png" alt="アクティブキュート · 既存 · female_008の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_008</figcaption>
+</figure><figure data-id="female_009">
+  <a class="portrait" href="../assets/female/female_009.png" data-title="アクティブキュート · 既存 · female_009" aria-label="アクティブキュート · 既存 · female_009を拡大">
+    <img src="../assets/female/female_009.png" alt="アクティブキュート · 既存 · female_009の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_009</figcaption>
+</figure><figure data-id="female_010">
+  <a class="portrait" href="../assets/female/female_010.png" data-title="アクティブキュート · 既存 · female_010" aria-label="アクティブキュート · 既存 · female_010を拡大">
+    <img src="../assets/female/female_010.png" alt="アクティブキュート · 既存 · female_010の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_010</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="female_046">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_046.png" data-title="アクティブキュート · 追加候補 · female_046" aria-label="アクティブキュート · 追加候補 · female_046を拡大">
+    <img src="../assets/previews/v8-additions/female/female_046.png" alt="アクティブキュート · 追加候補 · female_046の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_046</figcaption>
+</figure><figure data-id="female_047">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_047.png" data-title="アクティブキュート · 追加候補 · female_047" aria-label="アクティブキュート · 追加候補 · female_047を拡大">
+    <img src="../assets/previews/v8-additions/female/female_047.png" alt="アクティブキュート · 追加候補 · female_047の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_047</figcaption>
+</figure><figure data-id="female_048">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_048.png" data-title="アクティブキュート · 追加候補 · female_048" aria-label="アクティブキュート · 追加候補 · female_048を拡大">
+    <img src="../assets/previews/v8-additions/female/female_048.png" alt="アクティブキュート · 追加候補 · female_048の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_048</figcaption>
+</figure><figure data-id="female_049">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_049.png" data-title="アクティブキュート · 追加候補 · female_049" aria-label="アクティブキュート · 追加候補 · female_049を拡大">
+    <img src="../assets/previews/v8-additions/female/female_049.png" alt="アクティブキュート · 追加候補 · female_049の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_049</figcaption>
+</figure><figure data-id="female_050">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_050.png" data-title="アクティブキュート · 追加候補 · female_050" aria-label="アクティブキュート · 追加候補 · female_050を拡大">
+    <img src="../assets/previews/v8-additions/female/female_050.png" alt="アクティブキュート · 追加候補 · female_050の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_050</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="female" data-type="female:fresh" aria-labelledby="female-fresh">
+<div class="type-heading"><div><p class="type-code">ACQ</p><h3 id="female-fresh">気づけば隣にいてほしい顔</h3><p class="classification">（フレッシュ）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="female_011">
+  <a class="portrait" href="../assets/female/female_011.png" data-title="フレッシュ · 既存 · female_011" aria-label="フレッシュ · 既存 · female_011を拡大">
+    <img src="../assets/female/female_011.png" alt="フレッシュ · 既存 · female_011の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_011</figcaption>
+</figure><figure data-id="female_012">
+  <a class="portrait" href="../assets/female/female_012.png" data-title="フレッシュ · 既存 · female_012" aria-label="フレッシュ · 既存 · female_012を拡大">
+    <img src="../assets/female/female_012.png" alt="フレッシュ · 既存 · female_012の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_012</figcaption>
+</figure><figure data-id="female_013">
+  <a class="portrait" href="../assets/female/female_013.png" data-title="フレッシュ · 既存 · female_013" aria-label="フレッシュ · 既存 · female_013を拡大">
+    <img src="../assets/female/female_013.png" alt="フレッシュ · 既存 · female_013の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_013</figcaption>
+</figure><figure data-id="female_014">
+  <a class="portrait" href="../assets/female/female_014.png" data-title="フレッシュ · 既存 · female_014" aria-label="フレッシュ · 既存 · female_014を拡大">
+    <img src="../assets/female/female_014.png" alt="フレッシュ · 既存 · female_014の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_014</figcaption>
+</figure><figure data-id="female_015">
+  <a class="portrait" href="../assets/female/female_015.png" data-title="フレッシュ · 既存 · female_015" aria-label="フレッシュ · 既存 · female_015を拡大">
+    <img src="../assets/female/female_015.png" alt="フレッシュ · 既存 · female_015の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_015</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="female_051">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_051.png" data-title="フレッシュ · 追加候補 · female_051" aria-label="フレッシュ · 追加候補 · female_051を拡大">
+    <img src="../assets/previews/v8-additions/female/female_051.png" alt="フレッシュ · 追加候補 · female_051の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_051</figcaption>
+</figure><figure data-id="female_052">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_052.png" data-title="フレッシュ · 追加候補 · female_052" aria-label="フレッシュ · 追加候補 · female_052を拡大">
+    <img src="../assets/previews/v8-additions/female/female_052.png" alt="フレッシュ · 追加候補 · female_052の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_052</figcaption>
+</figure><figure data-id="female_053">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_053.png" data-title="フレッシュ · 追加候補 · female_053" aria-label="フレッシュ · 追加候補 · female_053を拡大">
+    <img src="../assets/previews/v8-additions/female/female_053.png" alt="フレッシュ · 追加候補 · female_053の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_053</figcaption>
+</figure><figure data-id="female_054">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_054.png" data-title="フレッシュ · 追加候補 · female_054" aria-label="フレッシュ · 追加候補 · female_054を拡大">
+    <img src="../assets/previews/v8-additions/female/female_054.png" alt="フレッシュ · 追加候補 · female_054の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_054</figcaption>
+</figure><figure data-id="female_055">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_055.png" data-title="フレッシュ · 追加候補 · female_055" aria-label="フレッシュ · 追加候補 · female_055を拡大">
+    <img src="../assets/previews/v8-additions/female/female_055.png" alt="フレッシュ · 追加候補 · female_055の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_055</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="female" data-type="female:cool_casual" aria-labelledby="female-cool_casual">
+<div class="type-heading"><div><p class="type-code">ACV</p><h3 id="female-cool_casual">飾らないのに、目を奪う顔</h3><p class="classification">（クールカジュアル）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="female_016">
+  <a class="portrait" href="../assets/female/female_016.png" data-title="クールカジュアル · 既存 · female_016" aria-label="クールカジュアル · 既存 · female_016を拡大">
+    <img src="../assets/female/female_016.png" alt="クールカジュアル · 既存 · female_016の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_016</figcaption>
+</figure><figure data-id="female_017">
+  <a class="portrait" href="../assets/female/female_017.png" data-title="クールカジュアル · 既存 · female_017" aria-label="クールカジュアル · 既存 · female_017を拡大">
+    <img src="../assets/female/female_017.png" alt="クールカジュアル · 既存 · female_017の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_017</figcaption>
+</figure><figure data-id="female_018">
+  <a class="portrait" href="../assets/female/female_018.png" data-title="クールカジュアル · 既存 · female_018" aria-label="クールカジュアル · 既存 · female_018を拡大">
+    <img src="../assets/female/female_018.png" alt="クールカジュアル · 既存 · female_018の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_018</figcaption>
+</figure><figure data-id="female_019">
+  <a class="portrait" href="../assets/female/female_019.png" data-title="クールカジュアル · 既存 · female_019" aria-label="クールカジュアル · 既存 · female_019を拡大">
+    <img src="../assets/female/female_019.png" alt="クールカジュアル · 既存 · female_019の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_019</figcaption>
+</figure><figure data-id="female_020">
+  <a class="portrait" href="../assets/female/female_020.png" data-title="クールカジュアル · 既存 · female_020" aria-label="クールカジュアル · 既存 · female_020を拡大">
+    <img src="../assets/female/female_020.png" alt="クールカジュアル · 既存 · female_020の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_020</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="female_056">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_056.png" data-title="クールカジュアル · 追加候補 · female_056" aria-label="クールカジュアル · 追加候補 · female_056を拡大">
+    <img src="../assets/previews/v8-additions/female/female_056.png" alt="クールカジュアル · 追加候補 · female_056の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_056</figcaption>
+</figure><figure data-id="female_057">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_057.png" data-title="クールカジュアル · 追加候補 · female_057" aria-label="クールカジュアル · 追加候補 · female_057を拡大">
+    <img src="../assets/previews/v8-additions/female/female_057.png" alt="クールカジュアル · 追加候補 · female_057の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_057</figcaption>
+</figure><figure data-id="female_058">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_058.png" data-title="クールカジュアル · 追加候補 · female_058" aria-label="クールカジュアル · 追加候補 · female_058を拡大">
+    <img src="../assets/previews/v8-additions/female/female_058.png" alt="クールカジュアル · 追加候補 · female_058の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_058</figcaption>
+</figure><figure data-id="female_059">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_059.png" data-title="クールカジュアル · 追加候補 · female_059" aria-label="クールカジュアル · 追加候補 · female_059を拡大">
+    <img src="../assets/previews/v8-additions/female/female_059.png" alt="クールカジュアル · 追加候補 · female_059の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_059</figcaption>
+</figure><figure data-id="female_060">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_060.png" data-title="クールカジュアル · 追加候補 · female_060" aria-label="クールカジュアル · 追加候補 · female_060を拡大">
+    <img src="../assets/previews/v8-additions/female/female_060.png" alt="クールカジュアル · 追加候補 · female_060の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_060</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="female" data-type="female:feminine" aria-labelledby="female-feminine">
+<div class="type-heading"><div><p class="type-code">RSV</p><h3 id="female-feminine">やさしい色気に、ほどける顔</h3><p class="classification">（フェミニン）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="female_021">
+  <a class="portrait" href="../assets/female/female_021.png" data-title="フェミニン · 既存 · female_021" aria-label="フェミニン · 既存 · female_021を拡大">
+    <img src="../assets/female/female_021.png" alt="フェミニン · 既存 · female_021の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_021</figcaption>
+</figure><figure data-id="female_022">
+  <a class="portrait" href="../assets/female/female_022.png" data-title="フェミニン · 既存 · female_022" aria-label="フェミニン · 既存 · female_022を拡大">
+    <img src="../assets/female/female_022.png" alt="フェミニン · 既存 · female_022の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_022</figcaption>
+</figure><figure data-id="female_023">
+  <a class="portrait" href="../assets/female/female_023.png" data-title="フェミニン · 既存 · female_023" aria-label="フェミニン · 既存 · female_023を拡大">
+    <img src="../assets/female/female_023.png" alt="フェミニン · 既存 · female_023の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_023</figcaption>
+</figure><figure data-id="female_024">
+  <a class="portrait" href="../assets/female/female_024.png" data-title="フェミニン · 既存 · female_024" aria-label="フェミニン · 既存 · female_024を拡大">
+    <img src="../assets/female/female_024.png" alt="フェミニン · 既存 · female_024の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_024</figcaption>
+</figure><figure data-id="female_025">
+  <a class="portrait" href="../assets/female/female_025.png" data-title="フェミニン · 既存 · female_025" aria-label="フェミニン · 既存 · female_025を拡大">
+    <img src="../assets/female/female_025.png" alt="フェミニン · 既存 · female_025の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_025</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="female_061">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_061.png" data-title="フェミニン · 追加候補 · female_061" aria-label="フェミニン · 追加候補 · female_061を拡大">
+    <img src="../assets/previews/v8-additions/female/female_061.png" alt="フェミニン · 追加候補 · female_061の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_061</figcaption>
+</figure><figure data-id="female_062">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_062.png" data-title="フェミニン · 追加候補 · female_062" aria-label="フェミニン · 追加候補 · female_062を拡大">
+    <img src="../assets/previews/v8-additions/female/female_062.png" alt="フェミニン · 追加候補 · female_062の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_062</figcaption>
+</figure><figure data-id="female_063">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_063.png" data-title="フェミニン · 追加候補 · female_063" aria-label="フェミニン · 追加候補 · female_063を拡大">
+    <img src="../assets/previews/v8-additions/female/female_063.png" alt="フェミニン · 追加候補 · female_063の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_063</figcaption>
+</figure><figure data-id="female_064">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_064.png" data-title="フェミニン · 追加候補 · female_064" aria-label="フェミニン · 追加候補 · female_064を拡大">
+    <img src="../assets/previews/v8-additions/female/female_064.png" alt="フェミニン · 追加候補 · female_064の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_064</figcaption>
+</figure><figure data-id="female_065">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_065.png" data-title="フェミニン · 追加候補 · female_065" aria-label="フェミニン · 追加候補 · female_065を拡大">
+    <img src="../assets/previews/v8-additions/female/female_065.png" alt="フェミニン · 追加候補 · female_065の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_065</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="female" data-type="female:soft_elegant" aria-labelledby="female-soft_elegant">
+<div class="type-heading"><div><p class="type-code">RSQ</p><h3 id="female-soft_elegant">何度でも会いたくなる、余韻の顔</h3><p class="classification">（ソフトエレガント）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="female_026">
+  <a class="portrait" href="../assets/female/female_026.png" data-title="ソフトエレガント · 既存 · female_026" aria-label="ソフトエレガント · 既存 · female_026を拡大">
+    <img src="../assets/female/female_026.png" alt="ソフトエレガント · 既存 · female_026の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_026</figcaption>
+</figure><figure data-id="female_027">
+  <a class="portrait" href="../assets/female/female_027.png" data-title="ソフトエレガント · 既存 · female_027" aria-label="ソフトエレガント · 既存 · female_027を拡大">
+    <img src="../assets/female/female_027.png" alt="ソフトエレガント · 既存 · female_027の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_027</figcaption>
+</figure><figure data-id="female_028">
+  <a class="portrait" href="../assets/female/female_028.png" data-title="ソフトエレガント · 既存 · female_028" aria-label="ソフトエレガント · 既存 · female_028を拡大">
+    <img src="../assets/female/female_028.png" alt="ソフトエレガント · 既存 · female_028の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_028</figcaption>
+</figure><figure data-id="female_029">
+  <a class="portrait" href="../assets/female/female_029.png" data-title="ソフトエレガント · 既存 · female_029" aria-label="ソフトエレガント · 既存 · female_029を拡大">
+    <img src="../assets/female/female_029.png" alt="ソフトエレガント · 既存 · female_029の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_029</figcaption>
+</figure><figure data-id="female_030">
+  <a class="portrait" href="../assets/female/female_030.png" data-title="ソフトエレガント · 既存 · female_030" aria-label="ソフトエレガント · 既存 · female_030を拡大">
+    <img src="../assets/female/female_030.png" alt="ソフトエレガント · 既存 · female_030の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_030</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="female_066">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_066.png" data-title="ソフトエレガント · 追加候補 · female_066" aria-label="ソフトエレガント · 追加候補 · female_066を拡大">
+    <img src="../assets/previews/v8-additions/female/female_066.png" alt="ソフトエレガント · 追加候補 · female_066の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_066</figcaption>
+</figure><figure data-id="female_067">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_067.png" data-title="ソフトエレガント · 追加候補 · female_067" aria-label="ソフトエレガント · 追加候補 · female_067を拡大">
+    <img src="../assets/previews/v8-additions/female/female_067.png" alt="ソフトエレガント · 追加候補 · female_067の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_067</figcaption>
+</figure><figure data-id="female_068">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_068.png" data-title="ソフトエレガント · 追加候補 · female_068" aria-label="ソフトエレガント · 追加候補 · female_068を拡大">
+    <img src="../assets/previews/v8-additions/female/female_068.png" alt="ソフトエレガント · 追加候補 · female_068の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_068</figcaption>
+</figure><figure data-id="female_069">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_069.png" data-title="ソフトエレガント · 追加候補 · female_069" aria-label="ソフトエレガント · 追加候補 · female_069を拡大">
+    <img src="../assets/previews/v8-additions/female/female_069.png" alt="ソフトエレガント · 追加候補 · female_069の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_069</figcaption>
+</figure><figure data-id="female_070">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_070.png" data-title="ソフトエレガント · 追加候補 · female_070" aria-label="ソフトエレガント · 追加候補 · female_070を拡大">
+    <img src="../assets/previews/v8-additions/female/female_070.png" alt="ソフトエレガント · 追加候補 · female_070の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_070</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="female" data-type="female:elegant" aria-labelledby="female-elegant">
+<div class="type-heading"><div><p class="type-code">RCV</p><h3 id="female-elegant">一目で主役をさらう、華やぎ顔</h3><p class="classification">（エレガント）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="female_031">
+  <a class="portrait" href="../assets/female/female_031.png" data-title="エレガント · 既存 · female_031" aria-label="エレガント · 既存 · female_031を拡大">
+    <img src="../assets/female/female_031.png" alt="エレガント · 既存 · female_031の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_031</figcaption>
+</figure><figure data-id="female_032">
+  <a class="portrait" href="../assets/female/female_032.png" data-title="エレガント · 既存 · female_032" aria-label="エレガント · 既存 · female_032を拡大">
+    <img src="../assets/female/female_032.png" alt="エレガント · 既存 · female_032の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_032</figcaption>
+</figure><figure data-id="female_033">
+  <a class="portrait" href="../assets/female/female_033.png" data-title="エレガント · 既存 · female_033" aria-label="エレガント · 既存 · female_033を拡大">
+    <img src="../assets/female/female_033.png" alt="エレガント · 既存 · female_033の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_033</figcaption>
+</figure><figure data-id="female_034">
+  <a class="portrait" href="../assets/female/female_034.png" data-title="エレガント · 既存 · female_034" aria-label="エレガント · 既存 · female_034を拡大">
+    <img src="../assets/female/female_034.png" alt="エレガント · 既存 · female_034の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_034</figcaption>
+</figure><figure data-id="female_035">
+  <a class="portrait" href="../assets/female/female_035.png" data-title="エレガント · 既存 · female_035" aria-label="エレガント · 既存 · female_035を拡大">
+    <img src="../assets/female/female_035.png" alt="エレガント · 既存 · female_035の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_035</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="female_071">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_071.png" data-title="エレガント · 追加候補 · female_071" aria-label="エレガント · 追加候補 · female_071を拡大">
+    <img src="../assets/previews/v8-additions/female/female_071.png" alt="エレガント · 追加候補 · female_071の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_071</figcaption>
+</figure><figure data-id="female_072">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_072.png" data-title="エレガント · 追加候補 · female_072" aria-label="エレガント · 追加候補 · female_072を拡大">
+    <img src="../assets/previews/v8-additions/female/female_072.png" alt="エレガント · 追加候補 · female_072の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_072</figcaption>
+</figure><figure data-id="female_073">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_073.png" data-title="エレガント · 追加候補 · female_073" aria-label="エレガント · 追加候補 · female_073を拡大">
+    <img src="../assets/previews/v8-additions/female/female_073.png" alt="エレガント · 追加候補 · female_073の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_073</figcaption>
+</figure><figure data-id="female_074">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_074.png" data-title="エレガント · 追加候補 · female_074" aria-label="エレガント · 追加候補 · female_074を拡大">
+    <img src="../assets/previews/v8-additions/female/female_074.png" alt="エレガント · 追加候補 · female_074の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_074</figcaption>
+</figure><figure data-id="female_075">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_075.png" data-title="エレガント · 追加候補 · female_075" aria-label="エレガント · 追加候補 · female_075を拡大">
+    <img src="../assets/previews/v8-additions/female/female_075.png" alt="エレガント · 追加候補 · female_075の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_075</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="female" data-type="female:cool" aria-labelledby="female-cool">
+<div class="type-heading"><div><p class="type-code">RCQ</p><h3 id="female-cool">静かな目力に、吸い込まれる顔</h3><p class="classification">（クール）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="female_036">
+  <a class="portrait" href="../assets/female/female_036.png" data-title="クール · 既存 · female_036" aria-label="クール · 既存 · female_036を拡大">
+    <img src="../assets/female/female_036.png" alt="クール · 既存 · female_036の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_036</figcaption>
+</figure><figure data-id="female_037">
+  <a class="portrait" href="../assets/female/female_037.png" data-title="クール · 既存 · female_037" aria-label="クール · 既存 · female_037を拡大">
+    <img src="../assets/female/female_037.png" alt="クール · 既存 · female_037の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_037</figcaption>
+</figure><figure data-id="female_038">
+  <a class="portrait" href="../assets/female/female_038.png" data-title="クール · 既存 · female_038" aria-label="クール · 既存 · female_038を拡大">
+    <img src="../assets/female/female_038.png" alt="クール · 既存 · female_038の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_038</figcaption>
+</figure><figure data-id="female_039">
+  <a class="portrait" href="../assets/female/female_039.png" data-title="クール · 既存 · female_039" aria-label="クール · 既存 · female_039を拡大">
+    <img src="../assets/female/female_039.png" alt="クール · 既存 · female_039の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_039</figcaption>
+</figure><figure data-id="female_040">
+  <a class="portrait" href="../assets/female/female_040.png" data-title="クール · 既存 · female_040" aria-label="クール · 既存 · female_040を拡大">
+    <img src="../assets/female/female_040.png" alt="クール · 既存 · female_040の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_040</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="female_076">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_076.png" data-title="クール · 追加候補 · female_076" aria-label="クール · 追加候補 · female_076を拡大">
+    <img src="../assets/previews/v8-additions/female/female_076.png" alt="クール · 追加候補 · female_076の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_076</figcaption>
+</figure><figure data-id="female_077">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_077.png" data-title="クール · 追加候補 · female_077" aria-label="クール · 追加候補 · female_077を拡大">
+    <img src="../assets/previews/v8-additions/female/female_077.png" alt="クール · 追加候補 · female_077の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_077</figcaption>
+</figure><figure data-id="female_078">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_078.png" data-title="クール · 追加候補 · female_078" aria-label="クール · 追加候補 · female_078を拡大">
+    <img src="../assets/previews/v8-additions/female/female_078.png" alt="クール · 追加候補 · female_078の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_078</figcaption>
+</figure><figure data-id="female_079">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_079.png" data-title="クール · 追加候補 · female_079" aria-label="クール · 追加候補 · female_079を拡大">
+    <img src="../assets/previews/v8-additions/female/female_079.png" alt="クール · 追加候補 · female_079の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_079</figcaption>
+</figure><figure data-id="female_080">
+  <a class="portrait" href="../assets/previews/v8-additions/female/female_080.png" data-title="クール · 追加候補 · female_080" aria-label="クール · 追加候補 · female_080を拡大">
+    <img src="../assets/previews/v8-additions/female/female_080.png" alt="クール · 追加候補 · female_080の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>female_080</figcaption>
+</figure></div></div></section></section>
+<section class="gender-section" data-gender="male" aria-labelledby="heading-male"><h2 id="heading-male">男性<span>8タイプ · 80人</span></h2><section class="type-group" data-gender="male" data-type="male:charming_soft" aria-labelledby="male-charming_soft">
+<div class="type-heading"><div><p class="type-code">ASQ</p><h3 id="male-charming_soft">甘い笑顔に、つい甘やかしたくなる顔</h3><p class="classification">（チャーミングソフト）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="male_001">
+  <a class="portrait" href="../assets/male/male_001.png" data-title="チャーミングソフト · 既存 · male_001" aria-label="チャーミングソフト · 既存 · male_001を拡大">
+    <img src="../assets/male/male_001.png" alt="チャーミングソフト · 既存 · male_001の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_001</figcaption>
+</figure><figure data-id="male_002">
+  <a class="portrait" href="../assets/male/male_002.png" data-title="チャーミングソフト · 既存 · male_002" aria-label="チャーミングソフト · 既存 · male_002を拡大">
+    <img src="../assets/male/male_002.png" alt="チャーミングソフト · 既存 · male_002の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_002</figcaption>
+</figure><figure data-id="male_003">
+  <a class="portrait" href="../assets/male/male_003.png" data-title="チャーミングソフト · 既存 · male_003" aria-label="チャーミングソフト · 既存 · male_003を拡大">
+    <img src="../assets/male/male_003.png" alt="チャーミングソフト · 既存 · male_003の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_003</figcaption>
+</figure><figure data-id="male_004">
+  <a class="portrait" href="../assets/male/male_004.png" data-title="チャーミングソフト · 既存 · male_004" aria-label="チャーミングソフト · 既存 · male_004を拡大">
+    <img src="../assets/male/male_004.png" alt="チャーミングソフト · 既存 · male_004の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_004</figcaption>
+</figure><figure data-id="male_005">
+  <a class="portrait" href="../assets/male/male_005.png" data-title="チャーミングソフト · 既存 · male_005" aria-label="チャーミングソフト · 既存 · male_005を拡大">
+    <img src="../assets/male/male_005.png" alt="チャーミングソフト · 既存 · male_005の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_005</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="male_041">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_041.png" data-title="チャーミングソフト · 追加候補 · male_041" aria-label="チャーミングソフト · 追加候補 · male_041を拡大">
+    <img src="../assets/previews/v8-additions/male/male_041.png" alt="チャーミングソフト · 追加候補 · male_041の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_041</figcaption>
+</figure><figure data-id="male_042">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_042.png" data-title="チャーミングソフト · 追加候補 · male_042" aria-label="チャーミングソフト · 追加候補 · male_042を拡大">
+    <img src="../assets/previews/v8-additions/male/male_042.png" alt="チャーミングソフト · 追加候補 · male_042の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_042</figcaption>
+</figure><figure data-id="male_043">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_043.png" data-title="チャーミングソフト · 追加候補 · male_043" aria-label="チャーミングソフト · 追加候補 · male_043を拡大">
+    <img src="../assets/previews/v8-additions/male/male_043.png" alt="チャーミングソフト · 追加候補 · male_043の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_043</figcaption>
+</figure><figure data-id="male_044">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_044.png" data-title="チャーミングソフト · 追加候補 · male_044" aria-label="チャーミングソフト · 追加候補 · male_044を拡大">
+    <img src="../assets/previews/v8-additions/male/male_044.png" alt="チャーミングソフト · 追加候補 · male_044の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_044</figcaption>
+</figure><figure data-id="male_045">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_045.png" data-title="チャーミングソフト · 追加候補 · male_045" aria-label="チャーミングソフト · 追加候補 · male_045を拡大">
+    <img src="../assets/previews/v8-additions/male/male_045.png" alt="チャーミングソフト · 追加候補 · male_045の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_045</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="male" data-type="male:charming_hard" aria-labelledby="male-charming_hard">
+<div class="type-heading"><div><p class="type-code">ASV</p><h3 id="male-charming_hard">目が合うだけで、恋が始まる顔</h3><p class="classification">（チャーミングハード）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="male_006">
+  <a class="portrait" href="../assets/male/male_006.png" data-title="チャーミングハード · 既存 · male_006" aria-label="チャーミングハード · 既存 · male_006を拡大">
+    <img src="../assets/male/male_006.png" alt="チャーミングハード · 既存 · male_006の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_006</figcaption>
+</figure><figure data-id="male_007">
+  <a class="portrait" href="../assets/male/male_007.png" data-title="チャーミングハード · 既存 · male_007" aria-label="チャーミングハード · 既存 · male_007を拡大">
+    <img src="../assets/male/male_007.png" alt="チャーミングハード · 既存 · male_007の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_007</figcaption>
+</figure><figure data-id="male_008">
+  <a class="portrait" href="../assets/male/male_008.png" data-title="チャーミングハード · 既存 · male_008" aria-label="チャーミングハード · 既存 · male_008を拡大">
+    <img src="../assets/male/male_008.png" alt="チャーミングハード · 既存 · male_008の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_008</figcaption>
+</figure><figure data-id="male_009">
+  <a class="portrait" href="../assets/male/male_009.png" data-title="チャーミングハード · 既存 · male_009" aria-label="チャーミングハード · 既存 · male_009を拡大">
+    <img src="../assets/male/male_009.png" alt="チャーミングハード · 既存 · male_009の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_009</figcaption>
+</figure><figure data-id="male_010">
+  <a class="portrait" href="../assets/male/male_010.png" data-title="チャーミングハード · 既存 · male_010" aria-label="チャーミングハード · 既存 · male_010を拡大">
+    <img src="../assets/male/male_010.png" alt="チャーミングハード · 既存 · male_010の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_010</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="male_046">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_046.png" data-title="チャーミングハード · 追加候補 · male_046" aria-label="チャーミングハード · 追加候補 · male_046を拡大">
+    <img src="../assets/previews/v8-additions/male/male_046.png" alt="チャーミングハード · 追加候補 · male_046の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_046</figcaption>
+</figure><figure data-id="male_047">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_047.png" data-title="チャーミングハード · 追加候補 · male_047" aria-label="チャーミングハード · 追加候補 · male_047を拡大">
+    <img src="../assets/previews/v8-additions/male/male_047.png" alt="チャーミングハード · 追加候補 · male_047の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_047</figcaption>
+</figure><figure data-id="male_048">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_048.png" data-title="チャーミングハード · 追加候補 · male_048" aria-label="チャーミングハード · 追加候補 · male_048を拡大">
+    <img src="../assets/previews/v8-additions/male/male_048.png" alt="チャーミングハード · 追加候補 · male_048の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_048</figcaption>
+</figure><figure data-id="male_049">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_049.png" data-title="チャーミングハード · 追加候補 · male_049" aria-label="チャーミングハード · 追加候補 · male_049を拡大">
+    <img src="../assets/previews/v8-additions/male/male_049.png" alt="チャーミングハード · 追加候補 · male_049の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_049</figcaption>
+</figure><figure data-id="male_050">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_050.png" data-title="チャーミングハード · 追加候補 · male_050" aria-label="チャーミングハード · 追加候補 · male_050を拡大">
+    <img src="../assets/previews/v8-additions/male/male_050.png" alt="チャーミングハード · 追加候補 · male_050の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_050</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="male" data-type="male:fresh_soft" aria-labelledby="male-fresh_soft">
+<div class="type-heading"><div><p class="type-code">ACQ</p><h3 id="male-fresh_soft">隣で笑っていてほしい、癒やし顔</h3><p class="classification">（フレッシュソフト）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="male_011">
+  <a class="portrait" href="../assets/male/male_011.png" data-title="フレッシュソフト · 既存 · male_011" aria-label="フレッシュソフト · 既存 · male_011を拡大">
+    <img src="../assets/male/male_011.png" alt="フレッシュソフト · 既存 · male_011の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_011</figcaption>
+</figure><figure data-id="male_012">
+  <a class="portrait" href="../assets/male/male_012.png" data-title="フレッシュソフト · 既存 · male_012" aria-label="フレッシュソフト · 既存 · male_012を拡大">
+    <img src="../assets/male/male_012.png" alt="フレッシュソフト · 既存 · male_012の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_012</figcaption>
+</figure><figure data-id="male_013">
+  <a class="portrait" href="../assets/male/male_013.png" data-title="フレッシュソフト · 既存 · male_013" aria-label="フレッシュソフト · 既存 · male_013を拡大">
+    <img src="../assets/male/male_013.png" alt="フレッシュソフト · 既存 · male_013の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_013</figcaption>
+</figure><figure data-id="male_014">
+  <a class="portrait" href="../assets/male/male_014.png" data-title="フレッシュソフト · 既存 · male_014" aria-label="フレッシュソフト · 既存 · male_014を拡大">
+    <img src="../assets/male/male_014.png" alt="フレッシュソフト · 既存 · male_014の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_014</figcaption>
+</figure><figure data-id="male_015">
+  <a class="portrait" href="../assets/male/male_015.png" data-title="フレッシュソフト · 既存 · male_015" aria-label="フレッシュソフト · 既存 · male_015を拡大">
+    <img src="../assets/male/male_015.png" alt="フレッシュソフト · 既存 · male_015の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_015</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="male_051">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_051.png" data-title="フレッシュソフト · 追加候補 · male_051" aria-label="フレッシュソフト · 追加候補 · male_051を拡大">
+    <img src="../assets/previews/v8-additions/male/male_051.png" alt="フレッシュソフト · 追加候補 · male_051の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_051</figcaption>
+</figure><figure data-id="male_052">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_052.png" data-title="フレッシュソフト · 追加候補 · male_052" aria-label="フレッシュソフト · 追加候補 · male_052を拡大">
+    <img src="../assets/previews/v8-additions/male/male_052.png" alt="フレッシュソフト · 追加候補 · male_052の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_052</figcaption>
+</figure><figure data-id="male_053">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_053.png" data-title="フレッシュソフト · 追加候補 · male_053" aria-label="フレッシュソフト · 追加候補 · male_053を拡大">
+    <img src="../assets/previews/v8-additions/male/male_053.png" alt="フレッシュソフト · 追加候補 · male_053の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_053</figcaption>
+</figure><figure data-id="male_054">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_054.png" data-title="フレッシュソフト · 追加候補 · male_054" aria-label="フレッシュソフト · 追加候補 · male_054を拡大">
+    <img src="../assets/previews/v8-additions/male/male_054.png" alt="フレッシュソフト · 追加候補 · male_054の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_054</figcaption>
+</figure><figure data-id="male_055">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_055.png" data-title="フレッシュソフト · 追加候補 · male_055" aria-label="フレッシュソフト · 追加候補 · male_055を拡大">
+    <img src="../assets/previews/v8-additions/male/male_055.png" alt="フレッシュソフト · 追加候補 · male_055の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_055</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="male" data-type="male:fresh_hard" aria-labelledby="male-fresh_hard">
+<div class="type-heading"><div><p class="type-code">ACV</p><h3 id="male-fresh_hard">さらっとかっこいい、青春の主役顔</h3><p class="classification">（フレッシュハード）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="male_016">
+  <a class="portrait" href="../assets/male/male_016.png" data-title="フレッシュハード · 既存 · male_016" aria-label="フレッシュハード · 既存 · male_016を拡大">
+    <img src="../assets/male/male_016.png" alt="フレッシュハード · 既存 · male_016の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_016</figcaption>
+</figure><figure data-id="male_017">
+  <a class="portrait" href="../assets/male/male_017.png" data-title="フレッシュハード · 既存 · male_017" aria-label="フレッシュハード · 既存 · male_017を拡大">
+    <img src="../assets/male/male_017.png" alt="フレッシュハード · 既存 · male_017の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_017</figcaption>
+</figure><figure data-id="male_018">
+  <a class="portrait" href="../assets/male/male_018.png" data-title="フレッシュハード · 既存 · male_018" aria-label="フレッシュハード · 既存 · male_018を拡大">
+    <img src="../assets/male/male_018.png" alt="フレッシュハード · 既存 · male_018の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_018</figcaption>
+</figure><figure data-id="male_019">
+  <a class="portrait" href="../assets/male/male_019.png" data-title="フレッシュハード · 既存 · male_019" aria-label="フレッシュハード · 既存 · male_019を拡大">
+    <img src="../assets/male/male_019.png" alt="フレッシュハード · 既存 · male_019の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_019</figcaption>
+</figure><figure data-id="male_020">
+  <a class="portrait" href="../assets/male/male_020.png" data-title="フレッシュハード · 既存 · male_020" aria-label="フレッシュハード · 既存 · male_020を拡大">
+    <img src="../assets/male/male_020.png" alt="フレッシュハード · 既存 · male_020の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_020</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="male_056">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_056.png" data-title="フレッシュハード · 追加候補 · male_056" aria-label="フレッシュハード · 追加候補 · male_056を拡大">
+    <img src="../assets/previews/v8-additions/male/male_056.png" alt="フレッシュハード · 追加候補 · male_056の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_056</figcaption>
+</figure><figure data-id="male_057">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_057.png" data-title="フレッシュハード · 追加候補 · male_057" aria-label="フレッシュハード · 追加候補 · male_057を拡大">
+    <img src="../assets/previews/v8-additions/male/male_057.png" alt="フレッシュハード · 追加候補 · male_057の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_057</figcaption>
+</figure><figure data-id="male_058">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_058.png" data-title="フレッシュハード · 追加候補 · male_058" aria-label="フレッシュハード · 追加候補 · male_058を拡大">
+    <img src="../assets/previews/v8-additions/male/male_058.png" alt="フレッシュハード · 追加候補 · male_058の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_058</figcaption>
+</figure><figure data-id="male_059">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_059.png" data-title="フレッシュハード · 追加候補 · male_059" aria-label="フレッシュハード · 追加候補 · male_059を拡大">
+    <img src="../assets/previews/v8-additions/male/male_059.png" alt="フレッシュハード · 追加候補 · male_059の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_059</figcaption>
+</figure><figure data-id="male_060">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_060.png" data-title="フレッシュハード · 追加候補 · male_060" aria-label="フレッシュハード · 追加候補 · male_060を拡大">
+    <img src="../assets/previews/v8-additions/male/male_060.png" alt="フレッシュハード · 追加候補 · male_060の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_060</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="male" data-type="male:elegant_soft" aria-labelledby="male-elegant_soft">
+<div class="type-heading"><div><p class="type-code">RSQ</p><h3 id="male-elegant_soft">やさしい色気で、距離を縮める顔</h3><p class="classification">（エレガントソフト）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="male_021">
+  <a class="portrait" href="../assets/male/male_021.png" data-title="エレガントソフト · 既存 · male_021" aria-label="エレガントソフト · 既存 · male_021を拡大">
+    <img src="../assets/male/male_021.png" alt="エレガントソフト · 既存 · male_021の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_021</figcaption>
+</figure><figure data-id="male_022">
+  <a class="portrait" href="../assets/male/male_022.png" data-title="エレガントソフト · 既存 · male_022" aria-label="エレガントソフト · 既存 · male_022を拡大">
+    <img src="../assets/male/male_022.png" alt="エレガントソフト · 既存 · male_022の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_022</figcaption>
+</figure><figure data-id="male_023">
+  <a class="portrait" href="../assets/male/male_023.png" data-title="エレガントソフト · 既存 · male_023" aria-label="エレガントソフト · 既存 · male_023を拡大">
+    <img src="../assets/male/male_023.png" alt="エレガントソフト · 既存 · male_023の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_023</figcaption>
+</figure><figure data-id="male_024">
+  <a class="portrait" href="../assets/male/male_024.png" data-title="エレガントソフト · 既存 · male_024" aria-label="エレガントソフト · 既存 · male_024を拡大">
+    <img src="../assets/male/male_024.png" alt="エレガントソフト · 既存 · male_024の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_024</figcaption>
+</figure><figure data-id="male_025">
+  <a class="portrait" href="../assets/male/male_025.png" data-title="エレガントソフト · 既存 · male_025" aria-label="エレガントソフト · 既存 · male_025を拡大">
+    <img src="../assets/male/male_025.png" alt="エレガントソフト · 既存 · male_025の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_025</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="male_061">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_061.png" data-title="エレガントソフト · 追加候補 · male_061" aria-label="エレガントソフト · 追加候補 · male_061を拡大">
+    <img src="../assets/previews/v8-additions/male/male_061.png" alt="エレガントソフト · 追加候補 · male_061の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_061</figcaption>
+</figure><figure data-id="male_062">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_062.png" data-title="エレガントソフト · 追加候補 · male_062" aria-label="エレガントソフト · 追加候補 · male_062を拡大">
+    <img src="../assets/previews/v8-additions/male/male_062.png" alt="エレガントソフト · 追加候補 · male_062の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_062</figcaption>
+</figure><figure data-id="male_063">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_063.png" data-title="エレガントソフト · 追加候補 · male_063" aria-label="エレガントソフト · 追加候補 · male_063を拡大">
+    <img src="../assets/previews/v8-additions/male/male_063.png" alt="エレガントソフト · 追加候補 · male_063の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_063</figcaption>
+</figure><figure data-id="male_064">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_064.png" data-title="エレガントソフト · 追加候補 · male_064" aria-label="エレガントソフト · 追加候補 · male_064を拡大">
+    <img src="../assets/previews/v8-additions/male/male_064.png" alt="エレガントソフト · 追加候補 · male_064の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_064</figcaption>
+</figure><figure data-id="male_065">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_065.png" data-title="エレガントソフト · 追加候補 · male_065" aria-label="エレガントソフト · 追加候補 · male_065を拡大">
+    <img src="../assets/previews/v8-additions/male/male_065.png" alt="エレガントソフト · 追加候補 · male_065の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_065</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="male" data-type="male:elegant_hard" aria-labelledby="male-elegant_hard">
+<div class="type-heading"><div><p class="type-code">RSV</p><h3 id="male-elegant_hard">登場した瞬間、空気が変わる顔</h3><p class="classification">（エレガントハード）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="male_026">
+  <a class="portrait" href="../assets/male/male_026.png" data-title="エレガントハード · 既存 · male_026" aria-label="エレガントハード · 既存 · male_026を拡大">
+    <img src="../assets/male/male_026.png" alt="エレガントハード · 既存 · male_026の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_026</figcaption>
+</figure><figure data-id="male_027">
+  <a class="portrait" href="../assets/male/male_027.png" data-title="エレガントハード · 既存 · male_027" aria-label="エレガントハード · 既存 · male_027を拡大">
+    <img src="../assets/male/male_027.png" alt="エレガントハード · 既存 · male_027の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_027</figcaption>
+</figure><figure data-id="male_028">
+  <a class="portrait" href="../assets/male/male_028.png" data-title="エレガントハード · 既存 · male_028" aria-label="エレガントハード · 既存 · male_028を拡大">
+    <img src="../assets/male/male_028.png" alt="エレガントハード · 既存 · male_028の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_028</figcaption>
+</figure><figure data-id="male_029">
+  <a class="portrait" href="../assets/male/male_029.png" data-title="エレガントハード · 既存 · male_029" aria-label="エレガントハード · 既存 · male_029を拡大">
+    <img src="../assets/male/male_029.png" alt="エレガントハード · 既存 · male_029の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_029</figcaption>
+</figure><figure data-id="male_030">
+  <a class="portrait" href="../assets/male/male_030.png" data-title="エレガントハード · 既存 · male_030" aria-label="エレガントハード · 既存 · male_030を拡大">
+    <img src="../assets/male/male_030.png" alt="エレガントハード · 既存 · male_030の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_030</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="male_066">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_066.png" data-title="エレガントハード · 追加候補 · male_066" aria-label="エレガントハード · 追加候補 · male_066を拡大">
+    <img src="../assets/previews/v8-additions/male/male_066.png" alt="エレガントハード · 追加候補 · male_066の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_066</figcaption>
+</figure><figure data-id="male_067">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_067.png" data-title="エレガントハード · 追加候補 · male_067" aria-label="エレガントハード · 追加候補 · male_067を拡大">
+    <img src="../assets/previews/v8-additions/male/male_067.png" alt="エレガントハード · 追加候補 · male_067の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_067</figcaption>
+</figure><figure data-id="male_068">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_068.png" data-title="エレガントハード · 追加候補 · male_068" aria-label="エレガントハード · 追加候補 · male_068を拡大">
+    <img src="../assets/previews/v8-additions/male/male_068.png" alt="エレガントハード · 追加候補 · male_068の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_068</figcaption>
+</figure><figure data-id="male_069">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_069.png" data-title="エレガントハード · 追加候補 · male_069" aria-label="エレガントハード · 追加候補 · male_069を拡大">
+    <img src="../assets/previews/v8-additions/male/male_069.png" alt="エレガントハード · 追加候補 · male_069の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_069</figcaption>
+</figure><figure data-id="male_070">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_070.png" data-title="エレガントハード · 追加候補 · male_070" aria-label="エレガントハード · 追加候補 · male_070を拡大">
+    <img src="../assets/previews/v8-additions/male/male_070.png" alt="エレガントハード · 追加候補 · male_070の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_070</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="male" data-type="male:cool_soft" aria-labelledby="male-cool_soft">
+<div class="type-heading"><div><p class="type-code">RCQ</p><h3 id="male-cool_soft">静かな横顔まで、沼になる顔</h3><p class="classification">（クールソフト）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="male_031">
+  <a class="portrait" href="../assets/male/male_031.png" data-title="クールソフト · 既存 · male_031" aria-label="クールソフト · 既存 · male_031を拡大">
+    <img src="../assets/male/male_031.png" alt="クールソフト · 既存 · male_031の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_031</figcaption>
+</figure><figure data-id="male_032">
+  <a class="portrait" href="../assets/male/male_032.png" data-title="クールソフト · 既存 · male_032" aria-label="クールソフト · 既存 · male_032を拡大">
+    <img src="../assets/male/male_032.png" alt="クールソフト · 既存 · male_032の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_032</figcaption>
+</figure><figure data-id="male_033">
+  <a class="portrait" href="../assets/male/male_033.png" data-title="クールソフト · 既存 · male_033" aria-label="クールソフト · 既存 · male_033を拡大">
+    <img src="../assets/male/male_033.png" alt="クールソフト · 既存 · male_033の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_033</figcaption>
+</figure><figure data-id="male_034">
+  <a class="portrait" href="../assets/male/male_034.png" data-title="クールソフト · 既存 · male_034" aria-label="クールソフト · 既存 · male_034を拡大">
+    <img src="../assets/male/male_034.png" alt="クールソフト · 既存 · male_034の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_034</figcaption>
+</figure><figure data-id="male_035">
+  <a class="portrait" href="../assets/male/male_035.png" data-title="クールソフト · 既存 · male_035" aria-label="クールソフト · 既存 · male_035を拡大">
+    <img src="../assets/male/male_035.png" alt="クールソフト · 既存 · male_035の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_035</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="male_071">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_071.png" data-title="クールソフト · 追加候補 · male_071" aria-label="クールソフト · 追加候補 · male_071を拡大">
+    <img src="../assets/previews/v8-additions/male/male_071.png" alt="クールソフト · 追加候補 · male_071の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_071</figcaption>
+</figure><figure data-id="male_072">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_072.png" data-title="クールソフト · 追加候補 · male_072" aria-label="クールソフト · 追加候補 · male_072を拡大">
+    <img src="../assets/previews/v8-additions/male/male_072.png" alt="クールソフト · 追加候補 · male_072の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_072</figcaption>
+</figure><figure data-id="male_073">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_073.png" data-title="クールソフト · 追加候補 · male_073" aria-label="クールソフト · 追加候補 · male_073を拡大">
+    <img src="../assets/previews/v8-additions/male/male_073.png" alt="クールソフト · 追加候補 · male_073の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_073</figcaption>
+</figure><figure data-id="male_074">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_074.png" data-title="クールソフト · 追加候補 · male_074" aria-label="クールソフト · 追加候補 · male_074を拡大">
+    <img src="../assets/previews/v8-additions/male/male_074.png" alt="クールソフト · 追加候補 · male_074の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_074</figcaption>
+</figure><figure data-id="male_075">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_075.png" data-title="クールソフト · 追加候補 · male_075" aria-label="クールソフト · 追加候補 · male_075を拡大">
+    <img src="../assets/previews/v8-additions/male/male_075.png" alt="クールソフト · 追加候補 · male_075の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_075</figcaption>
+</figure></div></div></section><section class="type-group" data-gender="male" data-type="male:cool_hard" aria-labelledby="male-cool_hard">
+<div class="type-heading"><div><p class="type-code">RCV</p><h3 id="male-cool_hard">その眼差しに、心を持っていかれる顔</h3><p class="classification">（クールハード）</p></div><p class="group-count">既存5人 ＋ 追加5人</p></div>
+<div class="cohort" data-source="current"><h4><span class="badge current">既存</span><span>5人</span></h4><div class="grid"><figure data-id="male_036">
+  <a class="portrait" href="../assets/male/male_036.png" data-title="クールハード · 既存 · male_036" aria-label="クールハード · 既存 · male_036を拡大">
+    <img src="../assets/male/male_036.png" alt="クールハード · 既存 · male_036の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_036</figcaption>
+</figure><figure data-id="male_037">
+  <a class="portrait" href="../assets/male/male_037.png" data-title="クールハード · 既存 · male_037" aria-label="クールハード · 既存 · male_037を拡大">
+    <img src="../assets/male/male_037.png" alt="クールハード · 既存 · male_037の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_037</figcaption>
+</figure><figure data-id="male_038">
+  <a class="portrait" href="../assets/male/male_038.png" data-title="クールハード · 既存 · male_038" aria-label="クールハード · 既存 · male_038を拡大">
+    <img src="../assets/male/male_038.png" alt="クールハード · 既存 · male_038の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_038</figcaption>
+</figure><figure data-id="male_039">
+  <a class="portrait" href="../assets/male/male_039.png" data-title="クールハード · 既存 · male_039" aria-label="クールハード · 既存 · male_039を拡大">
+    <img src="../assets/male/male_039.png" alt="クールハード · 既存 · male_039の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_039</figcaption>
+</figure><figure data-id="male_040">
+  <a class="portrait" href="../assets/male/male_040.png" data-title="クールハード · 既存 · male_040" aria-label="クールハード · 既存 · male_040を拡大">
+    <img src="../assets/male/male_040.png" alt="クールハード · 既存 · male_040の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_040</figcaption>
+</figure></div></div><div class="cohort" data-source="addition"><h4><span class="badge addition">追加候補</span><span>5人</span></h4><div class="grid"><figure data-id="male_076">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_076.png" data-title="クールハード · 追加候補 · male_076" aria-label="クールハード · 追加候補 · male_076を拡大">
+    <img src="../assets/previews/v8-additions/male/male_076.png" alt="クールハード · 追加候補 · male_076の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_076</figcaption>
+</figure><figure data-id="male_077">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_077.png" data-title="クールハード · 追加候補 · male_077" aria-label="クールハード · 追加候補 · male_077を拡大">
+    <img src="../assets/previews/v8-additions/male/male_077.png" alt="クールハード · 追加候補 · male_077の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_077</figcaption>
+</figure><figure data-id="male_078">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_078.png" data-title="クールハード · 追加候補 · male_078" aria-label="クールハード · 追加候補 · male_078を拡大">
+    <img src="../assets/previews/v8-additions/male/male_078.png" alt="クールハード · 追加候補 · male_078の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_078</figcaption>
+</figure><figure data-id="male_079">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_079.png" data-title="クールハード · 追加候補 · male_079" aria-label="クールハード · 追加候補 · male_079を拡大">
+    <img src="../assets/previews/v8-additions/male/male_079.png" alt="クールハード · 追加候補 · male_079の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_079</figcaption>
+</figure><figure data-id="male_080">
+  <a class="portrait" href="../assets/previews/v8-additions/male/male_080.png" data-title="クールハード · 追加候補 · male_080" aria-label="クールハード · 追加候補 · male_080を拡大">
+    <img src="../assets/previews/v8-additions/male/male_080.png" alt="クールハード · 追加候補 · male_080の顔写真" width="1200" height="1600" loading="lazy" decoding="async">
+  </a><figcaption>male_080</figcaption>
+</figure></div></div></section></section>
+    </main>
+    <footer>
+      <p>すべて架空の成人日本人を描いたAI生成画像です。年齢・タイプは制作上の設定です。<br>各写真を個別生成し、既存と同じ1200×1600にそろえています。</p>
+      <nav><a href="face-types-v8.html">既存80人の一覧</a><a href="../data/previews/face_additions_v8.json">追加80人の生成記録・全プロンプト</a></nav>
+    </footer>
+  </div>
+  <dialog id="portrait-dialog" aria-labelledby="detail-title">
+    <div class="dialog-top"><h2 id="detail-title"></h2><button type="button" id="close-dialog" autofocus>閉じる</button></div>
+    <img id="detail-image" alt="" width="1200" height="1600">
+    <div class="dialog-bottom"><a id="original-link" target="_blank" rel="noopener">原寸画像を開く</a><nav aria-label="写真の切り替え"><button type="button" id="previous-image">前へ</button><button type="button" id="next-image">次へ</button></nav></div>
+  </dialog>
+</body>
+</html>

@@ -264,8 +264,9 @@ def main():
     check_promotion_card(check, referenced)
     check_pv_assets(check, referenced)
     images = {p.resolve() for p in (ROOT / "assets").rglob("*") if p.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}}
-    check(images == referenced and len(images) == 232, "旧画像または対応データのない画像が残っています")
-    check(not (ROOT / "assets/previews").exists(), "旧試作画像が残っています")
+    from check_face_additions import check_face_additions
+    check_face_additions(check, referenced)
+    check(images == referenced and len(images) == 312, "旧画像または対応データのない画像が残っています")
     html = (ROOT / "index.html").read_text()
     for gender in ("female", "male"):
         check(f'assets/{gender}/{gender}_011.png' in html, f"トップ画像: {gender}_011が使われていない")
@@ -291,7 +292,7 @@ def main():
             local_path(source, target)
     if errors:
         raise SystemExit("\n".join(errors))
-    print("整合性OK: 顔80枚・キャラクター16体・キャラクター共有80枚・3文字共有54枚・宣材1枚・PVサムネイル1枚、タイプ・生成記録・ハッシュ・リンク")
+    print("整合性OK: 本番の顔80枚・未採用の追加候補80枚・キャラクター16体・キャラクター共有80枚・3文字共有54枚・宣材1枚・PVサムネイル1枚、タイプ・生成記録・ハッシュ・リンク")
 
 
 if __name__ == "__main__":

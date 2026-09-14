@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f5f4ef">
+  <title>既存80人 ＋ 追加80人｜顔タイプ写真 比較一覧</title>
+  <style>
+    :root { color-scheme: light; --paper:#f5f4ef; --ink:#253c34; --muted:#67756d; --line:#d9ded5; --accent:#dce7b9; }
+    * { box-sizing:border-box; }
+    [hidden] { display:none!important; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif; }
+    button,select,input { font:inherit; color:inherit; }
+    button,a,input,select { -webkit-tap-highlight-color:transparent; }
+    button { cursor:pointer; }
+    a { color:inherit; text-underline-offset:4px; }
+    :focus-visible { outline:3px solid #76954b; outline-offset:4px; }
+    .wrap { max-width:1600px; margin:auto; padding:0 48px; }
+    .masthead { padding-top:28px; display:flex; justify-content:space-between; align-items:center; gap:16px; font-size:11px; letter-spacing:.1em; }
+    .edition { border:1px solid var(--line); border-radius:99px; padding:8px 12px; white-space:nowrap; }
+    header { padding:60px 0 32px; }
+    .eyebrow { font-size:11px; letter-spacing:.15em; margin:0 0 18px; }
+    h1 { font-size:clamp(30px,4.8vw,64px); letter-spacing:-.045em; font-weight:600; line-height:1.3; margin:0; }
+    h1 span { display:inline-block; }
+    .intro { font-size:14px; line-height:1.9; color:var(--muted); margin:20px 0 0; }
+    .preview-note { display:inline-block; padding:10px 14px; border-radius:6px; background:var(--accent); font-size:12px; line-height:1.7; margin-top:18px; }
+    .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:18px 24px; border-block:1px solid var(--line); padding:18px 0; }
+    .filters { display:flex; gap:5px; }
+    .filters button { border:0; background:transparent; border-radius:99px; padding:11px 18px; font-size:13px; min-height:44px; }
+    .filters button[aria-pressed="true"] { background:var(--ink); color:white; }
+    .filters small { margin-left:5px; opacity:.7; }
+    .options { display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px; font-size:12px; }
+    .options label { display:flex; align-items:center; gap:8px; min-height:40px; }
+    select { border:1px solid var(--line); background:var(--paper); border-radius:5px; max-width:270px; min-height:40px; padding:8px; }
+    input { accent-color:var(--ink); width:16px; height:16px; }
+    #visible-count { font-size:12px; color:var(--muted); margin:16px 0 0; }
+    h2 { display:flex; align-items:baseline; gap:16px; margin:42px 0 8px; font-size:24px; font-weight:600; }
+    h2 span { font-size:11px; color:var(--muted); font-weight:400; }
+    .type-group { padding:28px 0 36px; border-bottom:1px solid var(--line); }
+    .type-heading { display:flex; justify-content:space-between; align-items:end; gap:18px; margin-bottom:22px; }
+    .type-code { margin:0 0 7px; font-family:ui-monospace,monospace; letter-spacing:.12em; font-size:26px; }
+    h3 { margin:0; font-size:19px; line-height:1.5; font-weight:600; }
+    .classification { margin:5px 0 0; text-align:right; color:var(--muted); font-size:12px; }
+    .group-count { font-size:11px; color:var(--muted); white-space:nowrap; }
+    .cohort + .cohort { margin-top:24px; }
+    h4 { display:flex; align-items:center; gap:10px; margin:0 0 12px; font-size:11px; font-weight:400; color:var(--muted); }
+    .badge { padding:5px 10px; border-radius:99px; color:var(--ink); border:1px solid var(--line); font-weight:600; }
+    .badge.addition { background:var(--accent); border-color:var(--accent); }
+    .grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:20px; }
+    figure { margin:0; min-width:0; }
+    .portrait { display:block; aspect-ratio:3/4; background:#e8e7e2; overflow:hidden; border-radius:4px; }
+    .portrait img { display:block; width:100%; height:100%; object-fit:cover; }
+    .face-crop .portrait { aspect-ratio:1; }
+    .face-crop .portrait img { height:133.333%; transform:scale(1.55); transform-origin:50% 38.125%; }
+    figcaption { padding-top:9px; font-family:ui-monospace,monospace; color:var(--muted); font-size:11px; }
+    footer { display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; margin:35px 0; font-size:11px; line-height:1.9; color:var(--muted); }
+    footer p { margin:0; }
+    footer nav { display:flex; flex-wrap:wrap; gap:16px; }
+    dialog { width:min(650px,calc(100% - 24px)); max-height:calc(100dvh - 24px); border:0; border-radius:8px; background:var(--paper); color:var(--ink); padding:14px; }
+    dialog::backdrop { background:rgb(20 30 26 / .8); }
+    .dialog-top,.dialog-bottom { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .dialog-top { margin-bottom:10px; }
+    .dialog-top h2 { font-size:13px; margin:0; }
+    dialog button { border:1px solid var(--line); border-radius:99px; padding:10px 15px; background:transparent; min-height:44px; font-size:12px; flex-shrink:0; }
+    #detail-image { display:block; width:100%; max-height:calc(100dvh - 185px); object-fit:contain; background:#e8e7e2; }
+    .dialog-bottom { margin-top:12px; font-size:11px; }
+    .dialog-bottom nav { display:flex; gap:6px; }
+    @media (max-width:900px) { .wrap { padding:0 24px; } .grid { gap:12px; } .options { width:100%; } }
+    @media (max-width:600px) { .wrap { padding:0 16px; } .masthead { font-size:9px; letter-spacing:0; } header { padding:40px 0 24px; } .intro { font-size:12px; } .filters { width:100%; } .filters button { flex:1; padding:11px 12px; } .options { gap:10px; } .options label { width:100%; justify-content:space-between; } .options label:last-child { justify-content:start; } select { flex:1; min-width:0; max-width:260px; } .grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px 12px; } .type-heading { align-items:start; } h3 { font-size:16px; } .type-code { font-size:23px; } .group-count { display:none; } .classification { font-size:11px; } h2 { margin-top:30px; } }
+  </style>
+  <script src="../js/face_additions_gallery.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="masthead"><strong>SHIAN STUDIO / FACE STUDY</strong><span class="edition">追加候補 · REVIEW</span></div>
+    <header>
+      <p class="eyebrow">SAME TYPE, MORE INDIVIDUALITY</p>
+      <h1><span>既存80人。</span><span>新しい80人。</span></h1>
+      <p class="intro">男女それぞれ8タイプ。各タイプの既存5人と追加5人を並べました。<br>全員25歳の設定、同じ撮影条件。写真を選ぶと大きく表示できます。</p>
+      <p class="preview-note">追加80人は確認用の候補です。診断にはまだ組み込んでいません。</p>
+    </header>
+    <main>
+      <div class="toolbar" id="gallery-controls" hidden>
+        <div class="filters" role="group" aria-label="性別で絞る">
+          <button type="button" data-gender="all" aria-pressed="true">すべて<small>160</small></button>
+          <button type="button" data-gender="female" aria-pressed="false">女性<small>80</small></button>
+          <button type="button" data-gender="male" aria-pressed="false">男性<small>80</small></button>
+        </div>
+        <div class="options">
+          <label>タイプ<select id="type-filter"><option value="all">全タイプ</option>{{TYPE_OPTIONS}}</select></label>
+          <label>写真<select id="source-filter"><option value="all">既存 ＋ 追加</option><option value="current">既存のみ</option><option value="addition">追加のみ</option></select></label>
+          <label><input type="checkbox" id="face-crop">顔を大きく比較</label>
+        </div>
+      </div>
+      <p id="visible-count" role="status" aria-live="polite">160枚を表示 · 既存80枚 / 追加80枚</p>
+      {{SECTIONS}}
+    </main>
+    <footer>
+      <p>すべて架空の成人日本人を描いたAI生成画像です。年齢・タイプは制作上の設定です。<br>各写真を個別生成し、既存と同じ1200×1600にそろえています。</p>
+      <nav><a href="face-types-v8.html">既存80人の一覧</a><a href="../data/previews/face_additions_v8.json">追加80人の生成記録・全プロンプト</a></nav>
+    </footer>
+  </div>
+  <dialog id="portrait-dialog" aria-labelledby="detail-title">
+    <div class="dialog-top"><h2 id="detail-title"></h2><button type="button" id="close-dialog" autofocus>閉じる</button></div>
+    <img id="detail-image" alt="" width="1200" height="1600">
+    <div class="dialog-bottom"><a id="original-link" target="_blank" rel="noopener">原寸画像を開く</a><nav aria-label="写真の切り替え"><button type="button" id="previous-image">前へ</button><button type="button" id="next-image">次へ</button></nav></div>
+  </dialog>
+</body>
+</html>

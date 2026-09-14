@@ -2,6 +2,8 @@
 
 全員25歳の設定で個別生成した、男女各40枚（8タイプ×5人）の顔写真を使う静的Webアプリです。結果は3文字コード・キャラクター・同タイプの顔5枚・結果の文字の意味で表示します。[本番サイト](https://type-checker.shianstudio.com/) / [キャラクター16体と顔の例](https://type-checker.shianstudio.com/docs/characters.html) / [80枚の比較ページ](docs/face-types-v8.html)
 
+[既存80人＋追加候補80人の比較一覧](docs/face-types-additions.html)：各タイプに5人ずつ追加生成した確認用ページです。追加写真は診断に未採用です。[追加分の制作記録](docs/face-additions-v8.md)
+
 ## 出題と採点
 
 - 二択は異なるタイプ同士。最初の20組で40人全員が一度ずつ登場します。
