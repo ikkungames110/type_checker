@@ -1,4 +1,4 @@
-"""既存80人と未採用候補80人を、JavaScriptなしでも見られる比較HTMLへ出力する。"""
+"""既存80人と追加80人を、JavaScriptなしでも見られる比較HTMLへ出力する。"""
 
 import json
 from html import escape
@@ -20,7 +20,7 @@ def build_gallery():
             key = f'{gender}:{type_record["id"]}'
             options.append(f'<option value="{key}" data-gender="{gender}">{gender_label} · {escape(type_record["classification_label"])} / {type_record["code"]}</option>')
             rows = []
-            for source, label, records in (("current", "既存", current), ("addition", "追加候補", plan["records"])):
+            for source, label, records in (("current", "既存", current), ("addition", "追加", plan["records"])):
                 selected = [r for r in records if r["gender"] == gender and r["type"] == type_record["id"]]
                 assert len(selected) == 5, (key, source)
                 cards = []

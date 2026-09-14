@@ -78,16 +78,16 @@ async function main() {
       let rejectedTypes = new Set();
       const inspectPair = async () => {
         const saved = await page.evaluate(key => JSON.parse(sessionStorage.getItem(key)), sessionKey);
-        const records = await page.evaluate(g => g === 'female' ? window.FEMALE_FACE_ASSETS : window.MALE_FACE_ASSETS, gender);
+        const records = await page.evaluate(g => [...(g === 'female' ? window.FEMALE_FACE_ASSETS : window.MALE_FACE_ASSETS), ...window.ADDITIONAL_FACE_ASSETS[g]], gender);
         const current = saved.deck.current.map(id => records.find(face => face.id === id));
         assert.notEqual(current[0].type, current[1].type);
         assert.equal(await page.locator('#duel img').evaluateAll(imgs => imgs.every(img => Math.abs(img.clientWidth / img.clientHeight - 0.75) < 0.01)), true);
         assert.equal(saved.deck.shownPairs, ++observedPairs);
         if (observedPairs <= 20) {
-          current.forEach(face => { assert.ok(!shownFirstCycle.has(face.id)); shownFirstCycle.add(face.id); });
+          current.forEach(face => { assert.ok(Number(face.id.slice(-3)) <= 40); assert.ok(!shownFirstCycle.has(face.id)); shownFirstCycle.add(face.id); });
           if (observedPairs === 20) assert.equal(shownFirstCycle.size, 40);
         } else {
-          current.forEach(face => assert.ok(!rejectedTypes.has(face.type)));
+          current.forEach(face => { assert.ok(Number(face.id.slice(-3)) > 40); assert.ok(!rejectedTypes.has(face.type)); });
         }
         return current;
       };
@@ -134,11 +134,15 @@ async function main() {
 
       // 未完了で結果URLを開いた場合は、進行中の診断へ戻す。
       await page.goto(routeUrl('result'));
-      const resumedDocument = await ready('quiz');
+      let resumedDocument = await ready('quiz');
       assert.equal(await page.locator('#roundLabel').innerText(), '5 / 20');
       for (let i = 5; i < 19; i += 1) { await page.locator(i % 2 ? '#rightCard' : '#leftCard').click(); await inspectPair(); }
       assert.equal(observedPairs, 21);
       const finalPair = await pair();
+      const additionalSaved = await page.evaluate(key => sessionStorage.getItem(key), sessionKey);
+      await page.reload(); resumedDocument = await ready('quiz');
+      assert.deepEqual(await pair(), finalPair);
+      assert.equal(await page.evaluate(key => sessionStorage.getItem(key), sessionKey), additionalSaved);
       await page.evaluate(() => {
         window.__originalSetItem = Storage.prototype.setItem;
         Storage.prototype.setItem = () => { throw new Error('Storage disabled'); };
@@ -153,7 +157,8 @@ async function main() {
       assert.equal(await ready('result'), resumedDocument);
       const resultData = await page.evaluate(key => {
         const saved = JSON.parse(sessionStorage.getItem(key));
-        const records = saved.gender === 'female' ? window.FEMALE_FACE_ASSETS : window.MALE_FACE_ASSETS;
+        const originals = saved.gender === 'female' ? window.FEMALE_FACE_ASSETS : window.MALE_FACE_ASSETS;
+        const records = [...originals, ...window.ADDITIONAL_FACE_ASSETS[saved.gender]];
         const types = window.FACE_RESULT_TYPES[saved.gender];
         const byId = new Map(records.map(face => [face.id, face]));
         const counts = Object.fromEntries(types.map(type=>[type.code,0]));
@@ -163,7 +168,7 @@ async function main() {
         if (!candidates.includes(saved.selectedCode)) throw new Error('結果が最多タイプに含まれません');
         return {codes,counts,total:saved.chosenIds.length,types:codes.map(code=>{
           const type=types.find(type=>type.code===code);
-          return {...type,character:window.FACE_CHARACTERS.find(c=>c.gender===saved.gender&&c.type===type.id),examples:records.filter(face=>face.type===type.id).map(face=>face.id).sort()};
+          return {...type,character:window.FACE_CHARACTERS.find(c=>c.gender===saved.gender&&c.type===type.id),examples:originals.filter(face=>face.type===type.id).map(face=>face.id).sort()};
         })};
       },sessionKey);
       assert.equal(resultData.total,20);
@@ -283,9 +288,54 @@ async function main() {
       const beforeRestart = await page.evaluate(() => window.__documentId);
       await page.locator('#restartButton').click();
       assert.equal(await ready('top'), beforeRestart);
-      await page.screenshot({path:`/tmp/type-checker-ad-${width}.png`,fullPage:true});
+      // 全ページ撮影時の一時的なviewport変更で広告の幅切り替えを発火させない。
+      await page.screenshot({path:`/tmp/type-checker-ad-${width}.png`});
       await ready('top');
       assert.equal(await page.evaluate(key => sessionStorage.getItem(key), sessionKey), null);
+      // スキップなしなら既存40人だけで20回答に到達し、追加画像は読み込まない。
+      const requestedAdditions = [];
+      const recordAddition = request => {
+        if (request.url().includes('/assets/previews/v8-additions/')) requestedAdditions.push(request.url());
+      };
+      page.on('request', recordAddition);
+      await page.locator(`.gender-btn[data-gender="${gender}"]`).click();
+      await ready('quiz');
+      const originalIds = new Set();
+      for (let i = 0; i < 20; i++) {
+        const saved = await page.evaluate(key => JSON.parse(sessionStorage.getItem(key)), sessionKey);
+        assert.equal(saved.deck.shownPairs, i + 1);
+        saved.deck.current.forEach(id => { assert.ok(Number(id.slice(-3)) <= 40); assert.ok(!originalIds.has(id)); originalIds.add(id); });
+        await page.locator('#leftCard').click();
+      }
+      await ready('result');
+      assert.equal(originalIds.size, 40);
+      assert.deepEqual(requestedAdditions, []);
+      page.off('request', recordAddition);
+
+      // 旧保存形式の21組目からも回答を失わず移行し、次の再読み込みでペアを変えない。
+      const legacyChoices = await page.evaluate(key => {
+        const saved = JSON.parse(sessionStorage.getItem(key));
+        saved.selectedCount = 19; saved.chosenIds = saved.chosenIds.slice(0, 19);
+        saved.deck.version = 2; delete saved.deck.additionalFaceKeys;
+        saved.deck.shownPairs = 21; saved.deck.cycle = 2;
+        const records = saved.gender === 'female' ? FEMALE_FACE_ASSETS : MALE_FACE_ASSETS;
+        const currentTypes = saved.deck.current.map(id => records.find(f => f.id === id).type);
+        saved.deck.rejectedTypes = FACE_RESULT_TYPES[saved.gender].map(t => t.id).filter(t => !currentTypes.includes(t)).slice(0, 2);
+        sessionStorage.setItem(key, JSON.stringify(saved));
+        return saved.chosenIds;
+      }, sessionKey);
+      await page.reload(); await ready('quiz');
+      const migrated = await page.evaluate(key => JSON.parse(sessionStorage.getItem(key)), sessionKey);
+      assert.equal(migrated.deck.version, 3);
+      assert.equal(migrated.deck.shownPairs, 21);
+      assert.deepEqual(migrated.chosenIds, legacyChoices);
+      migrated.deck.current.forEach(id => assert.ok(Number(id.slice(-3)) > 40));
+      const migratedPair = await pair();
+      await page.reload(); await ready('quiz');
+      assert.deepEqual(await pair(), migratedPair);
+      await page.locator('#leftCard').click(); await ready('result');
+      assert.equal(await page.locator('#resultExamples img').count(), 5);
+      await page.locator('#restartButton').click(); await ready('top');
       for (const name of ['quiz', 'result']) {
         await page.goto(routeUrl(name));
         await ready('top');
@@ -308,7 +358,7 @@ async function main() {
       assert.equal(await page.evaluate(() => new Set(window.adsbyimobile.map(ad => ad.elementid)).size), 3);
       assert.deepEqual(errors, []);
       await context.close();
-      console.log(`${gender} / ${width}px: 3画面・40枚一巡・異タイプ二択・21組目除外・タイプ別採点・同点・文字の意味・復元・共有・広告・保存エラー OK`);
+      console.log(`${gender} / ${width}px: 3画面・40枚一巡・異タイプ二択・21組目から追加写真・除外・タイプ別採点・同点・文字の意味・復元・共有・広告・保存エラー OK`);
     }
   } finally {
     await browser.close();

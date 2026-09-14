@@ -1,13 +1,20 @@
-/* 最初の一巡ですべての顔を表示し、二巡目から「どちらも違う」のタイプを除外する。 */
+/* 最初の20組は既存40人。21組目以降は追加40人から除外ルールに従って出題する。 */
 class FaceDeck {
-  constructor(faces, questionCount = 20, random = Math.random) {
-    if (faces.length !== 40 || new Set(faces.map(f => f.id)).size !== faces.length ||
-        faces.some(f => !f.type) || new Set(faces.map(f => f.type)).size !== 8) {
-      throw new Error('顔データは重複しない40枚・8タイプで指定してください');
+  constructor(faces, additionalFaces, questionCount = 20, random = Math.random) {
+    for (const group of [faces, additionalFaces]) {
+      if (!Array.isArray(group) || group.length !== 40 || new Set(group.map(f => f.id)).size !== group.length ||
+          group.some(f => !f.type) || new Set(group.map(f => f.type)).size !== 8) {
+        throw new Error('顔データは重複しない40枚・8タイプで指定してください');
+      }
+      const counts = group.reduce((map, f) => map.set(f.type, (map.get(f.type) || 0) + 1), new Map());
+      if ([...counts.values()].some(count => count !== 5)) throw new Error('各タイプ5枚で指定してください');
     }
-    const counts = faces.reduce((map, f) => map.set(f.type, (map.get(f.type) || 0) + 1), new Map());
-    if ([...counts.values()].some(count => count !== 5)) throw new Error('各タイプ5枚で指定してください');
+    if (new Set([...faces, ...additionalFaces].map(f => f.id)).size !== 80 ||
+        additionalFaces.some(f => !faces.some(original => original.type === f.type))) {
+      throw new Error('既存と追加は別の40人・同じ8タイプで指定してください');
+    }
     this.faces = [...faces];
+    this.additionalFaces = [...additionalFaces];
     this.questionCount = questionCount;
     this.random = random;
     this.unseen = new Set(faces.map(f => f.id));
@@ -19,8 +26,9 @@ class FaceDeck {
   }
 
   eligibleFaces() {
-    if (this.shownPairs < this.faces.length / 2 || this.allTypes) return this.faces;
-    return this.faces.filter(f => !this.rejectedTypes.has(f.type));
+    if (this.shownPairs < 20) return this.faces;
+    if (this.allTypes) return this.additionalFaces;
+    return this.additionalFaces.filter(f => !this.rejectedTypes.has(f.type));
   }
 
   pick(pool) { return pool[Math.floor(this.random() * pool.length)]; }
@@ -67,8 +75,8 @@ class FaceDeck {
     for (const face of this.current) this.rejectedTypes.add(face.type);
     if (this.rejectedTypes.size >= 7 && !this.allTypes) {
       this.allTypes = true;
-      if (this.shownPairs > this.faces.length / 2) {
-        this.unseen = new Set(this.faces.map(f => f.id));
+      if (this.shownPairs > 20) {
+        this.unseen = new Set(this.additionalFaces.map(f => f.id));
         this.cycle += 1;
       }
     }
@@ -77,8 +85,9 @@ class FaceDeck {
 
   snapshot() {
     return {
-      version: 2,
+      version: 3,
       faceKeys: this.faces.map(f => `${f.id}:${f.type}:${f.asset_version || ''}`),
+      additionalFaceKeys: this.additionalFaces.map(f => `${f.id}:${f.type}:${f.asset_version || ''}`),
       questionCount: this.questionCount,
       current: this.current?.map(f => f.id),
       unseen: [...this.unseen],
@@ -89,13 +98,16 @@ class FaceDeck {
     };
   }
 
-  static restore(faces, saved, questionCount = 20, random = Math.random) {
+  static restore(faces, additionalFaces, saved, questionCount = 20, random = Math.random) {
     const invalid = () => { throw new Error('保存した出題データが無効です'); };
-    const deck = new FaceDeck(faces, questionCount, random);
-    const byId = new Map(faces.map(f => [f.id, f]));
+    const deck = new FaceDeck(faces, additionalFaces, questionCount, random);
+    const legacy = saved?.version === 2;
+    const activeFaces = legacy || saved?.shownPairs <= 20 ? faces : additionalFaces;
+    const byId = new Map(activeFaces.map(f => [f.id, f]));
     const types = new Set(faces.map(f => f.type));
-    if (!saved || saved.version !== 2 || saved.questionCount !== questionCount ||
+    if (!saved || ![2, 3].includes(saved.version) || saved.questionCount !== questionCount ||
         JSON.stringify(saved.faceKeys) !== JSON.stringify(deck.snapshot().faceKeys) ||
+        (!legacy && JSON.stringify(saved.additionalFaceKeys) !== JSON.stringify(deck.snapshot().additionalFaceKeys)) ||
         !Number.isInteger(saved.shownPairs) || saved.shownPairs < 1 ||
         !Number.isInteger(saved.cycle) || saved.cycle < 1 ||
         !Array.isArray(saved.current) || saved.current.length !== 2 || !saved.current.every(id => byId.has(id)) ||
@@ -104,10 +116,16 @@ class FaceDeck {
         saved.allTypes !== (saved.rejectedTypes.length >= 7)) invalid();
     const current = saved.current.map(id => byId.get(id));
     if (current[0].type === current[1].type || saved.current.some(id => saved.unseen.includes(id))) invalid();
-    if (saved.shownPairs <= faces.length / 2 &&
+    if (saved.shownPairs <= 20 &&
         (saved.cycle !== 1 || saved.unseen.length !== faces.length - saved.shownPairs * 2)) invalid();
     Object.assign(deck, { current, unseen: new Set(saved.unseen), rejectedTypes: new Set(saved.rejectedTypes),
       allTypes: saved.allTypes, shownPairs: saved.shownPairs, cycle: saved.cycle });
+    if (legacy && saved.shownPairs > 20) {
+      // 旧セッションの回答・除外・表示組数を維持し、未回答の二択を追加写真へ移行する。
+      deck.unseen.clear();
+      deck.shownPairs -= 1;
+      deck.next();
+    }
     return deck;
   }
 }

@@ -1,12 +1,12 @@
 # 好みの顔タイプ診断
 
-全員25歳の設定で個別生成した、男女各40枚（8タイプ×5人）の顔写真を使う静的Webアプリです。結果は3文字コード・キャラクター・同タイプの顔5枚・結果の文字の意味で表示します。[本番サイト](https://type-checker.shianstudio.com/) / [キャラクター16体と顔の例](https://type-checker.shianstudio.com/docs/characters.html) / [80枚の比較ページ](docs/face-types-v8.html)
+全員25歳の設定で個別生成した、男女各80枚（既存40人＋追加40人）の顔写真を使う静的Webアプリです。結果は3文字コード・キャラクター・同タイプの顔5枚・結果の文字の意味で表示します。[本番サイト](https://type-checker.shianstudio.com/) / [キャラクター16体と顔の例](https://type-checker.shianstudio.com/docs/characters.html) / [80枚の比較ページ](docs/face-types-v8.html)
 
-[既存80人＋追加候補80人の比較一覧](docs/face-types-additions.html)：各タイプに5人ずつ追加生成した確認用ページです。追加写真は診断に未採用です。[追加分の制作記録](docs/face-additions-v8.md)
+[既存80人＋追加80人の比較一覧](docs/face-types-additions.html)：各タイプに既存5人と追加5人を並べています。追加写真は21組目以降の出題に使用します。[追加分の制作記録](docs/face-additions-v8.md)
 
 ## 出題と採点
 
-- 二択は異なるタイプ同士。最初の20組で40人全員が一度ずつ登場します。
+- 二択は異なるタイプ同士。最初の20組で既存40人全員が一度ずつ登場します。21組目以降は追加40人のみを使います。スキップしなければ既存写真だけで診断が完了します。
 - 20回、好みに近い顔を選びます。ASQの画像なら、ASQのタイプへ1票加算します。
 - 8タイプそれぞれの選択回数を集計し、最多のタイプを結果にします。
 - 最多が同点の場合は、その中から1タイプを等確率で選び、結果コードを保存します。再読み込み後も同じ結果を表示し、画面では抽選について説明しません。
@@ -18,7 +18,7 @@
 
 ## 画像
 
-本番画像は `assets/female/`・`assets/male/` に各40枚。対応するタイプ・年齢・全プロンプト・生成記録は [女性データ](data/female_faces.js) と [男性データ](data/male_faces.js) に保存しています。採用したv8以外の顔画像・旧試作・旧共有画像は削除しました。以前の制作資料はGit履歴から確認できます。
+最初の20組の画像は `assets/female/`・`assets/male/` に各40枚。追加画像は `assets/previews/v8-additions/` に男女各40枚を保存し、[追加出題データ](data/additional_faces.js)から参照します。保存先名は制作時のまま維持しています。対応するタイプ・年齢・全プロンプト・生成記録は [女性データ](data/female_faces.js) と [男性データ](data/male_faces.js) に保存しています。採用したv8以外の顔画像・旧試作・旧共有画像は削除しました。以前の制作資料はGit履歴から確認できます。
 
 トップ画面は `female_011`・`male_011` の顔写真。サイトカードには男女8体を並べています。結果のキャラ16体は `assets/characters/v1/`、顔の例との対応は [type_presentation.js](js/type_presentation.js) にあります。[キャラクター制作・再生成手順](docs/characters-v1.md) / [サイトカードの制作記録](data/promotion_card.json)。写真自体の記録は [v8制作記録](docs/顔タイプ生成_ver8.md) を参照してください。
 

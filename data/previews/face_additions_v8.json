@@ -1,6 +1,6 @@
 {
   "version": "v8-additions-preview",
-  "status": "preview-only",
+  "status": "active-after-first-20-pairs",
   "age": 25,
   "portraits_per_gender": 40,
   "additional_portraits_per_type": 5,
@@ -2026,7 +2026,7 @@
   "review_notes": [
     "男女16タイプを既存5人・追加5人の並びで目視確認。",
     "female_054の下端の襟ぐり反復は広めの構図で再生成して解消。",
-    "160枚の読み込み・絞り込み・拡大・3画面幅・JavaScriptなしでの表示を検証。",
-    "候補の制作確認のみ。診断への採用は未実施。"
-  ]
+    "160枚の読み込み・絞り込み・拡大・3画面幅・JavaScriptなしでの表示を検証。"
+  ],
+  "usage": "最初の20組は既存40人、21組目以降は追加40人。除外タイプ・7タイプでの解除ルールを適用。"
 }

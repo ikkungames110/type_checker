@@ -810,19 +810,20 @@
 
   <script src="data/female_faces.js?v=8.1"></script>
   <script src="data/male_faces.js?v=8"></script>
+  <script src="data/additional_faces.js?v=1"></script>
   <script src="data/result_types.js?v=letters-1"></script>
   <script src="data/type_characters.js?v=1"></script>
   <script src="data/type_axes.js?v=2"></script>
   <script src="js/axis_breakdown.js?v=preference-label-1"></script>
   <script src="js/result_view.js?v=character-catalog-1"></script>
   <script src="js/type_presentation.js?v=1"></script>
-  <script src="js/face_deck.js?v=8"></script>
+  <script src="js/face_deck.js?v=8-additions-1"></script>
   <script src="js/face_scoring.js?v=type-votes-2"></script>
   <script>
     const TARGET_SELECTIONS = 20;
     const DATASETS = {
-      female: { label: "女性", resultTarget: "女性顔", assets: () => window.FEMALE_FACE_ASSETS },
-      male: { label: "男性", resultTarget: "男性顔", assets: () => window.MALE_FACE_ASSETS }
+      female: { label: "女性", resultTarget: "女性顔", assets: () => window.FEMALE_FACE_ASSETS, additions: () => window.ADDITIONAL_FACE_ASSETS.female },
+      male: { label: "男性", resultTarget: "男性顔", assets: () => window.MALE_FACE_ASSETS, additions: () => window.ADDITIONAL_FACE_ASSETS.male }
     };
 
     const state = {
@@ -889,7 +890,7 @@
           const saved = JSON.parse(lastSavedSession);
           state.selectedCount = saved.selectedCount;
           state.chosenIds = saved.chosenIds;
-          state.deck = FaceDeck.restore(state.faces, saved.deck, TARGET_SELECTIONS);
+          state.deck = FaceDeck.restore(state.dataset.assets(), state.dataset.additions(), saved.deck, TARGET_SELECTIONS);
         }
         sessionError.textContent = "診断を保存できませんでした。ブラウザのサイトデータ保存を許可して、もう一度お試しください。";
         sessionError.hidden = false;
@@ -903,12 +904,13 @@
         if (!saved || saved.version !== 8 || !Object.hasOwn(DATASETS, saved.gender)) return false;
         if (!Number.isInteger(saved.selectedCount) || saved.selectedCount < 0 || saved.selectedCount > TARGET_SELECTIONS) return false;
         const dataset = DATASETS[saved.gender];
-        const faces = dataset.assets();
+        const faces = [...dataset.assets(), ...dataset.additions()];
         if (!Array.isArray(saved.chosenIds) || saved.chosenIds.length !== saved.selectedCount ||
             !saved.chosenIds.every(id => faces.some(face => face.id === id))) return false;
-        const deck = FaceDeck.restore(faces, saved.deck, TARGET_SELECTIONS);
+        const deck = FaceDeck.restore(dataset.assets(), dataset.additions(), saved.deck, TARGET_SELECTIONS);
         Object.assign(state, { gender: saved.gender, dataset, faces, deck, selectedCount: saved.selectedCount, chosenIds: saved.chosenIds, selectedCode: saved.scoringVersion === "type-votes-v2" ? saved.selectedCode : null });
-        lastSavedSession = JSON.stringify(saved);
+        lastSavedSession = JSON.stringify({ ...saved, deck: deck.snapshot() });
+        if (saved.deck.version === 2) return saveSession();
         return true;
       } catch {
         return false;
@@ -945,8 +947,8 @@
       state.selectedCount = 0;
       state.chosenIds = [];
       state.selectedCode = null;
-      state.faces = state.dataset.assets();
-      state.deck = new FaceDeck(state.faces, TARGET_SELECTIONS);
+      state.faces = [...state.dataset.assets(), ...state.dataset.additions()];
+      state.deck = new FaceDeck(state.dataset.assets(), state.dataset.additions(), TARGET_SELECTIONS);
       state.deck.next();
       if (saveSession()) navigate("quiz");
     }
@@ -992,7 +994,7 @@
       state.selectedCode = result.codes[0];
       if (!saveSession()) return;
 
-      ResultView.render(result, state.gender, state.faces, window.FACE_CHARACTERS);
+      ResultView.render(result, state.gender, state.dataset.assets(), window.FACE_CHARACTERS);
       const codes = result.codes.join(" / ");
       state.lastResult = `好みの顔タイプ診断（${state.dataset.label}の顔）\n${codes}\n${result.winners.length === 1 ? result.winners[0].label : `${result.winners.length}つのタイプに惹かれました。`}`;
       const shared = new URL(FaceScoring.sharePath(state.gender, result), siteUrl);

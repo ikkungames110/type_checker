@@ -1,4 +1,4 @@
-"""追加候補の件数・生成記録・画像と、診断への未組み込みを検査する。"""
+"""追加写真の件数・生成記録・画像と、21組目以降の出題データを検査する。"""
 
 from collections import Counter
 import hashlib
@@ -7,6 +7,7 @@ from pathlib import Path
 import struct
 
 from build_share_pages import read_browser_data
+from build_additional_faces import runtime_records
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -16,15 +17,16 @@ def check_face_additions(check, referenced):
     additions = plan["records"]
     current = [r for gender in ("female", "male") for r in read_browser_data(ROOT / f"data/{gender}_faces.js")]
     types = read_browser_data(ROOT / "data/result_types.js")
-    check(plan["status"] == "preview-only", "追加候補: 確認用の状態ではない")
-    check(len(additions) == 80, "追加候補: 80人ではない")
-    check(len(current) == 80 and not {r["id"] for r in current} & {r["id"] for r in additions}, "追加候補: 既存の診断データに混在")
-    check(Counter((r["gender"], r["type"]) for r in additions) == Counter((r["gender"], r["type"]) for r in current), "追加候補: 男女各タイプ5人ではない")
+    check(plan["status"] == "active-after-first-20-pairs", "追加写真: 採用状態が不正")
+    check(read_browser_data(ROOT / "data/additional_faces.js") == runtime_records(plan), "追加写真: ブラウザ用データと制作記録が不一致")
+    check(len(additions) == 80, "追加写真: 80人ではない")
+    check(len(current) == 80 and not {r["id"] for r in current} & {r["id"] for r in additions}, "追加写真: 最初の20組用データに混在")
+    check(Counter((r["gender"], r["type"]) for r in additions) == Counter((r["gender"], r["type"]) for r in current), "追加写真: 男女各タイプ5人ではない")
     normalizer_hash = hashlib.sha256((ROOT / "scripts/normalize_face_asset.py").read_bytes()).hexdigest()
     for gender in ("female", "male"):
-        check([r["id"] for r in additions if r["gender"] == gender] == [f"{gender}_{i:03d}" for i in range(41, 81)], f"追加候補: {gender}のIDが不正")
+        check([r["id"] for r in additions if r["gender"] == gender] == [f"{gender}_{i:03d}" for i in range(41, 81)], f"追加写真: {gender}のIDが不正")
     for record in additions:
-        context = f'追加候補 {record["id"]}'
+        context = f'追加写真 {record["id"]}'
         generation = record["generation"]
         type_record = next((t for t in types[record["gender"]] if t["id"] == record["type"]), {})
         check(all(record.get(k) == type_record.get(k) for k in ("label", "classification_label")), f"{context}: タイプ名不一致")
@@ -43,7 +45,7 @@ def check_face_additions(check, referenced):
             check(hashlib.sha256(raw).hexdigest() == generation.get("image_sha256"), f"{context}: 画像ハッシュ不一致")
             referenced.add(path.resolve())
     for key in ("source_sha256", "image_sha256", "prompt_sha256"):
-        check(len({r["generation"].get(key) for r in current + additions}) == 160, f"追加候補: {key}が既存または候補と重複")
+        check(len({r["generation"].get(key) for r in current + additions}) == 160, f"追加写真: {key}が既存または候補と重複")
 
 
 if __name__ == "__main__":
@@ -51,4 +53,4 @@ if __name__ == "__main__":
     check_face_additions(lambda ok, message: None if ok else errors.append(message), set())
     if errors:
         raise SystemExit("\n".join(errors))
-    print("追加候補OK: 80人・男女各タイプ5人・25歳・1200×1600・生成記録・ハッシュ・既存と分離")
+    print("追加写真OK: 80人・男女各タイプ5人・25歳・1200×1600・生成記録・ハッシュ・既存と分離")

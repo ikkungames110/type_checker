@@ -1,8 +1,8 @@
-# v8追加候補 — 男女各8タイプに5人ずつ
+# v8追加写真 — 男女各8タイプに5人ずつ
 
-[既存80人＋追加候補80人の比較HTML](face-types-additions.html) / [追加80人の全プロンプト・生成記録](../data/previews/face_additions_v8.json)
+[既存80人＋追加写真80人の比較HTML](face-types-additions.html) / [追加80人の全プロンプト・生成記録](../data/previews/face_additions_v8.json)
 
-既存のv8と同じ方法・撮影条件で、女性40人・男性40人を追加生成した。各タイプは既存5人と追加5人の計10人となり、比較ページには160人を掲載する。追加分は確認用であり、診断には未採用。本番の写真・データ・二択・採点・結果・共有ページは引き続き既存80人を使用する。
+既存のv8と同じ方法・撮影条件で、女性40人・男性40人を追加生成した。各タイプは既存5人と追加5人の計10人となり、比較ページには160人を掲載する。追加分を診断の21組目以降に採用した。男女それぞれ最初の20組は既存40人を一度ずつ表示し、それ以降は追加40人のみを出題する。スキップした両タイプの除外と、7タイプ以上での永久解除を継続する。20回の肯定選択で完了するため、スキップがなければ追加写真は出ない。結果の顔の例5枚と既存共有ページは従来の写真を使う。
 
 ## 生成条件
 
@@ -27,7 +27,7 @@
 | 071〜075 | エレガント | クールソフト |
 | 076〜080 | クール | クールハード |
 
-画像のパスは `assets/previews/v8-additions/<gender>/<gender>_041.png` から `080.png`。タイプ内の `variant` は6〜10。追加レコードの `asset_version` は `v8-additions-preview`、全体の状態は `preview-only` とする。既存の `data/female_faces.js` と `data/male_faces.js` には追記しない。
+画像のパスは `assets/previews/v8-additions/<gender>/<gender>_041.png` から `080.png`。タイプ内の `variant` は6〜10。追加レコードの `asset_version` は `v8-additions-preview`、全体の状態は `active-after-first-20-pairs` とする。画像パスと `asset_version` は制作時の識別子として維持する。[build_additional_faces.py](../scripts/build_additional_faces.py) が制作記録から [additional_faces.js](../data/additional_faces.js) を生成する。既存の `data/female_faces.js` と `data/male_faces.js` には追記しない。
 
 ## 比較ページ
 
@@ -36,6 +36,7 @@
 HTMLは [テンプレート](../scripts/templates/face_additions_gallery.html) とレコードから生成する。診断画面からリンクしない確認専用ページとし、検索エンジンには `noindex, nofollow` を指定する。
 
 ```bash
+python3 scripts/build_additional_faces.py
 python3 scripts/check_face_additions.py
 python3 scripts/build_face_additions_gallery.py
 python3 scripts/build_pages.py
@@ -53,4 +54,8 @@ node scripts/check_face_additions_gallery.cjs
 
 ## 制作時の検証結果
 
-追加80人の件数・タイプ・サイズ・生成記録・ハッシュ検査、サイト全体の整合性検査とPagesビルド、既存33テスト、比較ページのブラウザ検査が通過した。男女全16タイプを既存写真と並べて目視確認し、制作確認の `review_status` を `checked` にした。これは診断への採用を意味せず、状態は `preview-only` のままとする。
+追加80人の件数・タイプ・サイズ・生成記録・ハッシュ検査、サイト全体の整合性検査とPagesビルド、既存33テスト、比較ページのブラウザ検査が通過した。男女全16タイプを既存写真と並べて目視確認し、制作確認の `review_status` を `checked` にした。その後、ユーザーの依頼により21組目以降の出題へ採用した。
+
+保存形式は出題データのversion 3を使用する。旧version 2の診断も回答・除外・解除状態を引き継ぐ。20組目までの表示中の写真は維持し、21組目以降の未回答ペアは追加写真に置き換えてから保存する。
+
+組み込み時は38テストとPagesビルドが通過した。ブラウザでは男女それぞれで、スキップなしなら既存40人のみで完了すること、スキップありの21組目は除外対象外の追加写真になること、追加写真の採点と結果の顔5枚、21組目での再読み込みと保存失敗時の復帰、旧保存形式からの移行を確認した。

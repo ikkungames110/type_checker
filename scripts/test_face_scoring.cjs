@@ -5,7 +5,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 const { FaceScoring } = require('../js/face_scoring.js');
 const context = {window:{}};
-for(const file of ['result_types','type_axes','female_faces','male_faces']) vm.runInNewContext(fs.readFileSync(path.join(__dirname,`../data/${file}.js`),'utf8'),context);
+for(const file of ['result_types','type_axes','female_faces','male_faces','additional_faces']) vm.runInNewContext(fs.readFileSync(path.join(__dirname,`../data/${file}.js`),'utf8'),context);
 const data = JSON.parse(JSON.stringify(context.window));
 const axes = data.FACE_TYPE_AXES;
 const codes = ['ASQ','ASV','ACQ','ACV','RSQ','RSV','RCQ','RCV'];
@@ -41,6 +41,27 @@ test('男女それぞれ8タイプに正しく加算する', () => {
    const face=records.find(face=>face.type===type.id);
    const r=FaceScoring.rank(records,Array(20).fill(face.id),group,axes);
    assert.deepEqual(r.codes,[type.code]); assert.equal(r.counts[type.id],20);
+  }
+ }
+});
+test('追加写真の回答も同じタイプへ1票を加え、既存写真との合計で結果を決める', () => {
+ for (const gender of ['female','male']) {
+  const original = data[gender === 'female' ? 'FEMALE_FACE_ASSETS' : 'MALE_FACE_ASSETS'];
+  const additions = data.ADDITIONAL_FACE_ASSETS[gender];
+  const records = [...original, ...additions];
+  const group = data.FACE_RESULT_TYPES[gender];
+  for (const type of group) {
+   const other = group.find(t => t.id !== type.id);
+   const chosen = [
+    ...Array(5).fill(original.find(f => f.type === type.id).id),
+    ...additions.filter(f => f.type === type.id).map(f => f.id),
+    additions.find(f => f.type === type.id).id,
+    ...Array(9).fill(original.find(f => f.type === other.id).id)
+   ];
+   const result = FaceScoring.rank(records, chosen, group, axes);
+   assert.equal(result.total, 20);
+   assert.equal(result.counts[type.id], 11);
+   assert.deepEqual(result.codes, [type.code]);
   }
  }
 });
