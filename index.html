@@ -743,7 +743,6 @@
     <aside class="fixed-ads" id="fixedAds" aria-label="広告" hidden>
       <div id="im-0188de672a6d45f9866ae278a4d4ef39" hidden></div>
       <div id="im-7313d3409a394418ac40b004be47b9e3" hidden></div>
-      <div id="im-63e67f8f371a43feac5dece1b87723b4" hidden></div>
     </aside>
     <script>
       (() => {
@@ -753,21 +752,6 @@
           {pid:85394,mid:596132,asid:1944283,type:"banner",display:"inline",elementid:"im-7313d3409a394418ac40b004be47b9e3"}
         ];
         const desktopBanner = {pid:85394,mid:596134,asid:1943673,type:"banner",display:"inline",elementid:"im-f9eb908dad6a4cf49b5ea04a2cd2e6f5"};
-        const largeMobileBanner = {pid:85394,mid:596132,asid:1944662,type:"banner",display:"inline",elementid:"im-63e67f8f371a43feac5dece1b87723b4"};
-        const adVariantKey = "face-diagnosis:mobile-ad-variant:v1";
-        let selectedMobileBanners;
-
-        function getMobileBanners() {
-          if (selectedMobileBanners) return selectedMobileBanners;
-          let variant;
-          try { variant = sessionStorage.getItem(adVariantKey); } catch { /* 保存不可でも広告は表示する。 */ }
-          if (variant !== "double" && variant !== "large") {
-            variant = Math.random() < 0.5 ? "double" : "large";
-            try { sessionStorage.setItem(adVariantKey, variant); } catch { /* このページ内では抽選結果を維持する。 */ }
-          }
-          selectedMobileBanners = variant === "double" ? mobileBanners : [largeMobileBanner];
-          return selectedMobileBanners;
-        }
         const loadedBanners = new Set();
         const fixedAds = document.getElementById("fixedAds");
 
@@ -784,8 +768,8 @@
         function showBanners() {
           fixedAds.hidden = desktopMedia.matches;
           document.getElementById(desktopBanner.elementid).hidden = !desktopMedia.matches;
-          const activeBanners = desktopMedia.matches ? [desktopBanner] : getMobileBanners();
-          for (const banner of [...mobileBanners, largeMobileBanner]) {
+          const activeBanners = desktopMedia.matches ? [desktopBanner] : mobileBanners;
+          for (const banner of mobileBanners) {
             document.getElementById(banner.elementid).hidden = !activeBanners.includes(banner);
           }
           activeBanners.forEach(loadBanner);
