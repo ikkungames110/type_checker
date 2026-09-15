@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 const site = process.env.SITE_URL || 'http://127.0.0.1:8000/';
 const key = 'face-diagnosis:mobile-ad-variant:v1';
-const ids = [1943443, 1944283];
+const ids = [1943443, 1944752];
 
 async function main() {
   const browser = await chromium.launch({ headless: true });
@@ -36,6 +36,15 @@ async function main() {
       const check = async () => {
         await page.waitForFunction(count => window.__adLoads === count, ids.length);
         assert.deepEqual(await page.evaluate(() => window.adsbyimobile.map(ad => ad.asid)), ids);
+        assert.deepEqual(await page.evaluate(() => window.adsbyimobile), [
+          { pid: 85394, mid: 596132, asid: 1943443, type: 'banner', display: 'inline', elementid: 'im-8062997010fc4d0d9409440e7545ffb5' },
+          { pid: 85394, mid: 596132, asid: 1944752, type: 'banner', display: 'inline', elementid: 'im-a053b4d717c34924ac4978b686f09e3a' }
+        ]);
+        assert.equal(await page.evaluate(() => {
+          const issued = document.querySelector('#mobileBannerTags').content;
+          return [...issued.querySelectorAll('div')].every(tag =>
+            document.getElementById(tag.id).innerHTML === tag.innerHTML);
+        }), true, '実行後も発行タグのscript属性・本文を保持する');
         assert.equal(await page.locator('#fixedAds > div:visible').count(), ids.length);
         await page.waitForFunction(() => getComputedStyle(document.body).paddingBottom === '100px');
         for (const fraction of [0, 0.5, 1]) {

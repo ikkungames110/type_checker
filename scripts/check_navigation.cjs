@@ -39,7 +39,7 @@ async function main() {
         const ad = await page.evaluate(() => window.adsbyimobile[0]);
         assert.equal(ad.asid, width >= 800 ? 1943673 : 1943443);
         if (width < 800) {
-          const banner = page.locator('#im-7313d3409a394418ac40b004be47b9e3');
+          const banner = page.locator('#im-a053b4d717c34924ac4978b686f09e3a');
           // 配信サイズを再現して、ページ先頭・途中・末尾で固定位置と余白を確認する。
           await banner.evaluate(node => { node.style.height = '50px'; });
           await page.waitForFunction(() => getComputedStyle(document.body).paddingBottom === '100px');
@@ -56,8 +56,8 @@ async function main() {
             assert.equal(geometry.left, 0);
             assert.equal(geometry.width, geometry.viewportWidth);
           }
-          assert.deepEqual(await page.evaluate(() => window.adsbyimobile.map(ad => ad.asid)), [1943443, 1944283]);
-          const upper = page.locator('#im-0188de672a6d45f9866ae278a4d4ef39');
+          assert.deepEqual(await page.evaluate(() => window.adsbyimobile.map(ad => ad.asid)), [1943443, 1944752]);
+          const upper = page.locator('#im-8062997010fc4d0d9409440e7545ffb5');
           await upper.evaluate(node => { node.style.height = '70px'; });
           await page.waitForFunction(() => getComputedStyle(document.body).paddingBottom === '120px');
           const upperBox = await upper.boundingBox();

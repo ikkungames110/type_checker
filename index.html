@@ -740,20 +740,31 @@
         <p class="ad-status" role="status">広告配信待ち</p>
       </div>
     </aside>
-    <aside class="fixed-ads" id="fixedAds" aria-label="広告" hidden>
-      <div id="im-0188de672a6d45f9866ae278a4d4ef39" hidden></div>
-      <div id="im-7313d3409a394418ac40b004be47b9e3" hidden></div>
-    </aside>
+    <aside class="fixed-ads" id="fixedAds" aria-label="広告" hidden></aside>
+    <!-- 発行タグを原文で保持し、スマホ幅で初めて表示するときだけ実行する。 -->
+    <template id="mobileBannerTags">
+<div id="im-8062997010fc4d0d9409440e7545ffb5">
+  <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
+  <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85394,mid:596132,asid:1943443,type:"banner",display:"inline",elementid:"im-8062997010fc4d0d9409440e7545ffb5"})</script>
+</div>
+<div id="im-a053b4d717c34924ac4978b686f09e3a">
+  <script async src="https://imp-adedge.i-mobile.co.jp/script/v1/spot.js?20220104"></script>
+  <script>(window.adsbyimobile=window.adsbyimobile||[]).push({pid:85394,mid:596132,asid:1944752,type:"banner",display:"inline",elementid:"im-a053b4d717c34924ac4978b686f09e3a"})</script>
+</div>
+    </template>
     <script>
       (() => {
         const desktopMedia = window.matchMedia("(min-width: 800px)");
-        const mobileBanners = [
-          {pid:85394,mid:596132,asid:1943443,type:"banner",display:"inline",elementid:"im-0188de672a6d45f9866ae278a4d4ef39"},
-          {pid:85394,mid:596132,asid:1944283,type:"banner",display:"inline",elementid:"im-7313d3409a394418ac40b004be47b9e3"}
-        ];
         const desktopBanner = {pid:85394,mid:596134,asid:1943673,type:"banner",display:"inline",elementid:"im-f9eb908dad6a4cf49b5ea04a2cd2e6f5"};
         const loadedBanners = new Set();
         const fixedAds = document.getElementById("fixedAds");
+        let mobileBannersLoaded = false;
+
+        function loadMobileBanners() {
+          if (mobileBannersLoaded) return;
+          mobileBannersLoaded = true;
+          fixedAds.appendChild(document.getElementById("mobileBannerTags").content.cloneNode(true));
+        }
 
         function loadBanner(banner) {
           if (loadedBanners.has(banner.elementid)) return;
@@ -768,11 +779,8 @@
         function showBanners() {
           fixedAds.hidden = desktopMedia.matches;
           document.getElementById(desktopBanner.elementid).hidden = !desktopMedia.matches;
-          const activeBanners = desktopMedia.matches ? [desktopBanner] : mobileBanners;
-          for (const banner of mobileBanners) {
-            document.getElementById(banner.elementid).hidden = !activeBanners.includes(banner);
-          }
-          activeBanners.forEach(loadBanner);
+          if (desktopMedia.matches) loadBanner(desktopBanner);
+          else loadMobileBanners();
         }
 
         new ResizeObserver(() => {
