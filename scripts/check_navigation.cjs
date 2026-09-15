@@ -20,6 +20,9 @@ async function main() {
         return route.fulfill({ status: 204, body: '' });
       });
       await context.addInitScript(() => { window.__documentId = crypto.randomUUID(); });
+      await context.addInitScript(() => {
+        sessionStorage.setItem('face-diagnosis:mobile-ad-variant:v1', 'double');
+      });
       const page = await context.newPage();
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
