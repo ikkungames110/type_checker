@@ -26,4 +26,17 @@ location.replace(target.href);
         page = destination / name / "index.html"
         page.parent.mkdir(parents=True, exist_ok=True)
         page.write_text(redirect, encoding="utf-8")
+    # 一度別の文書へ移動し、トップの広告も新しいページで読み込み直す。
+    restart = destination / "restart" / "index.html"
+    restart.parent.mkdir(parents=True, exist_ok=True)
+    restart.write_text('''<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<title>診断をやり直す</title>
+<meta name="robots" content="noindex, follow">
+<script>
+try { sessionStorage.removeItem("face-diagnosis:v8"); } catch { /* 保存不可でもトップへ戻れる。 */ }
+location.replace("/");
+</script>
+</head><body><a href="/">好みの顔タイプ診断へ</a></body></html>
+''', encoding="utf-8")
     print("診断画面: ドメイン直下で切り替え、旧画面URLはルートへ転送")

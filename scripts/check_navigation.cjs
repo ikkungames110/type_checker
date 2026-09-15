@@ -289,8 +289,19 @@ async function main() {
         assert.equal(await page.locator('#xShareButton').getAttribute('href'),tieShare);
       }
       const beforeRestart = await page.evaluate(() => window.__documentId);
+      const restartDocuments = [];
+      let restartAdRequests = 0;
+      const recordRestart = request => {
+        if (request.isNavigationRequest() && request.frame() === page.mainFrame()) restartDocuments.push(request.url());
+        if (new URL(request.url()).hostname === 'imp-adedge.i-mobile.co.jp') restartAdRequests++;
+      };
+      page.on('request', recordRestart);
       await page.locator('#restartButton').click();
-      assert.equal(await ready('top'), beforeRestart);
+      assert.notEqual(await ready('top'), beforeRestart);
+      page.off('request', recordRestart);
+      assert.deepEqual(restartDocuments, [routeUrl('restart'), site.href]);
+      // 同じURLのスクリプト取得はブラウザーがまとめる場合がある。各枠の実行回数はreadyで確認する。
+      assert.ok(restartAdRequests >= 1);
       // 全ページ撮影時の一時的なviewport変更で広告の幅切り替えを発火させない。
       await page.screenshot({path:`/tmp/type-checker-ad-${width}.png`});
       await ready('top');

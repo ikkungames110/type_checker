@@ -1029,9 +1029,7 @@
     }
 
     function reset() {
-      try { sessionStorage.removeItem(SESSION_KEY); } catch { /* 保存不可でもトップへ戻れる。 */ }
-      lastSavedSession = null;
-      navigate("top");
+      window.location.assign("/restart/");
     }
 
     async function copyResult() {
