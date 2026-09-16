@@ -129,7 +129,7 @@ def check_promotion_card(check, referenced):
     parser.feed(html)
     check(bool(card["generation"]["prompt"]) and card["review_status"] == "visual_checked", "宣材画像: 制作記録・目視確認がない")
 
-    expected_path = f'assets/promo/home-characters-v1-{card["image_sha256"][:12]}.png'
+    expected_path = 'assets/promo/OGP.png'
     check(card["image"] == expected_path, "宣材画像: 画像パスが不正")
     image_path = ROOT / expected_path
     check(image_path.is_file(), "宣材画像: 画像がない")

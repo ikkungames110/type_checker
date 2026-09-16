@@ -14,7 +14,7 @@ async function main(){
   const template='scripts/templates/promotion_card.html';
   const browser=await chromium.launch({headless:true});let bytes;
   try{const page=await browser.newPage({viewport:{width:1200,height:600},deviceScaleFactor:1});await page.goto(pathToFileURL(path.join(root,template)).href);const images=[];for(const c of characters){const data=await readFile(path.join(root,c.image));if(hash(data)!==c.sha256)throw Error(`${c.id}: ハッシュ不一致`);images.push(`data:image/png;base64,${data.toString('base64')}`);}await page.evaluate(async images=>{const target=document.getElementById('characters');for(const src of images){const img=document.createElement('img');img.src=src;img.alt='';target.append(img);}await document.fonts.ready;await Promise.all([...document.images].map(img=>img.decode()));},images);bytes=await page.screenshot({type:'png'});}finally{await browser.close();}
-  const imageHash=hash(bytes),image=`assets/promo/home-characters-v1-${imageHash.slice(0,12)}.png`;
+  const imageHash=hash(bytes),image='assets/promo/OGP.png';
   const manifestPath=path.join(root,'data/promotion_card.json');
   const previous=JSON.parse(await readFile(manifestPath,'utf8'));
   await writeFile(path.join(root,image),bytes);
